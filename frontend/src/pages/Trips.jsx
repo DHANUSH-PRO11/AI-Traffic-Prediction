@@ -8,9 +8,11 @@ import {
   CheckCircle2, 
   Sparkles,
   TrendingUp,
-  X
+  FileSpreadsheet
 } from 'lucide-react';
 import { trafficApi } from '../api/client';
+import { SectionHeader, Button, Card, Modal, StatusBadge } from '../components/common';
+import { formatDistance, formatDuration, formatTimestamp } from '../utils/formatters';
 
 export default function Trips() {
   const [trips, setTrips] = useState([]);
@@ -70,34 +72,48 @@ export default function Trips() {
   };
 
   return (
-    <div className="space-y-6 max-w-6xl mx-auto pb-10">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <div className="space-y-6 max-w-6xl mx-auto pb-6">
+      {/* 1. Header Section */}
+      <SectionHeader
+        title="User Trip History & Continuous Feedback"
+        subtitle="Completed driver trip telemetry stored to train and evaluate future ML model versions."
+        icon={History}
+        action={
+          <Button
+            onClick={() => setShowModal(true)}
+            icon={PlusCircle}
+            variant="primary"
+          >
+            Record Completed Trip
+          </Button>
+        }
+      />
+
+      {/* 2. Hero Information Card */}
+      <div className="p-5 rounded-2xl bg-gradient-to-r from-slate-900 via-emerald-950/20 to-slate-900 border border-emerald-500/20 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-2xl font-bold tracking-tight text-white flex items-center gap-2">
-            <History className="w-6 h-6 text-emerald-400" />
-            User Trip History & Continuous Learning Data
-          </h2>
-          <p className="text-sm text-slate-400 mt-1">
-            Historical trip observations stored for validation and ML model periodic retraining.
+          <span className="text-xs font-semibold text-emerald-400 uppercase tracking-wider block">
+            Continuous Learning Pipeline
+          </span>
+          <p className="text-xs text-slate-300 mt-1 max-w-xl">
+            Every recorded trip logs the predicted vs actual duration, generating real-world residual error metrics that trigger model retraining whenever error boundaries drift.
           </p>
         </div>
-        <button
-          onClick={() => setShowModal(true)}
-          className="flex items-center space-x-2 bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded-xl text-sm font-semibold shadow-lg shadow-emerald-600/30 transition-all"
-        >
-          <PlusCircle className="w-4 h-4 text-emerald-200" />
-          <span>Record Completed Trip</span>
-        </button>
+        <div className="flex items-center gap-3 shrink-0">
+          <div className="bg-slate-800/80 px-4 py-2 rounded-xl border border-slate-700/60 text-center font-mono">
+            <span className="text-[10px] text-slate-400 uppercase font-bold block">Logged Trips</span>
+            <span className="text-xl font-black text-white">{trips.length}</span>
+          </div>
+        </div>
       </div>
 
-      {/* Trips Table */}
-      <div className="glass-panel rounded-2xl border border-slate-800 overflow-hidden">
-        <div className="p-5 border-b border-slate-800 flex items-center justify-between">
-          <h3 className="font-semibold text-base text-white">Recorded Commuter Trips</h3>
-          <span className="text-xs text-slate-400 font-mono">{trips.length} Total Records</span>
-        </div>
-
+      {/* 3. Main Content: Trips Table */}
+      <Card
+        title="Recorded Commuter Trips"
+        subtitle="Chronological list of optimized paths and variance analysis"
+        action={<StatusBadge label={`${trips.length} Total`} variant="slate" />}
+        bodyClassName="p-0"
+      >
         {loading ? (
           <div className="flex items-center justify-center p-12">
             <div className="w-8 h-8 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin" />
@@ -111,7 +127,7 @@ export default function Trips() {
                   <th className="py-3 px-4">Distance</th>
                   <th className="py-3 px-4">Predicted Time</th>
                   <th className="py-3 px-4">Actual Time</th>
-                  <th className="py-3 px-4">Variance</th>
+                  <th className="py-3 px-4">Accuracy / Delta</th>
                   <th className="py-3 px-4">Algorithm</th>
                   <th className="py-3 px-4">Timestamp</th>
                 </tr>
@@ -131,9 +147,9 @@ export default function Trips() {
                         <span className="text-slate-500">→</span>
                         <span>{t.destination}</span>
                       </td>
-                      <td className="py-3 px-4 text-slate-300">{t.distance} km</td>
-                      <td className="py-3 px-4 text-emerald-300">{pred} min</td>
-                      <td className="py-3 px-4 text-white font-bold">{act} min</td>
+                      <td className="py-3 px-4 text-slate-300">{formatDistance(t.distance)}</td>
+                      <td className="py-3 px-4 text-emerald-300">{formatTimeMinutes(pred)}</td>
+                      <td className="py-3 px-4 text-white font-bold">{formatTimeMinutes(act)}</td>
                       <td className="py-3 px-4">
                         <span className={`px-2 py-0.5 rounded text-[11px] font-semibold ${Math.abs(diff) <= 2 ? 'bg-emerald-500/15 text-emerald-300 border border-emerald-500/30' : 'bg-amber-500/10 text-amber-400 border border-amber-500/30'}`}>
                           {diff > 0 ? `+${diff}` : diff}m ({variancePct}%)
@@ -145,7 +161,7 @@ export default function Trips() {
                         </span>
                       </td>
                       <td className="py-3 px-4 text-slate-400 text-[11px]">
-                        {new Date(t.created_at).toLocaleString()}
+                        {formatTimestamp(t.created_at)}
                       </td>
                     </tr>
                   );
@@ -158,118 +174,106 @@ export default function Trips() {
             No trip records found. Record your first trip to populate data!
           </div>
         )}
-      </div>
+      </Card>
 
-      {/* Modal: Record New Trip */}
-      {showModal && (
-        <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-slate-900 border border-slate-700 rounded-2xl w-full max-w-md p-6 space-y-4 shadow-2xl">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
-              <h3 className="font-bold text-base text-white flex items-center gap-2">
-                <Navigation className="w-4 h-4 text-emerald-400" />
-                Record Completed Trip Data
-              </h3>
-              <button 
-                onClick={() => setShowModal(false)}
-                className="p-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-
-            <form onSubmit={handleRecordNewTrip} className="space-y-3 text-xs">
-              <div>
-                <label className="font-semibold text-slate-300 block mb-1">Origin</label>
-                <input
-                  type="text"
-                  value={source}
-                  onChange={(e) => setSource(e.target.value)}
-                  className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-white"
-                  required
-                />
-              </div>
-
-              <div>
-                <label className="font-semibold text-slate-300 block mb-1">Destination</label>
-                <input
-                  type="text"
-                  value={destination}
-                  onChange={(e) => setDestination(e.target.value)}
-                  className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-white"
-                  required
-                />
-              </div>
-
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <label className="font-semibold text-slate-300 block mb-1">Distance (km)</label>
-                  <input
-                    type="number"
-                    step="0.1"
-                    value={distance}
-                    onChange={(e) => setDistance(e.target.value)}
-                    className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-white font-mono"
-                    required
-                  />
-                </div>
-                <div>
-                  <label className="font-semibold text-slate-300 block mb-1">Algorithm</label>
-                  <select
-                    value={algorithm}
-                    onChange={(e) => setAlgorithm(e.target.value)}
-                    className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-white"
-                  >
-                    <option value="A*">A*</option>
-                    <option value="Dijkstra">Dijkstra</option>
-                  </select>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <label className="font-semibold text-slate-300 block mb-1">Predicted Time (min)</label>
-                  <input
-                    type="number"
-                    step="0.1"
-                    value={predictedTime}
-                    onChange={(e) => setPredictedTime(e.target.value)}
-                    className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-white font-mono"
-                    required
-                  />
-                </div>
-                <div>
-                  <label className="font-semibold text-slate-300 block mb-1">Actual Time (min)</label>
-                  <input
-                    type="number"
-                    step="0.1"
-                    value={actualTime}
-                    onChange={(e) => setActualTime(e.target.value)}
-                    className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-white font-mono"
-                    required
-                  />
-                </div>
-              </div>
-
-              <div className="pt-2 flex items-center justify-end space-x-2">
-                <button
-                  type="button"
-                  onClick={() => setShowModal(false)}
-                  className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-medium"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  disabled={submitting}
-                  className="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-semibold shadow-lg shadow-emerald-600/30 flex items-center space-x-1.5"
-                >
-                  {submitting ? 'Saving...' : 'Submit to Database'}
-                </button>
-              </div>
-            </form>
+      {/* 4. Modal: Record New Trip */}
+      <Modal
+        isOpen={showModal}
+        onClose={() => setShowModal(false)}
+        title="Record Completed Driver Trip"
+        icon={Navigation}
+      >
+        <form onSubmit={handleRecordNewTrip} className="space-y-3 text-xs">
+          <div>
+            <label className="font-semibold text-slate-300 block mb-1">Origin Hub</label>
+            <input
+              type="text"
+              value={source}
+              onChange={(e) => setSource(e.target.value)}
+              className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-white"
+              required
+            />
           </div>
-        </div>
-      )}
+
+          <div>
+            <label className="font-semibold text-slate-300 block mb-1">Destination Hub</label>
+            <input
+              type="text"
+              value={destination}
+              onChange={(e) => setDestination(e.target.value)}
+              className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-white"
+              required
+            />
+          </div>
+
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <label className="font-semibold text-slate-300 block mb-1">Distance (km)</label>
+              <input
+                type="number"
+                step="0.1"
+                value={distance}
+                onChange={(e) => setDistance(e.target.value)}
+                className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-white font-mono"
+                required
+              />
+            </div>
+            <div>
+              <label className="font-semibold text-slate-300 block mb-1">Algorithm</label>
+              <select
+                value={algorithm}
+                onChange={(e) => setAlgorithm(e.target.value)}
+                className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-white"
+              >
+                <option value="A*">A*</option>
+                <option value="Dijkstra">Dijkstra</option>
+              </select>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <label className="font-semibold text-slate-300 block mb-1">Predicted Time (min)</label>
+              <input
+                type="number"
+                step="0.1"
+                value={predictedTime}
+                onChange={(e) => setPredictedTime(e.target.value)}
+                className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-white font-mono"
+                required
+              />
+            </div>
+            <div>
+              <label className="font-semibold text-slate-300 block mb-1">Actual Time (min)</label>
+              <input
+                type="number"
+                step="0.1"
+                value={actualTime}
+                onChange={(e) => setActualTime(e.target.value)}
+                className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-white font-mono"
+                required
+              />
+            </div>
+          </div>
+
+          <div className="pt-2 flex items-center justify-end space-x-2">
+            <Button
+              type="button"
+              variant="secondary"
+              onClick={() => setShowModal(false)}
+            >
+              Cancel
+            </Button>
+            <Button
+              type="submit"
+              variant="primary"
+              loading={submitting}
+            >
+              Submit to Database
+            </Button>
+          </div>
+        </form>
+      </Modal>
     </div>
   );
 }

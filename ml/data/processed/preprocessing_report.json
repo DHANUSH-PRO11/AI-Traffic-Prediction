@@ -1,0 +1,21 @@
+{
+  "source_dataset": "G:\\ML-Traffic\\ml\\data\\raw\\traffic_observations.csv",
+  "processed_dataset": "G:\\ML-Traffic\\ml\\data\\processed\\traffic_features.csv",
+  "processed_timestamp": "2026-09-29T07:05:35.292045+00:00",
+  "total_raw_records": 16128,
+  "valid_processed_records": 16128,
+  "anomalies_handled": 0,
+  "malformed_skipped": 0,
+  "engineered_features": [
+    "hour_sin",
+    "hour_cos",
+    "is_weekend",
+    "road_type_encoded",
+    "weather_encoded"
+  ],
+  "target_variables": [
+    "speed_kmh",
+    "travel_time_min",
+    "volume_vph"
+  ]
+}

@@ -10,14 +10,20 @@ import json
 import datetime
 import numpy as np
 
-# Ensure backend is on sys.path
+# Ensure backend and project root are on sys.path
 BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 BACKEND_DIR = os.path.join(BASE_DIR, "backend")
-if BACKEND_DIR not in sys.path:
-    sys.path.insert(0, BACKEND_DIR)
+for p in (BASE_DIR, BACKEND_DIR):
+    if p not in sys.path:
+        sys.path.insert(0, p)
 
-from app.ml.gbdt_model import GradientBoostedTrafficRegressor
-from app.ml.feature_pipeline import FEATURE_NAMES, extract_features_from_records
+try:
+    from backend.app.ml.gbdt_model import GradientBoostedTrafficRegressor
+    from backend.app.ml.feature_pipeline import FEATURE_NAMES, extract_features_from_records
+except ImportError:
+    from app.ml.gbdt_model import GradientBoostedTrafficRegressor  # type: ignore
+    from app.ml.feature_pipeline import FEATURE_NAMES, extract_features_from_records  # type: ignore
+
 
 def load_dataset(csv_path: str):
     records = []

@@ -3,20 +3,22 @@ import { useNavigate } from 'react-router-dom';
 import { 
   Activity, 
   AlertTriangle, 
-  Clock, 
-  Navigation, 
-  TrendingUp, 
-  TrendingDown, 
   Car, 
   Zap, 
   ShieldCheck, 
   ArrowRight,
-  Compass
+  Compass,
+  TrendingUp,
+  Navigation,
+  Sparkles
 } from 'lucide-react';
 import { 
-  AreaChart, Area, BarChart, Bar, LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid 
+  AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid 
 } from 'recharts';
 import { trafficApi } from '../api/client';
+import { SectionHeader, StatCard, Card, Button, TrafficBadge, StatusBadge } from '../components/common';
+import { getTrafficColor } from '../utils/trafficColors';
+import { formatSpeed } from '../utils/formatters';
 
 export default function Dashboard() {
   const navigate = useNavigate();
@@ -46,15 +48,6 @@ export default function Dashboard() {
     loadDashboard();
   }, []);
 
-  const getTrafficColor = (level) => {
-    switch (level) {
-      case 'SEVERE': return 'text-red-400 border-red-500/40 bg-red-500/10';
-      case 'HIGH': return 'text-orange-400 border-orange-500/40 bg-orange-500/10';
-      case 'MEDIUM': return 'text-amber-400 border-amber-500/40 bg-amber-500/10';
-      default: return 'text-emerald-300 border-emerald-500/40 bg-emerald-500/10';
-    }
-  };
-
   if (loading && !trafficData) {
     return (
       <div className="flex items-center justify-center h-96">
@@ -70,120 +63,90 @@ export default function Dashboard() {
   const totalSegs = trafficData?.total_segments || 48;
 
   return (
-    <div className="space-y-6 max-w-7xl mx-auto pb-10">
-      {/* Top Banner / Header in Emerald & Slate */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-gradient-to-r from-slate-900 via-emerald-950/25 to-slate-900 p-6 rounded-2xl border border-emerald-500/20">
+    <div className="space-y-6 max-w-7xl mx-auto pb-6">
+      {/* 1. Header & Hero Section */}
+      <div className="bg-gradient-to-r from-slate-900 via-emerald-950/25 to-slate-900 p-6 rounded-2xl border border-emerald-500/20 shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h2 className="text-2xl font-bold tracking-tight text-white flex items-center gap-2">
-            Traffic Intelligence & Routing Center
-          </h2>
-          <p className="text-sm text-slate-400 mt-1">
-            Real-time machine learning predictions, dynamic graph heuristics, and incident mitigation.
+          <div className="flex items-center gap-2 mb-1">
+            <StatusBadge label="REAL-TIME TELEMETRY" variant="emerald" pulse={true} />
+            <span className="text-xs text-slate-400">METR-LA Urban Corridor Network</span>
+          </div>
+          <h1 className="text-2xl lg:text-3xl font-bold tracking-tight text-white flex items-center gap-2">
+            Traffic Intelligence & Route Optimization
+          </h1>
+          <p className="text-sm text-slate-300 mt-1 max-w-2xl leading-relaxed">
+            Continuous gradient-boosted speed regression combined with dynamic A* graph shortest-path heuristics and instant incident rerouting.
           </p>
         </div>
-        <div className="flex items-center gap-3">
-          <button
+        <div className="flex items-center gap-3 shrink-0">
+          <Button
             onClick={() => navigate('/map')}
-            className="flex items-center space-x-2 bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2.5 rounded-xl font-semibold text-sm transition-all shadow-lg shadow-emerald-600/30"
+            icon={Compass}
+            variant="primary"
           >
-            <Compass className="w-4 h-4 text-emerald-200" />
-            <span>Open Route Map</span>
-          </button>
-          <button
+            Open Route Map
+          </Button>
+          <Button
             onClick={() => navigate('/predict')}
-            className="flex items-center space-x-2 bg-slate-800 hover:bg-slate-700 text-white px-4 py-2.5 rounded-xl font-medium text-sm border border-slate-700 transition-all"
+            icon={Zap}
+            variant="secondary"
           >
-            <Zap className="w-4 h-4 text-emerald-400" />
-            <span>AI Predictor</span>
-          </button>
+            AI Predictor
+          </Button>
         </div>
       </div>
 
-      {/* KPI Cards Grid */}
+      {/* 2. Key Metrics Row */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-        {/* Current Traffic */}
-        <div className="glass-panel p-5 rounded-2xl flex flex-col justify-between">
-          <div className="flex items-center justify-between text-slate-400 text-xs font-medium">
-            <span>Current Traffic</span>
-            <Activity className="w-4 h-4 text-emerald-400" />
-          </div>
-          <div className="my-3">
-            <span className={`text-2xl font-black px-3 py-1 rounded-xl border ${getTrafficColor(trafficData?.system_traffic_level)}`}>
-              {trafficData?.system_traffic_level || 'LOW'}
-            </span>
-          </div>
-          <p className="text-xs text-slate-400">Based on {totalSegs} monitored corridor segments</p>
-        </div>
+        <StatCard
+          title="Current Traffic Severity"
+          badge={<TrafficBadge level={trafficData?.system_traffic_level || 'LOW'} pulse={true} />}
+          subtitle={`Based on ${totalSegs} active segments`}
+          icon={Activity}
+        />
 
-        {/* Predicted Traffic */}
-        <div className="glass-panel p-5 rounded-2xl flex flex-col justify-between">
-          <div className="flex items-center justify-between text-slate-400 text-xs font-medium">
-            <span>Predicted Next Hour</span>
-            <TrendingUp className="w-4 h-4 text-amber-400" />
-          </div>
-          <div className="my-3">
-            <span className="text-2xl font-black text-amber-400">
-              MEDIUM
-            </span>
-          </div>
-          <p className="text-xs text-slate-400">Evening rush forecast +8.4% volume</p>
-        </div>
+        <StatCard
+          title="Predicted Next Hour"
+          value="MEDIUM"
+          valueColor="text-amber-400"
+          subtitle="Forecast +8.4% peak volume"
+          icon={TrendingUp}
+        />
 
-        {/* Active Incidents */}
-        <div className="glass-panel p-5 rounded-2xl flex flex-col justify-between">
-          <div className="flex items-center justify-between text-slate-400 text-xs font-medium">
-            <span>Active Accidents</span>
-            <AlertTriangle className="w-4 h-4 text-red-400" />
-          </div>
-          <div className="my-3 flex items-baseline gap-2">
-            <span className="text-3xl font-black text-white">
-              {trafficData?.active_incidents_count || 0}
-            </span>
-            <span className="text-xs text-red-400 font-medium">Bottlenecks active</span>
-          </div>
-          <p className="text-xs text-slate-400">Automated reroute active</p>
-        </div>
+        <StatCard
+          title="Active Accidents / Bottlenecks"
+          value={trafficData?.active_incidents_count || 0}
+          valueColor={trafficData?.active_incidents_count > 0 ? 'text-red-400' : 'text-white'}
+          subtitle="Automated reroute active"
+          icon={AlertTriangle}
+        />
 
-        {/* Average Speed */}
-        <div className="glass-panel p-5 rounded-2xl flex flex-col justify-between">
-          <div className="flex items-center justify-between text-slate-400 text-xs font-medium">
-            <span>Network Avg Speed</span>
-            <Car className="w-4 h-4 text-emerald-400" />
-          </div>
-          <div className="my-3 flex items-baseline gap-2">
-            <span className="text-3xl font-black text-emerald-300 font-mono">
-              {trafficData?.system_average_speed || 45.2}
-            </span>
-            <span className="text-xs text-slate-400">km/h</span>
-          </div>
-          <p className="text-xs text-slate-400">Speed limit benchmark: 75 km/h</p>
-        </div>
+        <StatCard
+          title="Network Average Speed"
+          value={trafficData?.system_average_speed || 45.2}
+          unit="km/h"
+          valueColor="text-emerald-300"
+          subtitle="Speed limit benchmark: 75 km/h"
+          icon={Car}
+        />
 
-        {/* Trips Today */}
-        <div className="glass-panel p-5 rounded-2xl flex flex-col justify-between">
-          <div className="flex items-center justify-between text-slate-400 text-xs font-medium">
-            <span>Optimized Trips</span>
-            <Navigation className="w-4 h-4 text-emerald-400" />
-          </div>
-          <div className="my-3 flex items-baseline gap-2">
-            <span className="text-3xl font-black text-white font-mono">
-              1,284
-            </span>
-            <span className="text-xs text-emerald-400 font-medium">+14.2%</span>
-          </div>
-          <p className="text-xs text-slate-400">Avg 6.4 min saved per trip</p>
-        </div>
+        <StatCard
+          title="Total Optimized Trips"
+          value="1,284"
+          valueColor="text-white"
+          subtitle="Avg 6.4 min saved per trip"
+          icon={Navigation}
+        />
       </div>
 
-      {/* Main Charts Section */}
+      {/* 3. Main Content: 24h Area Chart + Congestion Distribution */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* 24-Hour Traffic Curve in Light Green & White */}
-        <div className="lg:col-span-2 glass-panel p-6 rounded-2xl border border-slate-800">
-          <div className="flex items-center justify-between mb-4">
-            <div>
-              <h3 className="font-semibold text-base text-white">24-Hour Traffic Volume & ML Forecast</h3>
-              <p className="text-xs text-slate-400">Actual loop detector volume vs continuous ML predicted volume</p>
-            </div>
+        {/* 24-Hour Traffic Curve */}
+        <Card
+          className="lg:col-span-2"
+          title="24-Hour Traffic Volume & ML Forecast Curve"
+          subtitle="Actual loop detector volume vs continuous ML predicted volume"
+          action={
             <div className="flex items-center space-x-4 text-xs font-medium">
               <span className="flex items-center gap-1.5 text-emerald-300">
                 <span className="w-2.5 h-2.5 rounded-full bg-emerald-400" />
@@ -194,8 +157,8 @@ export default function Dashboard() {
                 ML Predicted
               </span>
             </div>
-          </div>
-
+          }
+        >
           <div className="h-72 w-full">
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart data={historyData}>
@@ -220,69 +183,67 @@ export default function Dashboard() {
               </AreaChart>
             </ResponsiveContainer>
           </div>
-        </div>
+        </Card>
 
         {/* Congestion Level Distribution */}
-        <div className="glass-panel p-6 rounded-2xl border border-slate-800 flex flex-col justify-between">
-          <div>
-            <h3 className="font-semibold text-base text-white">Congestion Distribution</h3>
-            <p className="text-xs text-slate-400 mt-1">Status across all {totalSegs} network segments</p>
-
-            <div className="mt-6 space-y-4">
-              {/* Low */}
-              <div>
-                <div className="flex justify-between text-xs font-medium mb-1">
-                  <span className="text-emerald-300 flex items-center gap-1.5">
-                    <span className="w-2 h-2 rounded-full bg-emerald-400" />
-                    Low Traffic (Free Flow)
-                  </span>
-                  <span className="text-slate-300 font-mono">{breakdown.LOW || 0} seg ({Math.round(((breakdown.LOW || 0) / totalSegs) * 100)}%)</span>
-                </div>
-                <div className="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
-                  <div className="bg-emerald-400 h-full rounded-full transition-all duration-500" style={{ width: `${((breakdown.LOW || 0) / totalSegs) * 100}%` }} />
-                </div>
+        <Card
+          title="Congestion Distribution"
+          subtitle={`Segment status breakdown across all ${totalSegs} links`}
+        >
+          <div className="space-y-4">
+            {/* Low */}
+            <div>
+              <div className="flex justify-between text-xs font-medium mb-1">
+                <span className="text-emerald-300 flex items-center gap-1.5">
+                  <span className="w-2 h-2 rounded-full bg-emerald-400" />
+                  Low Traffic (Free Flow)
+                </span>
+                <span className="text-slate-300 font-mono">{breakdown.LOW || 0} seg ({Math.round(((breakdown.LOW || 0) / totalSegs) * 100)}%)</span>
               </div>
-
-              {/* Medium */}
-              <div>
-                <div className="flex justify-between text-xs font-medium mb-1">
-                  <span className="text-amber-400 flex items-center gap-1.5">
-                    <span className="w-2 h-2 rounded-full bg-amber-500" />
-                    Medium (Moderate Delays)
-                  </span>
-                  <span className="text-slate-300 font-mono">{breakdown.MEDIUM || 0} seg ({Math.round(((breakdown.MEDIUM || 0) / totalSegs) * 100)}%)</span>
-                </div>
-                <div className="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
-                  <div className="bg-amber-500 h-full rounded-full transition-all duration-500" style={{ width: `${((breakdown.MEDIUM || 0) / totalSegs) * 100}%` }} />
-                </div>
+              <div className="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
+                <div className="bg-emerald-400 h-full rounded-full transition-all duration-500" style={{ width: `${((breakdown.LOW || 0) / totalSegs) * 100}%` }} />
               </div>
+            </div>
 
-              {/* High */}
-              <div>
-                <div className="flex justify-between text-xs font-medium mb-1">
-                  <span className="text-orange-400 flex items-center gap-1.5">
-                    <span className="w-2 h-2 rounded-full bg-orange-500" />
-                    High (Heavy Traffic)
-                  </span>
-                  <span className="text-slate-300 font-mono">{breakdown.HIGH || 0} seg ({Math.round(((breakdown.HIGH || 0) / totalSegs) * 100)}%)</span>
-                </div>
-                <div className="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
-                  <div className="bg-orange-500 h-full rounded-full transition-all duration-500" style={{ width: `${((breakdown.HIGH || 0) / totalSegs) * 100}%` }} />
-                </div>
+            {/* Medium */}
+            <div>
+              <div className="flex justify-between text-xs font-medium mb-1">
+                <span className="text-amber-400 flex items-center gap-1.5">
+                  <span className="w-2 h-2 rounded-full bg-amber-500" />
+                  Medium (Moderate Delays)
+                </span>
+                <span className="text-slate-300 font-mono">{breakdown.MEDIUM || 0} seg ({Math.round(((breakdown.MEDIUM || 0) / totalSegs) * 100)}%)</span>
               </div>
+              <div className="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
+                <div className="bg-amber-500 h-full rounded-full transition-all duration-500" style={{ width: `${((breakdown.MEDIUM || 0) / totalSegs) * 100}%` }} />
+              </div>
+            </div>
 
-              {/* Severe */}
-              <div>
-                <div className="flex justify-between text-xs font-medium mb-1">
-                  <span className="text-red-400 flex items-center gap-1.5">
-                    <span className="w-2 h-2 rounded-full bg-red-500" />
-                    Severe (Incidents / Gridlock)
-                  </span>
-                  <span className="text-slate-300 font-mono">{breakdown.SEVERE || 0} seg ({Math.round(((breakdown.SEVERE || 0) / totalSegs) * 100)}%)</span>
-                </div>
-                <div className="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
-                  <div className="bg-red-500 h-full rounded-full transition-all duration-500" style={{ width: `${((breakdown.SEVERE || 0) / totalSegs) * 100}%` }} />
-                </div>
+            {/* High */}
+            <div>
+              <div className="flex justify-between text-xs font-medium mb-1">
+                <span className="text-orange-400 flex items-center gap-1.5">
+                  <span className="w-2 h-2 rounded-full bg-orange-500" />
+                  High (Heavy Traffic)
+                </span>
+                <span className="text-slate-300 font-mono">{breakdown.HIGH || 0} seg ({Math.round(((breakdown.HIGH || 0) / totalSegs) * 100)}%)</span>
+              </div>
+              <div className="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
+                <div className="bg-orange-500 h-full rounded-full transition-all duration-500" style={{ width: `${((breakdown.HIGH || 0) / totalSegs) * 100}%` }} />
+              </div>
+            </div>
+
+            {/* Severe */}
+            <div>
+              <div className="flex justify-between text-xs font-medium mb-1">
+                <span className="text-red-400 flex items-center gap-1.5">
+                  <span className="w-2 h-2 rounded-full bg-red-500" />
+                  Severe (Incidents / Gridlock)
+                </span>
+                <span className="text-slate-300 font-mono">{breakdown.SEVERE || 0} seg ({Math.round(((breakdown.SEVERE || 0) / totalSegs) * 100)}%)</span>
+              </div>
+              <div className="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
+                <div className="bg-red-500 h-full rounded-full transition-all duration-500" style={{ width: `${((breakdown.SEVERE || 0) / totalSegs) * 100}%` }} />
               </div>
             </div>
           </div>
@@ -296,26 +257,24 @@ export default function Dashboard() {
               Routing engine weights update on every telemetry pulse. Congested edges are dynamically penalized.
             </p>
           </div>
-        </div>
+        </Card>
       </div>
 
-      {/* Bottom Grid: Popular Routes & Incidents */}
+      {/* 4. Supporting Sections: Popular Routes & Incidents */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Popular Commute Routes */}
-        <div className="glass-panel p-6 rounded-2xl border border-slate-800">
-          <div className="flex items-center justify-between mb-4">
-            <div>
-              <h3 className="font-semibold text-base text-white">Popular Optimized Corridors</h3>
-              <p className="text-xs text-slate-400">Routes calculated with highest time-savings</p>
-            </div>
+        <Card
+          title="Popular Optimized Corridors"
+          subtitle="Top transit routes ordered by time savings"
+          action={
             <button 
               onClick={() => navigate('/analytics')}
               className="text-xs text-emerald-400 hover:text-emerald-300 flex items-center gap-1"
             >
               View Analytics <ArrowRight className="w-3.5 h-3.5" />
             </button>
-          </div>
-
+          }
+        >
           <div className="space-y-2.5">
             {popularRoutes.map((r, i) => (
               <div 
@@ -343,23 +302,21 @@ export default function Dashboard() {
               </div>
             ))}
           </div>
-        </div>
+        </Card>
 
         {/* Live Incident Alerts Feed */}
-        <div className="glass-panel p-6 rounded-2xl border border-slate-800">
-          <div className="flex items-center justify-between mb-4">
-            <div>
-              <h3 className="font-semibold text-base text-white">Active Traffic Incidents</h3>
-              <p className="text-xs text-slate-400">Real-time road closures, collisions, and hazards</p>
-            </div>
+        <Card
+          title="Active Traffic Incidents"
+          subtitle="Real-time road closures, collisions, and hazards"
+          action={
             <button 
               onClick={() => navigate('/admin')}
               className="text-xs text-red-400 hover:text-red-300 flex items-center gap-1"
             >
               Simulate / Manage <ArrowRight className="w-3.5 h-3.5" />
             </button>
-          </div>
-
+          }
+        >
           {trafficData?.incidents && trafficData.incidents.length > 0 ? (
             <div className="space-y-2.5">
               {trafficData.incidents.map((inc, i) => (
@@ -383,15 +340,17 @@ export default function Dashboard() {
               <ShieldCheck className="w-8 h-8 text-emerald-400 mb-2" />
               <p className="text-sm font-medium text-white">No Active Incidents Detected</p>
               <p className="text-xs text-slate-400 mt-1">All highway and arterial links operating under free-flow or regular peak patterns.</p>
-              <button
+              <Button
                 onClick={() => navigate('/admin')}
-                className="mt-4 text-xs font-semibold text-emerald-300 hover:text-white bg-emerald-500/15 px-3.5 py-1.5 rounded-lg border border-emerald-500/30 transition-colors"
+                variant="outline"
+                size="sm"
+                className="mt-4"
               >
                 Inject Simulated Incident
-              </button>
+              </Button>
             </div>
           )}
-        </div>
+        </Card>
       </div>
     </div>
   );

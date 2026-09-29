@@ -2,7 +2,7 @@
   "model_name": "Gradient Boosted Regressor",
   "version": "v1.0",
   "training_dataset": "METR-LA Synthetic Corridor (14-day loop detectors)",
-  "training_date": "2026-09-29 06:33:17 UTC",
+  "training_date": "2026-09-29 07:05:34 UTC",
   "metrics": {
     "MAE": 4.07,
     "RMSE": 5.45,

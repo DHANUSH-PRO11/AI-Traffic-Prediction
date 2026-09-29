@@ -6,13 +6,19 @@ import {
   Clock, 
   ArrowUpRight, 
   Gauge, 
-  Share2, 
-  Compass 
+  Compass,
+  Zap,
+  Layers
 } from 'lucide-react';
 import { 
-  BarChart, Bar, LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, PieChart, Pie, Cell 
+  LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, PieChart, Pie, Cell 
 } from 'recharts';
 import { trafficApi } from '../api/client';
+import { SectionHeader } from '../components/common/SectionHeader';
+import { Card } from '../components/common/Card';
+import { StatCard } from '../components/common/StatCard';
+import { TrafficBadge, StatusBadge } from '../components/common/Badge';
+import { formatSpeed, formatNumber } from '../utils/formatters';
 
 export default function Analytics() {
   const [trafficAnalytics, setTrafficAnalytics] = useState(null);
@@ -66,94 +72,98 @@ export default function Analytics() {
   return (
     <div className="space-y-6 max-w-7xl mx-auto pb-10">
       {/* Header */}
-      <div>
-        <h2 className="text-2xl font-bold tracking-tight text-white flex items-center gap-2">
-          <BarChart3 className="w-6 h-6 text-emerald-400" />
-          Network Congestion & Routing Analytics
-        </h2>
-        <p className="text-sm text-slate-400 mt-1">
-          Longitudinal analysis across peak intervals, bottleneck hotspots, and algorithm efficacy.
-        </p>
-      </div>
+      <SectionHeader
+        icon={BarChart3}
+        title="Network Congestion & Routing Analytics"
+        description="Longitudinal telematics across diurnal rush-hour cycles, corridor bottlenecks, and algorithmic routing performance."
+      />
 
       {/* Top 4 KPI Metrics */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="glass-panel p-5 rounded-2xl">
-          <span className="text-xs text-slate-400 font-medium">Avg System Travel Time Saved</span>
-          <div className="my-2 flex items-baseline gap-2">
-            <span className="text-3xl font-black text-emerald-300 font-mono">
-              {routesAnalytics?.average_system_time_saved_min || 6.4}
-            </span>
-            <span className="text-xs text-slate-400">min / trip</span>
-          </div>
-          <span className="text-[11px] text-slate-400">Against baseline static shortest paths</span>
-        </div>
-
-        <div className="glass-panel p-5 rounded-2xl">
-          <span className="text-xs text-slate-400 font-medium">Total Optimized Trips</span>
-          <div className="my-2 flex items-baseline gap-2">
-            <span className="text-3xl font-black text-white font-mono">
-              {routesAnalytics?.total_optimized_trips?.toLocaleString() || '1,284'}
-            </span>
-            <span className="text-xs text-emerald-400 font-medium">+18.5% wk</span>
-          </div>
-          <span className="text-[11px] text-slate-400">Recorded into continuous learning database</span>
-        </div>
-
-        <div className="glass-panel p-5 rounded-2xl">
-          <span className="text-xs text-slate-400 font-medium">A* Heuristic Adoption</span>
-          <div className="my-2 flex items-baseline gap-2">
-            <span className="text-3xl font-black text-emerald-400 font-mono">
-              {routesAnalytics?.algorithm_usage?.['A*'] || 78.4}%
-            </span>
-            <span className="text-xs text-slate-400">vs 21.6% Dijkstra</span>
-          </div>
-          <span className="text-[11px] text-slate-400">Admissible Euclidean distance heuristic</span>
-        </div>
-
-        <div className="glass-panel p-5 rounded-2xl">
-          <span className="text-xs text-slate-400 font-medium">Monitored Segments</span>
-          <div className="my-2 flex items-baseline gap-2">
-            <span className="text-3xl font-black text-white font-mono">
-              {trafficAnalytics?.total_segments || 48}
-            </span>
-            <span className="text-xs text-emerald-400 font-medium">100% active</span>
-          </div>
-          <span className="text-[11px] text-slate-400">16 major metropolitan transit hubs</span>
-        </div>
+        <StatCard
+          label="Avg System Time Saved"
+          value={routesAnalytics?.average_system_time_saved_min || 6.4}
+          unit="min / trip"
+          subtext="Versus baseline static shortest distance paths"
+          trend="up"
+          trendValue="+14% efficiency"
+          icon={Clock}
+        />
+        <StatCard
+          label="Total Optimized Trips"
+          value={routesAnalytics?.total_optimized_trips?.toLocaleString() || '1,284'}
+          subtext="Logged into continuous feedback database"
+          trend="up"
+          trendValue="+18.5% wk"
+          icon={Activity}
+        />
+        <StatCard
+          label="A* Heuristic Adoption"
+          value={`${routesAnalytics?.algorithm_usage?.['A*'] || 78.4}%`}
+          unit="vs Dijkstra"
+          subtext="Admissible Euclidean distance heuristic"
+          icon={Compass}
+        />
+        <StatCard
+          label="Monitored Segments"
+          value={trafficAnalytics?.total_segments || 48}
+          unit="active"
+          subtext="16 major transit hubs across metropolitan area"
+          trend="up"
+          trendValue="100% telemetry online"
+          icon={Gauge}
+        />
       </div>
 
-      {/* Main Charts: 24h Speed/Congestion Curve + Congestion Pie */}
+      {/* Main Visualizations: 24h Speed/Congestion Curve + Congestion Ratio Pie */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Speed Trend */}
-        <div className="lg:col-span-2 glass-panel p-6 rounded-2xl border border-slate-800">
-          <div className="flex items-center justify-between mb-4">
-            <div>
-              <h3 className="font-semibold text-base text-white">24-Hour Velocity & Congestion Index</h3>
-              <p className="text-xs text-slate-400">System average speed (km/h) across time of day</p>
+        {/* Speed Trend Line Chart */}
+        <div className="lg:col-span-2">
+          <Card
+            title="24-Hour Velocity & Diurnal Congestion Curve"
+            subtitle="System-wide average travel speed (km/h) across time of day"
+          >
+            <div className="h-72 w-full mt-2">
+              <ResponsiveContainer width="100%" height="100%">
+                <LineChart data={trafficAnalytics?.hourly_trends || []}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
+                  <XAxis 
+                    dataKey="hour" 
+                    stroke="#64748b" 
+                    tick={{ fontSize: 11 }} 
+                    tickFormatter={(h) => `${h}:00`} 
+                  />
+                  <YAxis stroke="#64748b" tick={{ fontSize: 11 }} unit=" km/h" />
+                  <Tooltip 
+                    contentStyle={{ 
+                      backgroundColor: '#0f172a', 
+                      borderColor: '#334155', 
+                      borderRadius: '0.75rem', 
+                      fontSize: '12px' 
+                    }} 
+                  />
+                  <Line 
+                    type="monotone" 
+                    dataKey="average_speed" 
+                    stroke="#10b981" 
+                    strokeWidth={3} 
+                    dot={{ r: 3, fill: '#34d399' }} 
+                    name="Avg Speed (km/h)" 
+                  />
+                </LineChart>
+              </ResponsiveContainer>
             </div>
-          </div>
-
-          <div className="h-72 w-full">
-            <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={trafficAnalytics?.hourly_trends || []}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
-                <XAxis dataKey="hour" stroke="#64748b" tick={{ fontSize: 11 }} tickFormatter={(h) => `${h}:00`} />
-                <YAxis stroke="#64748b" tick={{ fontSize: 11 }} unit=" km/h" />
-                <Tooltip contentStyle={{ backgroundColor: '#0f172a', borderColor: '#334155', borderRadius: '0.75rem', fontSize: '12px' }} />
-                <Line type="monotone" dataKey="average_speed" stroke="#10b981" strokeWidth={3} dot={{ r: 3, fill: '#34d399' }} name="Avg Speed (km/h)" />
-              </LineChart>
-            </ResponsiveContainer>
-          </div>
+          </Card>
         </div>
 
-        {/* Congestion Pie / Breakdown */}
-        <div className="glass-panel p-6 rounded-2xl border border-slate-800 flex flex-col justify-between">
+        {/* Congestion Distribution Pie Chart */}
+        <Card
+          title="Congestion Distribution"
+          subtitle="Network proportion by traffic severity category"
+          className="flex flex-col justify-between"
+        >
           <div>
-            <h3 className="font-semibold text-base text-white">Congestion Ratio</h3>
-            <p className="text-xs text-slate-400">Network distribution by traffic level</p>
-
-            <div className="h-52 w-full mt-2">
+            <div className="h-52 w-full mt-1">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <Pie
@@ -169,13 +179,21 @@ export default function Analytics() {
                       <Cell key={`cell-${index}`} fill={entry.color} />
                     ))}
                   </Pie>
-                  <Tooltip contentStyle={{ backgroundColor: '#0f172a', borderColor: '#334155', borderRadius: '0.75rem', fontSize: '12px' }} formatter={(val) => `${val}%`} />
+                  <Tooltip 
+                    contentStyle={{ 
+                      backgroundColor: '#0f172a', 
+                      borderColor: '#334155', 
+                      borderRadius: '0.75rem', 
+                      fontSize: '12px' 
+                    }} 
+                    formatter={(val) => `${val}%`} 
+                  />
                 </PieChart>
               </ResponsiveContainer>
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-2 text-xs pt-2 border-t border-slate-800">
+          <div className="grid grid-cols-2 gap-2 text-xs pt-3 border-t border-slate-800">
             {distData.map(d => (
               <div key={d.name} className="flex items-center gap-2">
                 <span className="w-2.5 h-2.5 rounded-full shrink-0" style={{ backgroundColor: d.color }} />
@@ -184,23 +202,21 @@ export default function Analytics() {
               </div>
             ))}
           </div>
-        </div>
+        </Card>
       </div>
 
       {/* Busiest & Fastest Roads Tables */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Busiest Roads */}
-        <div className="glass-panel p-6 rounded-2xl border border-slate-800">
-          <h3 className="font-semibold text-base text-white mb-3 flex items-center gap-2">
-            <Activity className="w-4 h-4 text-emerald-400" />
-            Highest Demand Corridors (Busiest)
-          </h3>
-
-          <div className="overflow-x-auto">
+        <Card
+          title="Highest Demand Corridors (Busiest)"
+          subtitle="Road segments with top vehicle volume and impedance"
+        >
+          <div className="overflow-x-auto mt-2">
             <table className="w-full text-xs text-left">
               <thead className="text-slate-400 border-b border-slate-800 uppercase tracking-wider text-[10px]">
                 <tr>
-                  <th className="py-2.5 px-3">Road Name</th>
+                  <th className="py-2.5 px-3">Corridor</th>
                   <th className="py-2.5 px-3">Type</th>
                   <th className="py-2.5 px-3">Speed</th>
                   <th className="py-2.5 px-3">Volume</th>
@@ -208,38 +224,38 @@ export default function Analytics() {
               </thead>
               <tbody className="divide-y divide-slate-800/60 font-mono">
                 {trafficAnalytics?.busiest_roads?.map((r, i) => (
-                  <tr key={i} className="hover:bg-slate-800/30">
+                  <tr key={i} className="hover:bg-slate-800/30 transition-colors">
                     <td className="py-2.5 px-3 font-sans font-medium text-white">{r.road_name}</td>
-                    <td className="py-2.5 px-3 text-slate-300 font-sans uppercase">{r.road_type}</td>
-                    <td className="py-2.5 px-3 text-emerald-300">{r.predicted_speed} km/h</td>
+                    <td className="py-2.5 px-3 text-slate-300 font-sans uppercase">
+                      <StatusBadge status={r.road_type} />
+                    </td>
+                    <td className="py-2.5 px-3 text-emerald-300 font-semibold">{r.predicted_speed} km/h</td>
                     <td className="py-2.5 px-3 text-white font-bold">{r.predicted_volume} vph</td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
-        </div>
+        </Card>
 
         {/* Fastest Highway Corridors */}
-        <div className="glass-panel p-6 rounded-2xl border border-slate-800">
-          <h3 className="font-semibold text-base text-white mb-3 flex items-center gap-2">
-            <Gauge className="w-4 h-4 text-emerald-400" />
-            Optimal Flow Highway Corridors (Fastest)
-          </h3>
-
-          <div className="overflow-x-auto">
+        <Card
+          title="Optimal Flow Corridors (Fastest)"
+          subtitle="Segments operating near free-flow design capacity"
+        >
+          <div className="overflow-x-auto mt-2">
             <table className="w-full text-xs text-left">
               <thead className="text-slate-400 border-b border-slate-800 uppercase tracking-wider text-[10px]">
                 <tr>
-                  <th className="py-2.5 px-3">Highway Segment</th>
+                  <th className="py-2.5 px-3">Corridor</th>
                   <th className="py-2.5 px-3">Limit</th>
-                  <th className="py-2.5 px-3">Current Speed</th>
-                  <th className="py-2.5 px-3">Efficiency</th>
+                  <th className="py-2.5 px-3">Velocity</th>
+                  <th className="py-2.5 px-3">Flow Ratio</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-800/60 font-mono">
                 {trafficAnalytics?.fastest_roads?.map((r, i) => (
-                  <tr key={i} className="hover:bg-slate-800/30">
+                  <tr key={i} className="hover:bg-slate-800/30 transition-colors">
                     <td className="py-2.5 px-3 font-sans font-medium text-white">{r.road_name}</td>
                     <td className="py-2.5 px-3 text-slate-400">{r.max_speed} km/h</td>
                     <td className="py-2.5 px-3 text-emerald-300 font-bold">{r.predicted_speed} km/h</td>
@@ -251,7 +267,7 @@ export default function Analytics() {
               </tbody>
             </table>
           </div>
-        </div>
+        </Card>
       </div>
     </div>
   );
