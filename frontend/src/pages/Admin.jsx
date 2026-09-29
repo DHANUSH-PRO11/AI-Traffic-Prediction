@@ -5,13 +5,8 @@ import {
   CheckCircle2, 
   RefreshCw, 
   Zap, 
-  Database, 
   Upload, 
-  Trash2, 
-  FileText,
-  PlayCircle,
-  GitBranch,
-  Sliders
+  PlayCircle
 } from 'lucide-react';
 import { trafficApi } from '../api/client';
 import { SectionHeader } from '../components/common/SectionHeader';
@@ -131,7 +126,7 @@ export default function Admin() {
         description="Simulate real-time road closures, test dynamic route recalculations, and orchestrate ML retraining pipelines."
         actions={
           <Button
-            variant="outline"
+            variant="secondary"
             size="sm"
             onClick={loadData}
             icon={RefreshCw}
@@ -148,18 +143,18 @@ export default function Admin() {
           title="Live Incident Injector"
           subtitle="Inject real-time hazards that dynamically reweight graph routing costs"
           headerAction={
-            <span className="text-[11px] font-mono text-red-400 bg-red-500/10 px-2 py-0.5 rounded border border-red-500/30">
+            <span className="text-[11px] font-bold font-mono text-red-700 bg-red-100 px-2 py-0.5 rounded border border-red-300">
               Interactive
             </span>
           }
         >
           <form onSubmit={handleSimulateIncident} className="space-y-3.5 text-xs mt-1">
             <div>
-              <label className="font-semibold text-slate-300 block mb-1">Target Road Segment</label>
+              <label className="font-bold text-neutral-700 block mb-1">Target Road Segment</label>
               <select
                 value={selectedRoadId}
                 onChange={(e) => setSelectedRoadId(e.target.value)}
-                className="w-full bg-slate-800/90 border border-slate-700 rounded-xl px-3 py-2 text-white text-xs focus:outline-none focus:border-emerald-500 transition-colors"
+                className="w-full bg-white border border-neutral-300 rounded-xl px-3 py-2.5 text-neutral-900 font-medium text-xs focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 transition-colors"
               >
                 {roads.map(r => (
                   <option key={r.road_id} value={r.road_id}>
@@ -171,11 +166,11 @@ export default function Admin() {
 
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="font-semibold text-slate-300 block mb-1">Severity Level</label>
+                <label className="font-bold text-neutral-700 block mb-1">Severity Level</label>
                 <select
                   value={severity}
                   onChange={(e) => setSeverity(e.target.value)}
-                  className="w-full bg-slate-800/90 border border-slate-700 rounded-lg px-3 py-2 text-white text-xs focus:outline-none focus:border-emerald-500"
+                  className="w-full bg-white border border-neutral-300 rounded-lg px-3 py-2 text-neutral-900 font-medium text-xs focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20"
                 >
                   <option value="LOW">LOW (+40% delay)</option>
                   <option value="MEDIUM">MEDIUM (+120% delay)</option>
@@ -185,39 +180,40 @@ export default function Admin() {
               </div>
 
               <div>
-                <label className="font-semibold text-slate-300 block mb-1">Incident Category</label>
+                <label className="font-bold text-neutral-700 block mb-1">Incident Category</label>
                 <input
                   type="text"
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
-                  className="w-full bg-slate-800/90 border border-slate-700 rounded-lg px-3 py-2 text-white text-xs focus:outline-none focus:border-emerald-500"
+                  className="w-full bg-white border border-neutral-300 rounded-lg px-3 py-2 text-neutral-900 font-medium text-xs focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20"
                   required
                 />
               </div>
             </div>
 
+            {/* Vibrant RED Inject Button */}
             <Button
               type="submit"
               variant="danger"
               disabled={simulating}
               loading={simulating}
               icon={AlertTriangle}
-              className="w-full mt-2"
+              className="w-full mt-2 py-3 shadow-md shadow-red-600/20 text-sm"
             >
               INJECT ACCIDENT / BOTTLENECK
             </Button>
           </form>
 
           {/* Active Incidents List */}
-          <div className="pt-4 border-t border-slate-800 mt-4">
+          <div className="pt-4 border-t border-neutral-100 mt-4">
             <div className="flex items-center justify-between mb-2">
-              <span className="text-xs font-semibold text-slate-300">
+              <span className="text-xs font-bold text-neutral-800">
                 Active Incidents ({incidents.length})
               </span>
               {incidents.length > 0 && (
                 <button
                   onClick={handleClearAllIncidents}
-                  className="text-[11px] text-red-400 hover:text-red-300 underline font-medium cursor-pointer"
+                  className="text-[11px] text-red-600 hover:text-red-700 underline font-bold cursor-pointer"
                 >
                   Clear All Incidents
                 </button>
@@ -227,19 +223,19 @@ export default function Admin() {
             {incidents.length > 0 ? (
               <div className="space-y-2 max-h-44 overflow-y-auto pr-1">
                 {incidents.map((inc, i) => (
-                  <div key={i} className="p-2.5 rounded-xl bg-red-500/10 border border-red-500/30 flex items-center justify-between text-xs">
+                  <div key={i} className="p-3 rounded-xl bg-red-50 border border-red-200 flex items-center justify-between text-xs">
                     <div>
                       <div className="flex items-center gap-2">
-                        <span className="font-bold text-white block">{inc.road_name}</span>
+                        <span className="font-bold text-neutral-900 block">{inc.road_name}</span>
                         <TrafficBadge level={inc.severity} />
                       </div>
-                      <span className="text-[11px] text-slate-300 mt-0.5 block">{inc.description}</span>
+                      <span className="text-[11px] text-neutral-600 mt-0.5 block">{inc.description}</span>
                     </div>
                     <Button
                       variant="secondary"
                       size="sm"
                       onClick={() => handleResolveIncident(inc.road_id)}
-                      className="shrink-0 ml-2 text-emerald-400 font-bold"
+                      className="shrink-0 ml-2 text-emerald-700 font-bold border-emerald-300 hover:bg-emerald-50"
                     >
                       Resolve
                     </Button>
@@ -247,7 +243,7 @@ export default function Admin() {
                 ))}
               </div>
             ) : (
-              <p className="text-xs text-slate-500 italic py-2">No incidents currently simulated on the network.</p>
+              <p className="text-xs text-neutral-500 italic py-2">No incidents currently simulated on the network.</p>
             )}
           </div>
         </Card>
@@ -257,61 +253,62 @@ export default function Admin() {
           title="Automated Retraining Pipeline"
           subtitle="Compile collected trip feedback, train candidate GBDT, and auto-deploy"
           headerAction={
-            <span className="text-[11px] font-mono text-emerald-300 bg-emerald-500/15 px-2 py-0.5 rounded border border-emerald-500/30">
+            <span className="text-[11px] font-bold font-mono text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded border border-emerald-300">
               Zero-Downtime
             </span>
           }
         >
           <div className="space-y-4">
-            <p className="text-xs text-slate-400 leading-relaxed">
+            <p className="text-xs text-neutral-600 leading-relaxed">
               Triggering retraining compiles accumulated trip feedback observations, fits an ensemble of decision trees with time-aware splitting, evaluates MAE/RMSE against the current model, and hot-swaps the production version if accuracy is superior.
             </p>
 
+            {/* Vibrant EMERALD GREEN Retraining Button */}
             <Button
               onClick={handleTriggerRetraining}
               disabled={retraining}
               loading={retraining}
               icon={PlayCircle}
-              className="w-full py-3 shadow-lg shadow-emerald-500/25"
+              className="w-full py-3 shadow-md shadow-emerald-600/20 text-sm"
             >
               START CONTINUOUS RETRAINING WORKFLOW
             </Button>
 
             {/* Retrain Result Card */}
             {retrainResult && (
-              <div className="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30 space-y-2 text-xs">
+              <div className="p-4 rounded-xl bg-emerald-50 border border-emerald-200 space-y-2 text-xs">
                 <div className="flex items-center justify-between">
-                  <span className="font-bold text-white flex items-center gap-1.5">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                  <span className="font-bold text-neutral-900 flex items-center gap-1.5">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-600" />
                     Candidate Model Promoted & Deployed!
                   </span>
-                  <span className="font-mono text-emerald-300 font-bold">
+                  <span className="font-mono text-emerald-700 font-bold">
                     +{retrainResult.improvement_percent}% Gain
                   </span>
                 </div>
-                <div className="grid grid-cols-2 gap-2 text-[11px] text-slate-300 font-mono pt-1">
-                  <div>Previous: <strong className="text-white">{retrainResult.previous_version}</strong> (MAE: {retrainResult.previous_metrics?.MAE})</div>
-                  <div>Candidate: <strong className="text-emerald-300">{retrainResult.candidate_version}</strong> (MAE: {retrainResult.candidate_metrics?.MAE})</div>
+                <div className="grid grid-cols-2 gap-2 text-[11px] text-neutral-700 font-mono pt-1">
+                  <div>Previous: <strong className="text-neutral-900">{retrainResult.previous_version}</strong> (MAE: {retrainResult.previous_metrics?.MAE})</div>
+                  <div>Candidate: <strong className="text-emerald-700 font-bold">{retrainResult.candidate_version}</strong> (MAE: {retrainResult.candidate_metrics?.MAE})</div>
                 </div>
-                <p className="text-[11px] text-slate-400 pt-1">
+                <p className="text-[11px] text-neutral-500 pt-1">
                   New model weights persisted to disk and hot-reloaded into inference service.
                 </p>
               </div>
             )}
 
-            {/* Dataset Upload Mock Dropzone */}
-            <div className="pt-3 border-t border-slate-800">
-              <span className="text-xs font-semibold text-slate-300 block mb-2">
+            {/* Dataset Upload Dropzone */}
+            <div className="pt-3 border-t border-neutral-100">
+              <span className="text-xs font-bold text-neutral-700 block mb-2">
                 Ingest External Telematics (CSV / Parquet / JSON)
               </span>
-              <label className="border-2 border-dashed border-slate-700 hover:border-emerald-500 rounded-xl p-4 flex flex-col items-center justify-center cursor-pointer transition-colors bg-slate-800/20">
-                <Upload className="w-6 h-6 text-emerald-400 mb-1" />
-                <span className="text-xs text-white font-medium">Click to upload loop detector telemetry</span>
-                <span className="text-[10px] text-slate-400 mt-0.5">Compatible with METR-LA, PEMS-BAY, and OSM formats</span>
+              <label className="border-2 border-dashed border-neutral-300 hover:border-emerald-500 rounded-xl p-5 flex flex-col items-center justify-center cursor-pointer transition-colors bg-neutral-50 hover:bg-emerald-50/40">
+                <Upload className="w-6 h-6 text-emerald-600 mb-1" />
+                <span className="text-xs text-neutral-900 font-bold">Click to upload loop detector telemetry</span>
+                <span className="text-[10px] text-neutral-500 mt-0.5">Compatible with METR-LA, PEMS-BAY, and OSM formats</span>
                 <input type="file" accept=".csv,.json,.parquet" onChange={handleFileUpload} className="hidden" />
               </label>
               {uploadStatus && (
-                <p className="text-xs text-emerald-300 font-mono mt-2">{uploadStatus}</p>
+                <p className="text-xs text-emerald-700 font-bold font-mono mt-2">{uploadStatus}</p>
               )}
             </div>
           </div>

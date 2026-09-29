@@ -1,5 +1,5 @@
 import React from 'react';
-import { getTrafficBadgeClass, getTrafficConfig } from '../../utils/trafficColors';
+import { getTrafficConfig } from '../../utils/trafficColors';
 
 export function TrafficBadge({ level, pulse = false, size = 'md' }) {
   const conf = getTrafficConfig(level);
@@ -15,19 +15,20 @@ export function TrafficBadge({ level, pulse = false, size = 'md' }) {
   );
 }
 
-export function StatusBadge({ label, variant = 'emerald', pulse = false }) {
+export function StatusBadge({ label, status, variant = 'emerald', pulse = false }) {
+  const displayLabel = label || status;
   const variants = {
-    emerald: 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30',
-    amber: 'bg-amber-500/15 text-amber-400 border-amber-500/30',
-    red: 'bg-red-500/15 text-red-400 border-red-500/30',
-    slate: 'bg-slate-800 text-slate-300 border-slate-700',
-    white: 'bg-white/10 text-white border-white/20'
+    emerald: 'bg-emerald-50 text-emerald-800 border-emerald-300',
+    amber: 'bg-amber-50 text-amber-800 border-amber-300',
+    red: 'bg-red-50 text-red-800 border-red-300',
+    slate: 'bg-neutral-100 text-neutral-800 border-neutral-300',
+    white: 'bg-white text-neutral-800 border-neutral-300 shadow-2xs'
   };
 
   return (
-    <span className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md text-[11px] font-semibold border ${variants[variant] || variants.emerald}`}>
+    <span className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md text-[11px] font-bold border ${variants[variant] || variants.emerald}`}>
       {pulse && <span className="w-1.5 h-1.5 rounded-full bg-current animate-pulse" />}
-      <span>{label}</span>
+      <span>{displayLabel}</span>
     </span>
   );
 }

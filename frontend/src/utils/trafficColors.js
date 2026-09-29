@@ -1,6 +1,6 @@
 /**
  * Unified Traffic Level Color and Badge Utility.
- * Follows the light green and white aesthetic with standard traffic severity indicators.
+ * Follows a crisp white aesthetic with emerald green and red severity indicators.
  */
 
 export const TRAFFIC_LEVELS = {
@@ -8,41 +8,41 @@ export const TRAFFIC_LEVELS = {
     label: 'Low (Free Flow)',
     shortLabel: 'LOW',
     hex: '#10b981',        // Emerald-500
-    borderClass: 'border-emerald-500/40',
-    bgClass: 'bg-emerald-500/15',
-    textClass: 'text-emerald-300',
-    glowClass: 'glow-emerald',
-    dotClass: 'bg-emerald-400'
+    borderClass: 'border-emerald-300',
+    bgClass: 'bg-emerald-50',
+    textClass: 'text-emerald-800',
+    glowClass: '',
+    dotClass: 'bg-emerald-500'
   },
   MEDIUM: {
     label: 'Medium (Moderate Delays)',
     shortLabel: 'MEDIUM',
     hex: '#f59e0b',        // Amber-500
-    borderClass: 'border-amber-500/40',
-    bgClass: 'bg-amber-500/15',
-    textClass: 'text-amber-400',
-    glowClass: 'glow-amber',
+    borderClass: 'border-amber-300',
+    bgClass: 'bg-amber-50',
+    textClass: 'text-amber-800',
+    glowClass: '',
     dotClass: 'bg-amber-500'
   },
   HIGH: {
     label: 'High (Heavy Traffic)',
     shortLabel: 'HIGH',
-    hex: '#f97316',        // Orange-500
-    borderClass: 'border-orange-500/40',
-    bgClass: 'bg-orange-500/15',
-    textClass: 'text-orange-400',
-    glowClass: 'glow-amber',
-    dotClass: 'bg-orange-500'
+    hex: '#ea580c',        // Orange-600
+    borderClass: 'border-orange-300',
+    bgClass: 'bg-orange-50',
+    textClass: 'text-orange-800',
+    glowClass: '',
+    dotClass: 'bg-orange-600'
   },
   SEVERE: {
     label: 'Severe (Gridlock / Closed)',
     shortLabel: 'SEVERE',
     hex: '#ef4444',        // Red-500
-    borderClass: 'border-red-500/40',
-    bgClass: 'bg-red-500/15',
-    textClass: 'text-red-400',
-    glowClass: 'glow-rose',
-    dotClass: 'bg-red-500'
+    borderClass: 'border-red-300',
+    bgClass: 'bg-red-50',
+    textClass: 'text-red-800',
+    glowClass: '',
+    dotClass: 'bg-red-600'
   }
 };
 
@@ -57,9 +57,8 @@ export function getTrafficHex(level) {
 
 export function getTrafficBadgeClass(level) {
   const conf = getTrafficConfig(level);
-  return `${conf.bgClass} ${conf.textClass} ${conf.borderClass} ${conf.glowClass}`;
+  return `${conf.bgClass} ${conf.textClass} ${conf.borderClass}`;
 }
 
 export const getTrafficColor = getTrafficHex;
 export const getTrafficColorHex = getTrafficHex;
-

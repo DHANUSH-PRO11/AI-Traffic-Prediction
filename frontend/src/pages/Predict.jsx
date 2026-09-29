@@ -6,12 +6,9 @@ import {
   CloudRain, 
   Thermometer, 
   AlertTriangle, 
-  TrendingDown, 
-  CheckCircle,
   Activity,
   Zap,
-  BarChart2,
-  Gauge
+  BarChart2
 } from 'lucide-react';
 import { 
   BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, Cell 
@@ -83,8 +80,8 @@ export default function Predict() {
 
   // Speed comparison chart data
   const comparisonData = selectedRoad && prediction ? [
-    { name: 'Speed Limit', speed: selectedRoad.max_speed_kmh, fill: '#64748b' },
-    { name: 'Historical Avg', speed: Math.round(selectedRoad.max_speed_kmh * 0.78), fill: '#f8fafc' },
+    { name: 'Speed Limit', speed: selectedRoad.max_speed_kmh, fill: '#94a3b8' },
+    { name: 'Historical Avg', speed: Math.round(selectedRoad.max_speed_kmh * 0.78), fill: '#cbd5e1' },
     { name: 'AI Predicted', speed: prediction.predicted_speed_kmh, fill: '#10b981' },
   ] : [];
 
@@ -106,13 +103,13 @@ export default function Predict() {
           <div className="space-y-4">
             {/* Road Segment Selector */}
             <div>
-              <label className="text-xs font-semibold text-slate-300 block mb-1.5">
+              <label className="text-xs font-bold text-neutral-700 block mb-1.5">
                 Target Road Corridor
               </label>
               <select
                 value={selectedRoadId}
                 onChange={(e) => setSelectedRoadId(e.target.value)}
-                className="w-full bg-slate-800/90 border border-slate-700 rounded-xl px-3 py-2 text-xs font-medium text-white focus:outline-none focus:border-emerald-500 transition-colors"
+                className="w-full bg-white border border-neutral-300 rounded-xl px-3 py-2 text-xs font-semibold text-neutral-900 focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 transition-colors"
               >
                 {roads.map(r => (
                   <option key={r.road_id} value={r.road_id}>
@@ -125,21 +122,21 @@ export default function Predict() {
             {/* Time & Date */}
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="text-xs font-semibold text-slate-400 block mb-1">Time</label>
+                <label className="text-xs font-bold text-neutral-600 block mb-1">Time</label>
                 <input
                   type="time"
                   value={timeStr}
                   onChange={(e) => setTimeStr(e.target.value)}
-                  className="w-full bg-slate-800/90 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-emerald-500 font-mono"
+                  className="w-full bg-white border border-neutral-300 rounded-lg px-2.5 py-1.5 text-xs text-neutral-900 font-medium focus:outline-none focus:border-emerald-500 font-mono"
                 />
               </div>
               <div>
-                <label className="text-xs font-semibold text-slate-400 block mb-1">Date</label>
+                <label className="text-xs font-bold text-neutral-600 block mb-1">Date</label>
                 <input
                   type="date"
                   value={dateStr}
                   onChange={(e) => setDateStr(e.target.value)}
-                  className="w-full bg-slate-800/90 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-emerald-500 font-mono"
+                  className="w-full bg-white border border-neutral-300 rounded-lg px-2.5 py-1.5 text-xs text-neutral-900 font-medium focus:outline-none focus:border-emerald-500 font-mono"
                 />
               </div>
             </div>
@@ -147,7 +144,7 @@ export default function Predict() {
             {/* Weather & Temperature */}
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="text-xs font-semibold text-slate-400 block mb-1">Weather</label>
+                <label className="text-xs font-bold text-neutral-600 block mb-1">Weather</label>
                 <select
                   value={weather}
                   onChange={(e) => {
@@ -155,7 +152,7 @@ export default function Predict() {
                     if (e.target.value === 'Rain') setRainfall(4.5);
                     else setRainfall(0.0);
                   }}
-                  className="w-full bg-slate-800/90 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-emerald-500"
+                  className="w-full bg-white border border-neutral-300 rounded-lg px-2.5 py-1.5 text-xs text-neutral-900 font-medium focus:outline-none focus:border-emerald-500"
                 >
                   <option value="Clear">Clear</option>
                   <option value="Overcast">Overcast</option>
@@ -164,41 +161,41 @@ export default function Predict() {
                 </select>
               </div>
               <div>
-                <label className="text-xs font-semibold text-slate-400 block mb-1">Temperature</label>
+                <label className="text-xs font-bold text-neutral-600 block mb-1">Temperature</label>
                 <div className="flex items-center space-x-1">
                   <input
                     type="number"
                     value={temperature}
                     onChange={(e) => setTemperature(e.target.value)}
-                    className="w-full bg-slate-800/90 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-emerald-500 font-mono"
+                    className="w-full bg-white border border-neutral-300 rounded-lg px-2.5 py-1.5 text-xs text-neutral-900 font-medium focus:outline-none focus:border-emerald-500 font-mono"
                   />
-                  <span className="text-xs text-slate-400">°C</span>
+                  <span className="text-xs text-neutral-500 font-bold">°C</span>
                 </div>
               </div>
             </div>
 
-            {/* Accident Toggle */}
-            <div className="p-3.5 rounded-xl bg-slate-800/50 border border-slate-700/60 flex items-center justify-between">
+            {/* Accident Toggle - Red Accent */}
+            <div className="p-3.5 rounded-xl bg-neutral-50 border border-neutral-200 flex items-center justify-between">
               <div>
-                <span className="text-xs font-semibold text-white block">Accident Reported?</span>
-                <span className="text-[11px] text-slate-400">Simulate incident lane blockage</span>
+                <span className="text-xs font-bold text-neutral-900 block">Accident Reported?</span>
+                <span className="text-[11px] text-neutral-500">Simulate incident lane blockage</span>
               </div>
               <button
                 type="button"
                 onClick={() => setHasAccident(!hasAccident)}
-                className={`w-12 h-6 rounded-full transition-colors relative p-0.5 ${hasAccident ? 'bg-red-500' : 'bg-slate-700'}`}
+                className={`w-12 h-6 rounded-full transition-colors relative p-0.5 cursor-pointer ${hasAccident ? 'bg-red-600' : 'bg-neutral-300'}`}
               >
-                <div className={`w-5 h-5 rounded-full bg-white transition-transform ${hasAccident ? 'translate-x-6' : 'translate-x-0'}`} />
+                <div className={`w-5 h-5 rounded-full bg-white shadow-xs transition-transform ${hasAccident ? 'translate-x-6' : 'translate-x-0'}`} />
               </button>
             </div>
 
-            {/* Run Prediction Button */}
+            {/* Run Prediction Button - Vibrant EMERALD GREEN */}
             <Button
               onClick={handlePredict}
               disabled={loading}
               loading={loading}
               icon={Zap}
-              className="w-full shadow-lg shadow-emerald-500/20"
+              className="w-full shadow-md shadow-emerald-600/20 py-3 text-sm"
             >
               RUN ML PREDICTION
             </Button>
@@ -212,46 +209,46 @@ export default function Predict() {
               {/* Primary Output Metric Cards */}
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                 <Card>
-                  <span className="text-slate-400 text-xs font-medium block mb-2">Traffic Severity</span>
+                  <span className="text-neutral-500 text-xs font-bold block mb-2">Traffic Severity</span>
                   <div className="mb-2">
                     <TrafficBadge level={prediction.traffic_level} />
                   </div>
-                  <span className="text-[10px] text-slate-400 font-mono">
+                  <span className="text-[10px] text-neutral-500 font-mono font-bold">
                     Conf: {(prediction.confidence_score * 100).toFixed(0)}%
                   </span>
                 </Card>
 
                 <Card>
-                  <span className="text-slate-400 text-xs font-medium block mb-1">Predicted Speed</span>
+                  <span className="text-neutral-500 text-xs font-bold block mb-1">Predicted Speed</span>
                   <div className="my-1 flex items-baseline gap-1">
-                    <span className="text-2xl font-black text-white font-mono">
+                    <span className="text-2xl font-black text-neutral-900 font-mono">
                       {prediction.predicted_speed_kmh}
                     </span>
-                    <span className="text-xs text-slate-400">km/h</span>
+                    <span className="text-xs text-neutral-500 font-medium">km/h</span>
                   </div>
-                  <span className="text-[10px] text-slate-400">Limit: {prediction.speed_limit_kmh} km/h</span>
+                  <span className="text-[10px] text-neutral-500">Limit: {prediction.speed_limit_kmh} km/h</span>
                 </Card>
 
                 <Card>
-                  <span className="text-slate-400 text-xs font-medium block mb-1">Travel Time</span>
+                  <span className="text-neutral-500 text-xs font-bold block mb-1">Travel Time</span>
                   <div className="my-1 flex items-baseline gap-1">
-                    <span className="text-2xl font-black text-emerald-300 font-mono">
+                    <span className="text-2xl font-black text-emerald-700 font-mono">
                       {prediction.predicted_travel_time_min}
                     </span>
-                    <span className="text-xs text-slate-400">min</span>
+                    <span className="text-xs text-neutral-500 font-medium">min</span>
                   </div>
-                  <span className="text-[10px] text-slate-400">Length: {prediction.length_km} km</span>
+                  <span className="text-[10px] text-neutral-500">Length: {prediction.length_km} km</span>
                 </Card>
 
                 <Card>
-                  <span className="text-slate-400 text-xs font-medium block mb-1">Predicted Volume</span>
+                  <span className="text-neutral-500 text-xs font-bold block mb-1">Predicted Volume</span>
                   <div className="my-1 flex items-baseline gap-1">
-                    <span className="text-2xl font-black text-white font-mono">
+                    <span className="text-2xl font-black text-neutral-900 font-mono">
                       {Math.round(prediction.predicted_volume_vph)}
                     </span>
-                    <span className="text-[10px] text-slate-400">vph</span>
+                    <span className="text-[10px] text-neutral-500 font-medium">vph</span>
                   </div>
-                  <span className="text-[10px] text-emerald-400 font-mono">Model {prediction.model_version}</span>
+                  <span className="text-[10px] text-emerald-700 font-mono font-bold">Model {prediction.model_version}</span>
                 </Card>
               </div>
 
@@ -263,14 +260,15 @@ export default function Predict() {
                 <div className="h-56 w-full mt-2">
                   <ResponsiveContainer width="100%" height="100%">
                     <BarChart data={comparisonData}>
-                      <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
-                      <XAxis dataKey="name" stroke="#64748b" tick={{ fontSize: 11 }} />
-                      <YAxis stroke="#64748b" tick={{ fontSize: 11 }} domain={[0, 'dataMax + 15']} unit=" km/h" />
+                      <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
+                      <XAxis dataKey="name" stroke="#6b7280" tick={{ fontSize: 11 }} />
+                      <YAxis stroke="#6b7280" tick={{ fontSize: 11 }} domain={[0, 'dataMax + 15']} unit=" km/h" />
                       <Tooltip 
                         contentStyle={{ 
-                          backgroundColor: '#0f172a', 
-                          borderColor: '#334155', 
+                          backgroundColor: '#ffffff', 
+                          borderColor: '#e5e7eb', 
                           borderRadius: '0.75rem', 
+                          boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1)',
                           fontSize: '12px' 
                         }} 
                       />
@@ -290,23 +288,23 @@ export default function Predict() {
                 subtitle="Decomposition of influential covariates driving the prediction"
               >
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs mt-2">
-                  <div className="p-3 rounded-xl bg-slate-800/40 border border-slate-700/50">
-                    <span className="text-slate-400 block text-[11px]">Time of Day Impact</span>
-                    <span className="font-bold text-white mt-1 block">
+                  <div className="p-3.5 rounded-xl bg-neutral-50 border border-neutral-200">
+                    <span className="text-neutral-500 block text-[11px] font-medium">Time of Day Impact</span>
+                    <span className="font-bold text-neutral-900 mt-1 block">
                       {timeStr >= '07:00' && timeStr <= '09:30' ? 'Morning Peak (-32% spd)' : 'Standard Off-Peak (-5% spd)'}
                     </span>
                   </div>
 
-                  <div className="p-3 rounded-xl bg-slate-800/40 border border-slate-700/50">
-                    <span className="text-slate-400 block text-[11px]">Weather Penalty</span>
-                    <span className="font-bold text-white mt-1 block">
+                  <div className="p-3.5 rounded-xl bg-neutral-50 border border-neutral-200">
+                    <span className="text-neutral-500 block text-[11px] font-medium">Weather Penalty</span>
+                    <span className="font-bold text-neutral-900 mt-1 block">
                       {weather === 'Rain' ? 'Wet Pavement (-18% spd)' : (weather === 'Fog' ? 'Reduced Visibility (-12% spd)' : 'Optimal Clear (0%)')}
                     </span>
                   </div>
 
-                  <div className="p-3 rounded-xl bg-slate-800/40 border border-slate-700/50">
-                    <span className="text-slate-400 block text-[11px]">Incident Impedance</span>
-                    <span className="font-bold text-white mt-1 block">
+                  <div className="p-3.5 rounded-xl bg-neutral-50 border border-neutral-200">
+                    <span className="text-neutral-500 block text-[11px] font-medium">Incident Impedance</span>
+                    <span className={`font-bold mt-1 block ${hasAccident ? 'text-red-600' : 'text-emerald-700'}`}>
                       {hasAccident ? 'Critical Delay (-65% spd)' : 'Normal Flow (No Hazard)'}
                     </span>
                   </div>

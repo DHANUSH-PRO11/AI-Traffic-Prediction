@@ -18,17 +18,17 @@ export default function SectionHeader({
       <div>
         <div className="flex items-center gap-2.5">
           {Icon && (
-            <div className="w-9 h-9 rounded-xl bg-emerald-500/10 border border-emerald-500/25 flex items-center justify-center text-emerald-400 shrink-0">
+            <div className="w-10 h-10 rounded-xl bg-emerald-100 border border-emerald-300 flex items-center justify-center text-emerald-700 shrink-0">
               <Icon className="w-5 h-5" />
             </div>
           )}
-          <h2 className="text-2xl font-bold tracking-tight text-white">
+          <h2 className="text-2xl font-black tracking-tight text-neutral-900">
             {title}
           </h2>
           {badge}
         </div>
         {displaySubtitle && (
-          <p className="text-sm text-slate-400 mt-1.5 max-w-3xl leading-relaxed">
+          <p className="text-sm text-neutral-600 mt-1 max-w-3xl leading-relaxed">
             {displaySubtitle}
           </p>
         )}

@@ -2,7 +2,7 @@ import React from 'react';
 
 export default function Button({
   children,
-  variant = 'primary', // 'primary' (emerald), 'secondary' (slate), 'outline', 'danger', 'ghost'
+  variant = 'primary', // 'primary' (emerald), 'secondary' (white), 'outline', 'danger' (red), 'ghost'
   size = 'md',        // 'sm', 'md', 'lg'
   icon: Icon,
   loading = false,
@@ -12,7 +12,7 @@ export default function Button({
   type = 'button',
   ...props
 }) {
-  const baseClasses = 'inline-flex items-center justify-center font-semibold rounded-xl transition-all duration-150 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed select-none';
+  const baseClasses = 'inline-flex items-center justify-center font-bold rounded-xl transition-all duration-150 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed select-none cursor-pointer';
 
   const sizeClasses = {
     sm: 'px-3 py-1.5 text-xs gap-1.5',
@@ -21,11 +21,11 @@ export default function Button({
   };
 
   const variantClasses = {
-    primary: 'bg-emerald-600 hover:bg-emerald-500 text-white shadow-lg shadow-emerald-600/30 active:scale-[0.98]',
-    secondary: 'bg-slate-800 hover:bg-slate-700 text-white border border-slate-700/60 active:scale-[0.98]',
-    outline: 'bg-transparent border border-emerald-500/40 text-emerald-300 hover:bg-emerald-500/10 active:scale-[0.98]',
-    danger: 'bg-red-600 hover:bg-red-500 text-white shadow-lg shadow-red-600/30 active:scale-[0.98]',
-    ghost: 'bg-transparent hover:bg-slate-800 text-slate-300 hover:text-white'
+    primary: 'bg-emerald-600 hover:bg-emerald-700 text-white shadow-md shadow-emerald-600/20 active:scale-[0.98]',
+    secondary: 'bg-white hover:bg-neutral-100 text-neutral-800 border border-neutral-300 shadow-xs active:scale-[0.98]',
+    outline: 'bg-white border border-emerald-500 text-emerald-700 hover:bg-emerald-50 active:scale-[0.98]',
+    danger: 'bg-red-600 hover:bg-red-700 text-white shadow-md shadow-red-600/20 active:scale-[0.98]',
+    ghost: 'bg-transparent hover:bg-neutral-100 text-neutral-700 hover:text-neutral-900'
   };
 
   return (
@@ -52,4 +52,3 @@ export default function Button({
 }
 
 export { Button };
-

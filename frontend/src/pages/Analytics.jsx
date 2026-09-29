@@ -4,11 +4,8 @@ import {
   TrendingUp, 
   Activity, 
   Clock, 
-  ArrowUpRight, 
   Gauge, 
-  Compass,
-  Zap,
-  Layers
+  Compass
 } from 'lucide-react';
 import { 
   LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, PieChart, Pie, Cell 
@@ -18,7 +15,6 @@ import { SectionHeader } from '../components/common/SectionHeader';
 import { Card } from '../components/common/Card';
 import { StatCard } from '../components/common/StatCard';
 import { TrafficBadge, StatusBadge } from '../components/common/Badge';
-import { formatSpeed, formatNumber } from '../utils/formatters';
 
 export default function Analytics() {
   const [trafficAnalytics, setTrafficAnalytics] = useState(null);
@@ -48,8 +44,8 @@ export default function Analytics() {
     return (
       <div className="flex items-center justify-center h-96">
         <div className="flex flex-col items-center space-y-3">
-          <div className="w-10 h-10 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin" />
-          <span className="text-sm text-slate-400">Loading Network Analytics...</span>
+          <div className="w-10 h-10 border-4 border-emerald-600 border-t-transparent rounded-full animate-spin" />
+          <span className="text-sm text-neutral-600 font-medium">Loading Network Analytics...</span>
         </div>
       </div>
     );
@@ -58,7 +54,7 @@ export default function Analytics() {
   const pieColors = {
     LOW: '#10b981',
     MEDIUM: '#f59e0b',
-    HIGH: '#f97316',
+    HIGH: '#ea580c',
     SEVERE: '#ef4444'
   };
 
@@ -84,7 +80,7 @@ export default function Analytics() {
           label="Avg System Time Saved"
           value={routesAnalytics?.average_system_time_saved_min || 6.4}
           unit="min / trip"
-          subtext="Versus baseline static shortest distance paths"
+          subtext="Versus baseline static shortest paths"
           trend="up"
           trendValue="+14% efficiency"
           icon={Clock}
@@ -126,19 +122,20 @@ export default function Analytics() {
             <div className="h-72 w-full mt-2">
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart data={trafficAnalytics?.hourly_trends || []}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
+                  <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
                   <XAxis 
                     dataKey="hour" 
-                    stroke="#64748b" 
+                    stroke="#6b7280" 
                     tick={{ fontSize: 11 }} 
                     tickFormatter={(h) => `${h}:00`} 
                   />
-                  <YAxis stroke="#64748b" tick={{ fontSize: 11 }} unit=" km/h" />
+                  <YAxis stroke="#6b7280" tick={{ fontSize: 11 }} unit=" km/h" />
                   <Tooltip 
                     contentStyle={{ 
-                      backgroundColor: '#0f172a', 
-                      borderColor: '#334155', 
+                      backgroundColor: '#ffffff', 
+                      borderColor: '#e5e7eb', 
                       borderRadius: '0.75rem', 
+                      boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1)',
                       fontSize: '12px' 
                     }} 
                   />
@@ -147,7 +144,7 @@ export default function Analytics() {
                     dataKey="average_speed" 
                     stroke="#10b981" 
                     strokeWidth={3} 
-                    dot={{ r: 3, fill: '#34d399' }} 
+                    dot={{ r: 4, fill: '#059669' }} 
                     name="Avg Speed (km/h)" 
                   />
                 </LineChart>
@@ -181,9 +178,10 @@ export default function Analytics() {
                   </Pie>
                   <Tooltip 
                     contentStyle={{ 
-                      backgroundColor: '#0f172a', 
-                      borderColor: '#334155', 
+                      backgroundColor: '#ffffff', 
+                      borderColor: '#e5e7eb', 
                       borderRadius: '0.75rem', 
+                      boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1)',
                       fontSize: '12px' 
                     }} 
                     formatter={(val) => `${val}%`} 
@@ -193,12 +191,12 @@ export default function Analytics() {
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-2 text-xs pt-3 border-t border-slate-800">
+          <div className="grid grid-cols-2 gap-2 text-xs pt-3 border-t border-neutral-100">
             {distData.map(d => (
               <div key={d.name} className="flex items-center gap-2">
                 <span className="w-2.5 h-2.5 rounded-full shrink-0" style={{ backgroundColor: d.color }} />
-                <span className="text-slate-300 font-medium">{d.name}:</span>
-                <span className="text-white font-mono">{d.value}%</span>
+                <span className="text-neutral-600 font-semibold">{d.name}:</span>
+                <span className="text-neutral-900 font-mono font-bold">{d.value}%</span>
               </div>
             ))}
           </div>
@@ -214,7 +212,7 @@ export default function Analytics() {
         >
           <div className="overflow-x-auto mt-2">
             <table className="w-full text-xs text-left">
-              <thead className="text-slate-400 border-b border-slate-800 uppercase tracking-wider text-[10px]">
+              <thead className="text-neutral-500 border-b border-neutral-200 uppercase tracking-wider text-[10px] font-bold">
                 <tr>
                   <th className="py-2.5 px-3">Corridor</th>
                   <th className="py-2.5 px-3">Type</th>
@@ -222,15 +220,15 @@ export default function Analytics() {
                   <th className="py-2.5 px-3">Volume</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-800/60 font-mono">
+              <tbody className="divide-y divide-neutral-100 font-mono">
                 {trafficAnalytics?.busiest_roads?.map((r, i) => (
-                  <tr key={i} className="hover:bg-slate-800/30 transition-colors">
-                    <td className="py-2.5 px-3 font-sans font-medium text-white">{r.road_name}</td>
-                    <td className="py-2.5 px-3 text-slate-300 font-sans uppercase">
+                  <tr key={i} className="hover:bg-neutral-50 transition-colors">
+                    <td className="py-2.5 px-3 font-sans font-bold text-neutral-900">{r.road_name}</td>
+                    <td className="py-2.5 px-3 text-neutral-700 font-sans uppercase">
                       <StatusBadge status={r.road_type} />
                     </td>
-                    <td className="py-2.5 px-3 text-emerald-300 font-semibold">{r.predicted_speed} km/h</td>
-                    <td className="py-2.5 px-3 text-white font-bold">{r.predicted_volume} vph</td>
+                    <td className="py-2.5 px-3 text-emerald-700 font-bold">{r.predicted_speed} km/h</td>
+                    <td className="py-2.5 px-3 text-neutral-900 font-bold">{r.predicted_volume} vph</td>
                   </tr>
                 ))}
               </tbody>
@@ -245,7 +243,7 @@ export default function Analytics() {
         >
           <div className="overflow-x-auto mt-2">
             <table className="w-full text-xs text-left">
-              <thead className="text-slate-400 border-b border-slate-800 uppercase tracking-wider text-[10px]">
+              <thead className="text-neutral-500 border-b border-neutral-200 uppercase tracking-wider text-[10px] font-bold">
                 <tr>
                   <th className="py-2.5 px-3">Corridor</th>
                   <th className="py-2.5 px-3">Limit</th>
@@ -253,13 +251,13 @@ export default function Analytics() {
                   <th className="py-2.5 px-3">Flow Ratio</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-800/60 font-mono">
+              <tbody className="divide-y divide-neutral-100 font-mono">
                 {trafficAnalytics?.fastest_roads?.map((r, i) => (
-                  <tr key={i} className="hover:bg-slate-800/30 transition-colors">
-                    <td className="py-2.5 px-3 font-sans font-medium text-white">{r.road_name}</td>
-                    <td className="py-2.5 px-3 text-slate-400">{r.max_speed} km/h</td>
-                    <td className="py-2.5 px-3 text-emerald-300 font-bold">{r.predicted_speed} km/h</td>
-                    <td className="py-2.5 px-3 text-white font-bold">
+                  <tr key={i} className="hover:bg-neutral-50 transition-colors">
+                    <td className="py-2.5 px-3 font-sans font-bold text-neutral-900">{r.road_name}</td>
+                    <td className="py-2.5 px-3 text-neutral-500 font-medium">{r.max_speed} km/h</td>
+                    <td className="py-2.5 px-3 text-emerald-700 font-bold">{r.predicted_speed} km/h</td>
+                    <td className="py-2.5 px-3 text-neutral-900 font-bold">
                       {Math.round(r.efficiency_ratio * 100)}%
                     </td>
                   </tr>
