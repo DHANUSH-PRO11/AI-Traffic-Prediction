@@ -1,0 +1,41 @@
+{
+  "model_name": "Gradient Boosted Regressor",
+  "version": "v1.0",
+  "training_dataset": "METR-LA Synthetic Corridor (14-day loop detectors)",
+  "training_date": "2026-09-29 06:33:17 UTC",
+  "metrics": {
+    "MAE": 4.07,
+    "RMSE": 5.45,
+    "R2": 0.957,
+    "MAPE": 7.43,
+    "training_samples": 12902,
+    "evaluation_samples": 3226
+  },
+  "feature_importances": {
+    "hour": 0.0032,
+    "day_of_week": 0.0279,
+    "month": 0.0,
+    "is_weekend": 0.0,
+    "is_holiday": 0.0,
+    "road_length": 0.0,
+    "max_speed": 0.0085,
+    "temperature": 0.0019,
+    "rainfall": 0.025,
+    "historical_speed": 0.7684,
+    "historical_volume": 0.0067,
+    "previous_speed": 0.0695,
+    "previous_volume": 0.0259,
+    "accident": 0.0498,
+    "road_type_highway": 0.0,
+    "road_type_arterial": 0.0001,
+    "road_type_secondary": 0.0,
+    "road_type_residential": 0.0,
+    "weather_Clear": 0.0036,
+    "weather_Overcast": 0.0006,
+    "weather_Rain": 0.0,
+    "weather_Fog": 0.0088,
+    "weather_Storm": 0.0
+  },
+  "model_path": "G:\\ML-Traffic\\ml\\models\\traffic_model_v1.0.json",
+  "is_active": true
+}

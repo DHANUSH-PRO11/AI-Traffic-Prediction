@@ -1,0 +1,3836 @@
+{
+  "n_estimators": 30,
+  "learning_rate": 0.15,
+  "max_depth": 4,
+  "base_pred": 63.205766547822044,
+  "feature_names": [
+    "hour",
+    "day_of_week",
+    "month",
+    "is_weekend",
+    "is_holiday",
+    "road_length",
+    "max_speed",
+    "temperature",
+    "rainfall",
+    "historical_speed",
+    "historical_volume",
+    "previous_speed",
+    "previous_volume",
+    "accident",
+    "road_type_highway",
+    "road_type_arterial",
+    "road_type_secondary",
+    "road_type_residential",
+    "weather_Clear",
+    "weather_Overcast",
+    "weather_Rain",
+    "weather_Fog",
+    "weather_Storm"
+  ],
+  "feature_importances": {
+    "hour": 0.0032,
+    "day_of_week": 0.0279,
+    "month": 0.0,
+    "is_weekend": 0.0,
+    "is_holiday": 0.0,
+    "road_length": 0.0,
+    "max_speed": 0.0085,
+    "temperature": 0.0019,
+    "rainfall": 0.025,
+    "historical_speed": 0.7684,
+    "historical_volume": 0.0067,
+    "previous_speed": 0.0695,
+    "previous_volume": 0.0259,
+    "accident": 0.0498,
+    "road_type_highway": 0.0,
+    "road_type_arterial": 0.0001,
+    "road_type_secondary": 0.0,
+    "road_type_residential": 0.0,
+    "weather_Clear": 0.0036,
+    "weather_Overcast": 0.0006,
+    "weather_Rain": 0.0,
+    "weather_Fog": 0.0088,
+    "weather_Storm": 0.0
+  },
+  "trees": [
+    {
+      "max_depth": 4,
+      "min_samples_split": 12,
+      "root": {
+        "feature_idx": 9,
+        "threshold": 61.7,
+        "impurity_reduction": 343.4787376458789,
+        "left": {
+          "feature_idx": 9,
+          "threshold": 46.8,
+          "impurity_reduction": 51.89441596642948,
+          "left": {
+            "feature_idx": 1,
+            "threshold": 4.0,
+            "impurity_reduction": 33.93253338598754,
+            "left": {
+              "feature_idx": 9,
+              "threshold": 38.904999999999994,
+              "impurity_reduction": 55.445774448699964,
+              "left": {
+                "value": -35.27702970571678
+              },
+              "right": {
+                "value": -20.310335513339286
+              }
+            },
+            "right": {
+              "feature_idx": 6,
+              "threshold": 55.0,
+              "impurity_reduction": 24.65007732584216,
+              "left": {
+                "value": -19.335717042871547
+              },
+              "right": {
+                "value": -9.396902911458408
+              }
+            }
+          },
+          "right": {
+            "feature_idx": 13,
+            "threshold": 0.0,
+            "impurity_reduction": 19.508577849694603,
+            "left": {
+              "feature_idx": 11,
+              "threshold": 74.5,
+              "impurity_reduction": 14.238373618619065,
+              "left": {
+                "value": -8.585660311347523
+              },
+              "right": {
+                "value": 8.77242894089976
+              }
+            },
+            "right": {
+              "feature_idx": 10,
+              "threshold": 2727.0,
+              "impurity_reduction": 7.785391773330936,
+              "left": {
+                "value": -43.80947025152575
+              },
+              "right": {
+                "value": -31.885766547822044
+              }
+            }
+          }
+        },
+        "right": {
+          "feature_idx": 9,
+          "threshold": 82.0,
+          "impurity_reduction": 88.71097980341898,
+          "left": {
+            "feature_idx": 1,
+            "threshold": 4.0,
+            "impurity_reduction": 74.46524055382918,
+            "left": {
+              "feature_idx": 9,
+              "threshold": 73.5,
+              "impurity_reduction": 45.709666531151115,
+              "left": {
+                "value": -3.9521951192506153
+              },
+              "right": {
+                "value": 9.631875175533963
+              }
+            },
+            "right": {
+              "feature_idx": 6,
+              "threshold": 65.0,
+              "impurity_reduction": 146.5144500927155,
+              "left": {
+                "value": -1.9495165478220442
+              },
+              "right": {
+                "value": 28.523622765155057
+              }
+            }
+          },
+          "right": {
+            "feature_idx": 13,
+            "threshold": 0.0,
+            "impurity_reduction": 53.21173174641356,
+            "left": {
+              "feature_idx": 8,
+              "threshold": 0.0,
+              "impurity_reduction": 22.196568272505516,
+              "left": {
+                "value": 33.57632721319312
+              },
+              "right": {
+                "value": 20.329384967329474
+              }
+            },
+            "right": {
+              "feature_idx": 11,
+              "threshold": 100.85,
+              "impurity_reduction": 8.26658336111111,
+              "left": {
+                "value": -30.99014154782204
+              },
+              "right": {
+                "value": -25.000210992266485
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "max_depth": 4,
+      "min_samples_split": 12,
+      "root": {
+        "feature_idx": 9,
+        "threshold": 61.7,
+        "impurity_reduction": 248.16338794914748,
+        "left": {
+          "feature_idx": 9,
+          "threshold": 50.3,
+          "impurity_reduction": 38.097957310754396,
+          "left": {
+            "feature_idx": 12,
+            "threshold": 588.0,
+            "impurity_reduction": 25.3002366267947,
+            "left": {
+              "feature_idx": 13,
+              "threshold": 0.0,
+              "impurity_reduction": 16.883585705652877,
+              "left": {
+                "value": -12.171707911003802
+              },
+              "right": {
+                "value": -40.038975180394516
+              }
+            },
+            "right": {
+              "feature_idx": 9,
+              "threshold": 41.8,
+              "impurity_reduction": 19.165762024380037,
+              "left": {
+                "value": -26.791377434629755
+              },
+              "right": {
+                "value": -17.974552276182038
+              }
+            }
+          },
+          "right": {
+            "feature_idx": 11,
+            "threshold": 76.13000000000001,
+            "impurity_reduction": 16.381904070586998,
+            "left": {
+              "feature_idx": 13,
+              "threshold": 0.0,
+              "impurity_reduction": 12.678385250882378,
+              "left": {
+                "value": -6.4544668210097305
+              },
+              "right": {
+                "value": -37.03563119527837
+              }
+            },
+            "right": {
+              "feature_idx": 1,
+              "threshold": 4.0,
+              "impurity_reduction": 414.347399023039,
+              "left": {
+                "value": -17.576297555623672
+              },
+              "right": {
+                "value": 25.846086452784444
+              }
+            }
+          }
+        },
+        "right": {
+          "feature_idx": 9,
+          "threshold": 82.0,
+          "impurity_reduction": 64.0936829079703,
+          "left": {
+            "feature_idx": 11,
+            "threshold": 74.14999999999999,
+            "impurity_reduction": 53.80850062532133,
+            "left": {
+              "feature_idx": 9,
+              "threshold": 69.6,
+              "impurity_reduction": 36.20963491076087,
+              "left": {
+                "value": -3.3134511607528374
+              },
+              "right": {
+                "value": 9.396395737270835
+              }
+            },
+            "right": {
+              "feature_idx": 1,
+              "threshold": 4.0,
+              "impurity_reduction": 74.39424172443569,
+              "left": {
+                "value": 8.217278365147108
+              },
+              "right": {
+                "value": 25.62841731013197
+              }
+            }
+          },
+          "right": {
+            "feature_idx": 13,
+            "threshold": 0.0,
+            "impurity_reduction": 38.44547618678379,
+            "left": {
+              "feature_idx": 12,
+              "threshold": 1490.0,
+              "impurity_reduction": 20.28345929091752,
+              "left": {
+                "value": 28.757271258153285
+              },
+              "right": {
+                "value": 16.13601905593217
+              }
+            },
+            "right": {
+              "feature_idx": 5,
+              "threshold": 5.32,
+              "impurity_reduction": 6.893984420457414,
+              "left": {
+                "value": -30.112800871204293
+              },
+              "right": {
+                "value": -23.278533425404834
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "max_depth": 4,
+      "min_samples_split": 12,
+      "root": {
+        "feature_idx": 9,
+        "threshold": 61.7,
+        "impurity_reduction": 179.2980477932591,
+        "left": {
+          "feature_idx": 9,
+          "threshold": 46.8,
+          "impurity_reduction": 27.669973020706877,
+          "left": {
+            "feature_idx": 1,
+            "threshold": 4.0,
+            "impurity_reduction": 21.806163151245215,
+            "left": {
+              "feature_idx": 9,
+              "threshold": 38.904999999999994,
+              "impurity_reduction": 32.21405002960332,
+              "left": {
+                "value": -26.18144693977489
+              },
+              "right": {
+                "value": -14.773320592008428
+              }
+            },
+            "right": {
+              "feature_idx": 6,
+              "threshold": 55.0,
+              "impurity_reduction": 19.75357322813055,
+              "left": {
+                "value": -14.211140088866435
+              },
+              "right": {
+                "value": -5.314044446852104
+              }
+            }
+          },
+          "right": {
+            "feature_idx": 13,
+            "threshold": 0.0,
+            "impurity_reduction": 10.62347346375303,
+            "left": {
+              "feature_idx": 8,
+              "threshold": 0.0,
+              "impurity_reduction": 9.035116216560809,
+              "left": {
+                "value": -4.233456720181902
+              },
+              "right": {
+                "value": -12.498977425148443
+              }
+            },
+            "right": {
+              "feature_idx": 11,
+              "threshold": 47.45,
+              "impurity_reduction": 2.9892887797527017,
+              "left": {
+                "value": -35.74543450520787
+              },
+              "right": {
+                "value": -30.91874590099538
+              }
+            }
+          }
+        },
+        "right": {
+          "feature_idx": 9,
+          "threshold": 88.4,
+          "impurity_reduction": 48.14136467886226,
+          "left": {
+            "feature_idx": 11,
+            "threshold": 71.47999999999999,
+            "impurity_reduction": 47.789994898142396,
+            "left": {
+              "feature_idx": 9,
+              "threshold": 69.1,
+              "impurity_reduction": 20.957667724583303,
+              "left": {
+                "value": -2.8241769749396237
+              },
+              "right": {
+                "value": 6.388460259617283
+              }
+            },
+            "right": {
+              "feature_idx": 13,
+              "threshold": 0.0,
+              "impurity_reduction": 40.86408604823126,
+              "left": {
+                "value": 16.16566082733792
+              },
+              "right": {
+                "value": -25.78785079817229
+              }
+            }
+          },
+          "right": {
+            "feature_idx": 13,
+            "threshold": 0.0,
+            "impurity_reduction": 22.980517759301947,
+            "left": {
+              "feature_idx": 8,
+              "threshold": 0.0,
+              "impurity_reduction": 20.195408336351598,
+              "left": {
+                "value": 25.862860081799955
+              },
+              "right": {
+                "value": 13.50595844304436
+              }
+            },
+            "right": {
+              "feature_idx": 11,
+              "threshold": 101.8,
+              "impurity_reduction": 7.357218174928562,
+              "left": {
+                "value": -22.868256028464025
+              },
+              "right": {
+                "value": -16.538954885171346
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "max_depth": 4,
+      "min_samples_split": 12,
+      "root": {
+        "feature_idx": 9,
+        "threshold": 61.7,
+        "impurity_reduction": 129.5428395306297,
+        "left": {
+          "feature_idx": 9,
+          "threshold": 50.3,
+          "impurity_reduction": 21.20414403929547,
+          "left": {
+            "feature_idx": 11,
+            "threshold": 47.5,
+            "impurity_reduction": 15.526072023781893,
+            "left": {
+              "feature_idx": 9,
+              "threshold": 36.5,
+              "impurity_reduction": 16.337808668449313,
+              "left": {
+                "value": -22.405046686028903
+              },
+              "right": {
+                "value": -13.962188996156264
+              }
+            },
+            "right": {
+              "feature_idx": 13,
+              "threshold": 0.0,
+              "impurity_reduction": 11.961873774816425,
+              "left": {
+                "value": -8.519538266561558
+              },
+              "right": {
+                "value": -31.91551716538448
+              }
+            }
+          },
+          "right": {
+            "feature_idx": 11,
+            "threshold": 76.13000000000001,
+            "impurity_reduction": 11.924366615873772,
+            "left": {
+              "feature_idx": 12,
+              "threshold": 1245.8000000000002,
+              "impurity_reduction": 10.234223640017866,
+              "left": {
+                "value": -3.61227132991121
+              },
+              "right": {
+                "value": -12.570127700884118
+              }
+            },
+            "right": {
+              "feature_idx": 1,
+              "threshold": 4.0,
+              "impurity_reduction": 298.8928548421157,
+              "left": {
+                "value": -13.974213586054171
+              },
+              "right": {
+                "value": 22.90563436123101
+              }
+            }
+          }
+        },
+        "right": {
+          "feature_idx": 9,
+          "threshold": 88.4,
+          "impurity_reduction": 34.78213598047799,
+          "left": {
+            "feature_idx": 11,
+            "threshold": 71.47999999999999,
+            "impurity_reduction": 34.52827131390785,
+            "left": {
+              "feature_idx": 13,
+              "threshold": 0.0,
+              "impurity_reduction": 16.73878690508836,
+              "left": {
+                "value": 1.5406461641123583
+              },
+              "right": {
+                "value": -35.33445056485607
+              }
+            },
+            "right": {
+              "feature_idx": 12,
+              "threshold": 981.0999999999999,
+              "impurity_reduction": 36.70571288319127,
+              "left": {
+                "value": 18.3684683693164
+              },
+              "right": {
+                "value": 6.189397793338408
+              }
+            }
+          },
+          "right": {
+            "feature_idx": 13,
+            "threshold": 0.0,
+            "impurity_reduction": 16.603424081095653,
+            "left": {
+              "feature_idx": 8,
+              "threshold": 0.0,
+              "impurity_reduction": 14.591182523014005,
+              "left": {
+                "value": 21.98343106952996
+              },
+              "right": {
+                "value": 11.480064676587713
+              }
+            },
+            "right": {
+              "feature_idx": 1,
+              "threshold": 0.0,
+              "impurity_reduction": 6.81596847183782,
+              "left": {
+                "value": -14.174413258975926
+              },
+              "right": {
+                "value": -19.85526961888115
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "max_depth": 4,
+      "min_samples_split": 12,
+      "root": {
+        "feature_idx": 9,
+        "threshold": 61.7,
+        "impurity_reduction": 93.59470156087991,
+        "left": {
+          "feature_idx": 9,
+          "threshold": 52.6,
+          "impurity_reduction": 15.782118347260074,
+          "left": {
+            "feature_idx": 12,
+            "threshold": 659.0,
+            "impurity_reduction": 12.15694052615519,
+            "left": {
+              "feature_idx": 13,
+              "threshold": 0.0,
+              "impurity_reduction": 9.310188550415162,
+              "left": {
+                "value": -7.058518865898594
+              },
+              "right": {
+                "value": -27.699049189290037
+              }
+            },
+            "right": {
+              "feature_idx": 8,
+              "threshold": 0.0,
+              "impurity_reduction": 7.339174363034317,
+              "left": {
+                "value": -13.33683023857407
+              },
+              "right": {
+                "value": -20.686043459930488
+              }
+            }
+          },
+          "right": {
+            "feature_idx": 11,
+            "threshold": 78.45999999999995,
+            "impurity_reduction": 14.074160060648992,
+            "left": {
+              "feature_idx": 8,
+              "threshold": 0.0,
+              "impurity_reduction": 9.467310971704851,
+              "left": {
+                "value": -2.154673616733379
+              },
+              "right": {
+                "value": -10.358796100756935
+              }
+            },
+            "right": {
+              "feature_idx": 1,
+              "threshold": 4.0,
+              "impurity_reduction": 143.8437070622465,
+              "left": {
+                "value": -10.570275154847641
+              },
+              "right": {
+                "value": 19.595462311949095
+              }
+            }
+          }
+        },
+        "right": {
+          "feature_idx": 11,
+          "threshold": 78.3,
+          "impurity_reduction": 26.230963348183863,
+          "left": {
+            "feature_idx": 9,
+            "threshold": 69.1,
+            "impurity_reduction": 26.60541315163742,
+            "left": {
+              "feature_idx": 8,
+              "threshold": 2.964999999999969,
+              "impurity_reduction": 13.704567803945338,
+              "left": {
+                "value": -1.047610558026508
+              },
+              "right": {
+                "value": -11.366111734782914
+              }
+            },
+            "right": {
+              "feature_idx": 13,
+              "threshold": 0.0,
+              "impurity_reduction": 21.871807703772532,
+              "left": {
+                "value": 8.789757138133547
+              },
+              "right": {
+                "value": -26.500593080577442
+              }
+            }
+          },
+          "right": {
+            "feature_idx": 13,
+            "threshold": 0.0,
+            "impurity_reduction": 17.49451082732331,
+            "left": {
+              "feature_idx": 18,
+              "threshold": 0.0,
+              "impurity_reduction": 12.317168545080548,
+              "left": {
+                "value": 13.169907382064682
+              },
+              "right": {
+                "value": 20.189239090242932
+              }
+            },
+            "right": {
+              "feature_idx": 9,
+              "threshold": 84.12,
+              "impurity_reduction": 46.910430242066056,
+              "left": {
+                "value": -33.86346538212953
+              },
+              "right": {
+                "value": -15.332678292637098
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "max_depth": 4,
+      "min_samples_split": 12,
+      "root": {
+        "feature_idx": 9,
+        "threshold": 61.7,
+        "impurity_reduction": 67.6221718777357,
+        "left": {
+          "feature_idx": 11,
+          "threshold": 50.0,
+          "impurity_reduction": 12.059900996428524,
+          "left": {
+            "feature_idx": 9,
+            "threshold": 42.5,
+            "impurity_reduction": 13.552828313488462,
+            "left": {
+              "feature_idx": 1,
+              "threshold": 4.0,
+              "impurity_reduction": 16.837078054719424,
+              "left": {
+                "value": -16.62903425540622
+              },
+              "right": {
+                "value": -5.647725731258607
+              }
+            },
+            "right": {
+              "feature_idx": 13,
+              "threshold": 0.0,
+              "impurity_reduction": 6.202674424606467,
+              "left": {
+                "value": -6.775973220689674
+              },
+              "right": {
+                "value": -27.380765542597295
+              }
+            }
+          },
+          "right": {
+            "feature_idx": 13,
+            "threshold": 0.0,
+            "impurity_reduction": 7.980430656844121,
+            "left": {
+              "feature_idx": 8,
+              "threshold": 0.0,
+              "impurity_reduction": 6.477068829334591,
+              "left": {
+                "value": -1.2700807980934266
+              },
+              "right": {
+                "value": -7.942704712332528
+              }
+            },
+            "right": {
+              "feature_idx": 8,
+              "threshold": 0.0,
+              "impurity_reduction": 5.182590049613577,
+              "left": {
+                "value": -22.78283199456232
+              },
+              "right": {
+                "value": -28.984839890447923
+              }
+            }
+          }
+        },
+        "right": {
+          "feature_idx": 9,
+          "threshold": 90.7,
+          "impurity_reduction": 21.624798189212697,
+          "left": {
+            "feature_idx": 11,
+            "threshold": 76.9,
+            "impurity_reduction": 16.946079909650194,
+            "left": {
+              "feature_idx": 10,
+              "threshold": 2352.3,
+              "impurity_reduction": 11.088052792554066,
+              "left": {
+                "value": 3.0838166413592747
+              },
+              "right": {
+                "value": -6.243044459809972
+              }
+            },
+            "right": {
+              "feature_idx": 12,
+              "threshold": 957.0,
+              "impurity_reduction": 22.153078680488193,
+              "left": {
+                "value": 13.409204005983389
+              },
+              "right": {
+                "value": 3.537882971847329
+              }
+            }
+          },
+          "right": {
+            "feature_idx": 8,
+            "threshold": 0.0,
+            "impurity_reduction": 10.814822391206505,
+            "left": {
+              "feature_idx": 21,
+              "threshold": 0.0,
+              "impurity_reduction": 17.190937292799163,
+              "left": {
+                "value": 18.911294982196427
+              },
+              "right": {
+                "value": 7.995352320246404
+              }
+            },
+            "right": {
+              "feature_idx": 7,
+              "threshold": 26.7,
+              "impurity_reduction": 3.994222955514614,
+              "left": {
+                "value": 8.53432261185723
+              },
+              "right": {
+                "value": -0.7605756095305578
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "max_depth": 4,
+      "min_samples_split": 12,
+      "root": {
+        "feature_idx": 9,
+        "threshold": 61.7,
+        "impurity_reduction": 48.857019181664086,
+        "left": {
+          "feature_idx": 9,
+          "threshold": 52.6,
+          "impurity_reduction": 9.2993562365805,
+          "left": {
+            "feature_idx": 12,
+            "threshold": 552.0,
+            "impurity_reduction": 7.033827077175303,
+            "left": {
+              "feature_idx": 6,
+              "threshold": 55.0,
+              "impurity_reduction": 6.3294356844862705,
+              "left": {
+                "value": -6.886153388996427
+              },
+              "right": {
+                "value": -1.682083936710452
+              }
+            },
+            "right": {
+              "feature_idx": 9,
+              "threshold": 33.9,
+              "impurity_reduction": 5.652685882643752,
+              "left": {
+                "value": -15.862680814933245
+              },
+              "right": {
+                "value": -9.265634463346878
+              }
+            }
+          },
+          "right": {
+            "feature_idx": 11,
+            "threshold": 78.45999999999995,
+            "impurity_reduction": 9.988643036885698,
+            "left": {
+              "feature_idx": 6,
+              "threshold": 65.0,
+              "impurity_reduction": 7.401714968535863,
+              "left": {
+                "value": -1.5517207692261337
+              },
+              "right": {
+                "value": -10.572289664723748
+              }
+            },
+            "right": {
+              "feature_idx": 1,
+              "threshold": 4.0,
+              "impurity_reduction": 104.85693086632801,
+              "left": {
+                "value": -8.658965871752986
+              },
+              "right": {
+                "value": 17.09636209466026
+              }
+            }
+          }
+        },
+        "right": {
+          "feature_idx": 9,
+          "threshold": 92.7,
+          "impurity_reduction": 16.00566710225462,
+          "left": {
+            "feature_idx": 12,
+            "threshold": 1111.1999999999998,
+            "impurity_reduction": 14.975678366256417,
+            "left": {
+              "feature_idx": 13,
+              "threshold": 0.0,
+              "impurity_reduction": 17.07821215659169,
+              "left": {
+                "value": 10.009676192849495
+              },
+              "right": {
+                "value": -19.155515089287313
+              }
+            },
+            "right": {
+              "feature_idx": 13,
+              "threshold": 0.0,
+              "impurity_reduction": 11.56795552023587,
+              "left": {
+                "value": 2.092196864235111
+              },
+              "right": {
+                "value": -23.55637371924444
+              }
+            }
+          },
+          "right": {
+            "feature_idx": 8,
+            "threshold": 0.0,
+            "impurity_reduction": 8.781929888899707,
+            "left": {
+              "feature_idx": 21,
+              "threshold": 0.0,
+              "impurity_reduction": 10.965409661164554,
+              "left": {
+                "value": 16.740241183256995
+              },
+              "right": {
+                "value": 7.861065498025663
+              }
+            },
+            "right": {
+              "feature_idx": 7,
+              "threshold": 24.5,
+              "impurity_reduction": 3.158000506180926,
+              "left": {
+                "value": 7.49673976279533
+              },
+              "right": {
+                "value": -4.040568215469396
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "max_depth": 4,
+      "min_samples_split": 12,
+      "root": {
+        "feature_idx": 9,
+        "threshold": 85.1,
+        "impurity_reduction": 35.33568524981309,
+        "left": {
+          "feature_idx": 9,
+          "threshold": 54.8,
+          "impurity_reduction": 10.177974776103305,
+          "left": {
+            "feature_idx": 11,
+            "threshold": 46.5,
+            "impurity_reduction": 5.2082979375993474,
+            "left": {
+              "feature_idx": 9,
+              "threshold": 42.2,
+              "impurity_reduction": 7.5877949264672395,
+              "left": {
+                "value": -11.829201095490621
+              },
+              "right": {
+                "value": -6.295239629821898
+              }
+            },
+            "right": {
+              "feature_idx": 13,
+              "threshold": 0.0,
+              "impurity_reduction": 6.119564683867193,
+              "left": {
+                "value": -3.8174012275250395
+              },
+              "right": {
+                "value": -19.651809787850073
+              }
+            }
+          },
+          "right": {
+            "feature_idx": 11,
+            "threshold": 84.2,
+            "impurity_reduction": 9.28699226390549,
+            "left": {
+              "feature_idx": 8,
+              "threshold": 0.0,
+              "impurity_reduction": 7.0619349708977595,
+              "left": {
+                "value": 0.026645276715672572
+              },
+              "right": {
+                "value": -7.202575527940046
+              }
+            },
+            "right": {
+              "feature_idx": 1,
+              "threshold": 4.0,
+              "impurity_reduction": 32.65473388458783,
+              "left": {
+                "value": 1.86836270215299
+              },
+              "right": {
+                "value": 13.302742224750201
+              }
+            }
+          }
+        },
+        "right": {
+          "feature_idx": 13,
+          "threshold": 0.0,
+          "impurity_reduction": 8.10736247387652,
+          "left": {
+            "feature_idx": 21,
+            "threshold": 0.0,
+            "impurity_reduction": 5.6832918408973825,
+            "left": {
+              "feature_idx": 8,
+              "threshold": 0.0,
+              "impurity_reduction": 9.33641969797062,
+              "left": {
+                "value": 13.086777662604742
+              },
+              "right": {
+                "value": 5.118168915275884
+              }
+            },
+            "right": {
+              "feature_idx": 7,
+              "threshold": 27.1,
+              "impurity_reduction": 7.732594700395811,
+              "left": {
+                "value": 6.1411564425935214
+              },
+              "right": {
+                "value": -1.8402277753837313
+              }
+            }
+          },
+          "right": {
+            "feature_idx": 5,
+            "threshold": 11.38,
+            "impurity_reduction": 4.292301313028602,
+            "left": {
+              "feature_idx": 12,
+              "threshold": 825.85,
+              "impurity_reduction": 5.394976132511836,
+              "left": {
+                "value": -11.349364134335005
+              },
+              "right": {
+                "value": -16.219084947918656
+              }
+            },
+            "right": {
+              "value": -7.307960392419789
+            }
+          }
+        }
+      }
+    },
+    {
+      "max_depth": 4,
+      "min_samples_split": 12,
+      "root": {
+        "feature_idx": 11,
+        "threshold": 83.9,
+        "impurity_reduction": 25.79358374521984,
+        "left": {
+          "feature_idx": 9,
+          "threshold": 58.4,
+          "impurity_reduction": 7.488933782103246,
+          "left": {
+            "feature_idx": 12,
+            "threshold": 558.0,
+            "impurity_reduction": 4.9002187406702475,
+            "left": {
+              "feature_idx": 18,
+              "threshold": 0.0,
+              "impurity_reduction": 4.610502867544142,
+              "left": {
+                "value": -4.579842448375882
+              },
+              "right": {
+                "value": -0.28355361532613793
+              }
+            },
+            "right": {
+              "feature_idx": 8,
+              "threshold": 0.0,
+              "impurity_reduction": 4.428049321084082,
+              "left": {
+                "value": -6.045521105309593
+              },
+              "right": {
+                "value": -11.861491170331686
+              }
+            }
+          },
+          "right": {
+            "feature_idx": 10,
+            "threshold": 2359.749999999999,
+            "impurity_reduction": 12.501977820713364,
+            "left": {
+              "feature_idx": 9,
+              "threshold": 91.67,
+              "impurity_reduction": 7.853459871647182,
+              "left": {
+                "value": 2.173216494365119
+              },
+              "right": {
+                "value": 10.015664844045935
+              }
+            },
+            "right": {
+              "feature_idx": 1,
+              "threshold": 4.0,
+              "impurity_reduction": 27.01130732410443,
+              "left": {
+                "value": -7.7126811054361175
+              },
+              "right": {
+                "value": 16.692222633290303
+              }
+            }
+          }
+        },
+        "right": {
+          "feature_idx": 13,
+          "threshold": 0.0,
+          "impurity_reduction": 9.156272254197624,
+          "left": {
+            "feature_idx": 8,
+            "threshold": 0.0,
+            "impurity_reduction": 5.733495375754522,
+            "left": {
+              "feature_idx": 21,
+              "threshold": 0.0,
+              "impurity_reduction": 8.489308972000359,
+              "left": {
+                "value": 11.774207598301818
+              },
+              "right": {
+                "value": 4.642424063439356
+              }
+            },
+            "right": {
+              "feature_idx": 6,
+              "threshold": 100.0,
+              "impurity_reduction": 5.5430715404760065,
+              "left": {
+                "value": 0.20422167031290245
+              },
+              "right": {
+                "value": 5.361690395605872
+              }
+            }
+          },
+          "right": {
+            "feature_idx": 9,
+            "threshold": 85.69999999999999,
+            "impurity_reduction": 36.222896287790896,
+            "left": {
+              "feature_idx": 1,
+              "threshold": 2.0,
+              "impurity_reduction": 36.68368636529638,
+              "left": {
+                "value": -16.239617094787356
+              },
+              "right": {
+                "value": -29.362479879229934
+              }
+            },
+            "right": {
+              "feature_idx": 9,
+              "threshold": 87.84,
+              "impurity_reduction": 4.331869443817769,
+              "left": {
+                "value": -6.707939763929126
+              },
+              "right": {
+                "value": -12.415764928447814
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "max_depth": 4,
+      "min_samples_split": 12,
+      "root": {
+        "feature_idx": 9,
+        "threshold": 85.1,
+        "impurity_reduction": 18.796974021156814,
+        "left": {
+          "feature_idx": 9,
+          "threshold": 49.2,
+          "impurity_reduction": 5.700348096925708,
+          "left": {
+            "feature_idx": 1,
+            "threshold": 4.0,
+            "impurity_reduction": 4.743153802252696,
+            "left": {
+              "feature_idx": 9,
+              "threshold": 42.0,
+              "impurity_reduction": 7.114331280215843,
+              "left": {
+                "value": -10.030658263807783
+              },
+              "right": {
+                "value": -4.672454341450811
+              }
+            },
+            "right": {
+              "feature_idx": 10,
+              "threshold": 840.0,
+              "impurity_reduction": 13.829651501233158,
+              "left": {
+                "value": -6.365092431414303
+              },
+              "right": {
+                "value": 1.1055476560183237
+              }
+            }
+          },
+          "right": {
+            "feature_idx": 13,
+            "threshold": 0.0,
+            "impurity_reduction": 4.7256285534941185,
+            "left": {
+              "feature_idx": 8,
+              "threshold": 0.0,
+              "impurity_reduction": 4.002701697160369,
+              "left": {
+                "value": 0.3935059109235261
+              },
+              "right": {
+                "value": -5.121923819719002
+              }
+            },
+            "right": {
+              "feature_idx": 9,
+              "threshold": 54.0,
+              "impurity_reduction": 9.101265560322346,
+              "left": {
+                "value": -15.364489213558256
+              },
+              "right": {
+                "value": -21.416080660470772
+              }
+            }
+          }
+        },
+        "right": {
+          "feature_idx": 13,
+          "threshold": 0.0,
+          "impurity_reduction": 4.418869119208701,
+          "left": {
+            "feature_idx": 1,
+            "threshold": 4.0,
+            "impurity_reduction": 4.277131314182036,
+            "left": {
+              "feature_idx": 8,
+              "threshold": 0.0,
+              "impurity_reduction": 4.582704754209459,
+              "left": {
+                "value": 9.959886345855773
+              },
+              "right": {
+                "value": 3.824069763559168
+              }
+            },
+            "right": {
+              "feature_idx": 12,
+              "threshold": 920.0,
+              "impurity_reduction": 46.39164706422082,
+              "left": {
+                "value": 8.447085635404907
+              },
+              "right": {
+                "value": -7.305568106998962
+              }
+            }
+          },
+          "right": {
+            "feature_idx": 5,
+            "threshold": 11.38,
+            "impurity_reduction": 2.8436224764265035,
+            "left": {
+              "feature_idx": 12,
+              "threshold": 825.85,
+              "impurity_reduction": 3.681990397761325,
+              "left": {
+                "value": -8.242397307344286
+              },
+              "right": {
+                "value": -12.265402797891475
+              }
+            },
+            "right": {
+              "value": -4.991531925297997
+            }
+          }
+        }
+      }
+    },
+    {
+      "max_depth": 4,
+      "min_samples_split": 12,
+      "root": {
+        "feature_idx": 11,
+        "threshold": 83.9,
+        "impurity_reduction": 14.307590996575719,
+        "left": {
+          "feature_idx": 9,
+          "threshold": 54.8,
+          "impurity_reduction": 4.3506592736603125,
+          "left": {
+            "feature_idx": 13,
+            "threshold": 0.0,
+            "impurity_reduction": 3.6845894913056156,
+            "left": {
+              "feature_idx": 8,
+              "threshold": 0.0,
+              "impurity_reduction": 2.834920877734735,
+              "left": {
+                "value": -3.029198111210909
+              },
+              "right": {
+                "value": -7.5952233985145154
+              }
+            },
+            "right": {
+              "feature_idx": 9,
+              "threshold": 46.99999999999999,
+              "impurity_reduction": 16.597300916840645,
+              "left": {
+                "value": -21.764061781050746
+              },
+              "right": {
+                "value": -13.575798597320592
+              }
+            }
+          },
+          "right": {
+            "feature_idx": 9,
+            "threshold": 67.9,
+            "impurity_reduction": 5.225353322270983,
+            "left": {
+              "feature_idx": 12,
+              "threshold": 2110.7,
+              "impurity_reduction": 6.755347743202439,
+              "left": {
+                "value": -0.07219202374325163
+              },
+              "right": {
+                "value": -7.347756879395727
+              }
+            },
+            "right": {
+              "feature_idx": 7,
+              "threshold": 25.9,
+              "impurity_reduction": 7.432447047754636,
+              "left": {
+                "value": 5.682508774788198
+              },
+              "right": {
+                "value": -0.655549151396714
+              }
+            }
+          }
+        },
+        "right": {
+          "feature_idx": 13,
+          "threshold": 0.0,
+          "impurity_reduction": 4.878910246798199,
+          "left": {
+            "feature_idx": 6,
+            "threshold": 100.0,
+            "impurity_reduction": 3.4315041890814797,
+            "left": {
+              "feature_idx": 8,
+              "threshold": 0.0,
+              "impurity_reduction": 3.615079604562432,
+              "left": {
+                "value": 4.7452330698856
+              },
+              "right": {
+                "value": -0.24227037495995382
+              }
+            },
+            "right": {
+              "feature_idx": 21,
+              "threshold": 0.0,
+              "impurity_reduction": 3.3469434983058193,
+              "left": {
+                "value": 8.843020288340226
+              },
+              "right": {
+                "value": 4.04926313555685
+              }
+            }
+          },
+          "right": {
+            "feature_idx": 9,
+            "threshold": 75.45,
+            "impurity_reduction": 20.0762576445647,
+            "left": {
+              "value": -21.232304525843034
+            },
+            "right": {
+              "feature_idx": 11,
+              "threshold": 101.83,
+              "impurity_reduction": 2.9986572360767667,
+              "left": {
+                "value": -10.179138632503923
+              },
+              "right": {
+                "value": -6.545788732091958
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "max_depth": 4,
+      "min_samples_split": 12,
+      "root": {
+        "feature_idx": 11,
+        "threshold": 83.9,
+        "impurity_reduction": 10.337234495025946,
+        "left": {
+          "feature_idx": 9,
+          "threshold": 56.4,
+          "impurity_reduction": 3.285591545731478,
+          "left": {
+            "feature_idx": 12,
+            "threshold": 581.0,
+            "impurity_reduction": 2.966387398910218,
+            "left": {
+              "feature_idx": 18,
+              "threshold": 0.0,
+              "impurity_reduction": 3.2389379131626583,
+              "left": {
+                "value": -3.34779091193126
+              },
+              "right": {
+                "value": 0.25468681516261366
+              }
+            },
+            "right": {
+              "feature_idx": 13,
+              "threshold": 0.0,
+              "impurity_reduction": 2.889533455195732,
+              "left": {
+                "value": -4.861004475995168
+              },
+              "right": {
+                "value": -18.041396374872008
+              }
+            }
+          },
+          "right": {
+            "feature_idx": 10,
+            "threshold": 2355.0,
+            "impurity_reduction": 4.810836126435632,
+            "left": {
+              "feature_idx": 13,
+              "threshold": 0.0,
+              "impurity_reduction": 3.2385540599768348,
+              "left": {
+                "value": 1.7193784981261224
+              },
+              "right": {
+                "value": -17.994929315505335
+              }
+            },
+            "right": {
+              "feature_idx": 1,
+              "threshold": 4.0,
+              "impurity_reduction": 24.694064003901936,
+              "left": {
+                "value": -5.8780203370215025
+              },
+              "right": {
+                "value": 14.74746775486066
+              }
+            }
+          }
+        },
+        "right": {
+          "feature_idx": 13,
+          "threshold": 0.0,
+          "impurity_reduction": 3.5250126533117054,
+          "left": {
+            "feature_idx": 8,
+            "threshold": 0.0,
+            "impurity_reduction": 3.129777735983275,
+            "left": {
+              "feature_idx": 21,
+              "threshold": 0.0,
+              "impurity_reduction": 4.716993266002337,
+              "left": {
+                "value": 7.731787477403511
+              },
+              "right": {
+                "value": 2.415669493509767
+              }
+            },
+            "right": {
+              "feature_idx": 8,
+              "threshold": 1.3,
+              "impurity_reduction": 2.7284350644633513,
+              "left": {
+                "value": -3.757006533700691
+              },
+              "right": {
+                "value": 2.3421799448764777
+              }
+            }
+          },
+          "right": {
+            "feature_idx": 9,
+            "threshold": 85.69999999999999,
+            "impurity_reduction": 15.532467240186449,
+            "left": {
+              "feature_idx": 1,
+              "threshold": 2.0,
+              "impurity_reduction": 17.5046700245546,
+              "left": {
+                "value": -9.680043299000666
+              },
+              "right": {
+                "value": -18.74506955095402
+              }
+            },
+            "right": {
+              "feature_idx": 0,
+              "threshold": 12.75,
+              "impurity_reduction": 3.73795849932759,
+              "left": {
+                "value": -8.067946571292977
+              },
+              "right": {
+                "value": -3.677367341270621
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "max_depth": 4,
+      "min_samples_split": 12,
+      "root": {
+        "feature_idx": 9,
+        "threshold": 57.8,
+        "impurity_reduction": 7.61428856167268,
+        "left": {
+          "feature_idx": 13,
+          "threshold": 0.0,
+          "impurity_reduction": 2.319683409762508,
+          "left": {
+            "feature_idx": 11,
+            "threshold": 46.0,
+            "impurity_reduction": 1.9359284743148457,
+            "left": {
+              "feature_idx": 9,
+              "threshold": 35.4,
+              "impurity_reduction": 3.7127851095122786,
+              "left": {
+                "value": -7.499739823606849
+              },
+              "right": {
+                "value": -3.0624913975293024
+              }
+            },
+            "right": {
+              "feature_idx": 21,
+              "threshold": 0.0,
+              "impurity_reduction": 1.8307220134610382,
+              "left": {
+                "value": -0.6221760464909923
+              },
+              "right": {
+                "value": -4.1129624510278315
+              }
+            }
+          },
+          "right": {
+            "feature_idx": 9,
+            "threshold": 45.78,
+            "impurity_reduction": 6.611109553013385,
+            "left": {
+              "feature_idx": 11,
+              "threshold": 47.059999999999995,
+              "impurity_reduction": 5.90836997216412,
+              "left": {
+                "value": -19.37800215980528
+              },
+              "right": {
+                "value": -14.4862848348503
+              }
+            },
+            "right": {
+              "feature_idx": 7,
+              "threshold": 27.4,
+              "impurity_reduction": 3.546912558173563,
+              "left": {
+                "value": -12.577899686637522
+              },
+              "right": {
+                "value": -7.195850582586412
+              }
+            }
+          }
+        },
+        "right": {
+          "feature_idx": 9,
+          "threshold": 77.4,
+          "impurity_reduction": 4.01589461801283,
+          "left": {
+            "feature_idx": 1,
+            "threshold": 4.0,
+            "impurity_reduction": 6.281237343394594,
+            "left": {
+              "feature_idx": 6,
+              "threshold": 65.0,
+              "impurity_reduction": 7.33045840696013,
+              "left": {
+                "value": 1.1654067337323648
+              },
+              "right": {
+                "value": -4.283764671156689
+              }
+            },
+            "right": {
+              "feature_idx": 6,
+              "threshold": 65.0,
+              "impurity_reduction": 23.725706343275505,
+              "left": {
+                "value": -0.09319745834037209
+              },
+              "right": {
+                "value": 9.703597997311455
+              }
+            }
+          },
+          "right": {
+            "feature_idx": 21,
+            "threshold": 0.0,
+            "impurity_reduction": 2.586055173470193,
+            "left": {
+              "feature_idx": 8,
+              "threshold": 0.0,
+              "impurity_reduction": 3.329042535035107,
+              "left": {
+                "value": 6.043564288616673
+              },
+              "right": {
+                "value": 1.1709627858489389
+              }
+            },
+            "right": {
+              "feature_idx": 12,
+              "threshold": 955.0,
+              "impurity_reduction": 4.6995301260597415,
+              "left": {
+                "value": 2.037872765690513
+              },
+              "right": {
+                "value": -2.9742542575544224
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "max_depth": 4,
+      "min_samples_split": 12,
+      "root": {
+        "feature_idx": 11,
+        "threshold": 83.9,
+        "impurity_reduction": 5.538384466996199,
+        "left": {
+          "feature_idx": 8,
+          "threshold": 1.2,
+          "impurity_reduction": 2.432615463796818,
+          "left": {
+            "feature_idx": 21,
+            "threshold": 0.0,
+            "impurity_reduction": 2.701260271796503,
+            "left": {
+              "feature_idx": 9,
+              "threshold": 58.95,
+              "impurity_reduction": 2.5937816317719786,
+              "left": {
+                "value": -0.8353365874204844
+              },
+              "right": {
+                "value": 2.8838190959443764
+              }
+            },
+            "right": {
+              "feature_idx": 7,
+              "threshold": 24.8,
+              "impurity_reduction": 1.249297926063754,
+              "left": {
+                "value": -3.282501964212187
+              },
+              "right": {
+                "value": -5.641839940122039
+              }
+            }
+          },
+          "right": {
+            "feature_idx": 13,
+            "threshold": 0.0,
+            "impurity_reduction": 1.8384910706216093,
+            "left": {
+              "feature_idx": 11,
+              "threshold": 51.1,
+              "impurity_reduction": 1.7873280637518985,
+              "left": {
+                "value": -6.384086681876604
+              },
+              "right": {
+                "value": -3.6982475725435657
+              }
+            },
+            "right": {
+              "feature_idx": 7,
+              "threshold": 20.040000000000003,
+              "impurity_reduction": 3.9287281198683157,
+              "left": {
+                "value": -14.285878813980306
+              },
+              "right": {
+                "value": -18.447506275493346
+              }
+            }
+          }
+        },
+        "right": {
+          "feature_idx": 13,
+          "threshold": 0.0,
+          "impurity_reduction": 2.4856596766918493,
+          "left": {
+            "feature_idx": 6,
+            "threshold": 100.0,
+            "impurity_reduction": 2.29327257428211,
+            "left": {
+              "feature_idx": 9,
+              "threshold": 65.315,
+              "impurity_reduction": 1.8603965401727791,
+              "left": {
+                "value": 7.73842401379092
+              },
+              "right": {
+                "value": 1.5330524771499388
+              }
+            },
+            "right": {
+              "feature_idx": 12,
+              "threshold": 929.0,
+              "impurity_reduction": 2.7409823658521084,
+              "left": {
+                "value": 6.17767874658401
+              },
+              "right": {
+                "value": 2.348084145600808
+              }
+            }
+          },
+          "right": {
+            "feature_idx": 9,
+            "threshold": 85.69999999999999,
+            "impurity_reduction": 9.422694354685959,
+            "left": {
+              "feature_idx": 1,
+              "threshold": 2.0,
+              "impurity_reduction": 11.07797618932533,
+              "left": {
+                "value": -8.597083179341832
+              },
+              "right": {
+                "value": -15.808528511427916
+              }
+            },
+            "right": {
+              "feature_idx": 0,
+              "threshold": 12.75,
+              "impurity_reduction": 2.858817199872078,
+              "left": {
+                "value": -7.5564777333575845
+              },
+              "right": {
+                "value": -3.7167734866482824
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "max_depth": 4,
+      "min_samples_split": 12,
+      "root": {
+        "feature_idx": 9,
+        "threshold": 85.1,
+        "impurity_reduction": 4.0383148859088465,
+        "left": {
+          "feature_idx": 13,
+          "threshold": 0.0,
+          "impurity_reduction": 1.8471448969263449,
+          "left": {
+            "feature_idx": 8,
+            "threshold": 0.0,
+            "impurity_reduction": 1.8081427242666557,
+            "left": {
+              "feature_idx": 11,
+              "threshold": 50.7,
+              "impurity_reduction": 1.813063431887766,
+              "left": {
+                "value": -1.8835979860370948
+              },
+              "right": {
+                "value": 0.8225126775690174
+              }
+            },
+            "right": {
+              "feature_idx": 1,
+              "threshold": 3.0,
+              "impurity_reduction": 1.7574398760333043,
+              "left": {
+                "value": -5.0723364674339235
+              },
+              "right": {
+                "value": -2.320797733987362
+              }
+            }
+          },
+          "right": {
+            "feature_idx": 12,
+            "threshold": 768.3000000000001,
+            "impurity_reduction": 4.317781161386506,
+            "left": {
+              "feature_idx": 7,
+              "threshold": 27.4,
+              "impurity_reduction": 2.803501023487705,
+              "left": {
+                "value": -10.99529601771631
+              },
+              "right": {
+                "value": -6.286857778594301
+              }
+            },
+            "right": {
+              "feature_idx": 19,
+              "threshold": 0.0,
+              "impurity_reduction": 4.8000204675344165,
+              "left": {
+                "value": -13.743541028634803
+              },
+              "right": {
+                "value": -19.910788777157528
+              }
+            }
+          }
+        },
+        "right": {
+          "feature_idx": 1,
+          "threshold": 4.0,
+          "impurity_reduction": 2.472010986015885,
+          "left": {
+            "feature_idx": 13,
+            "threshold": 0.0,
+            "impurity_reduction": 1.8506631805497609,
+            "left": {
+              "feature_idx": 8,
+              "threshold": 0.0,
+              "impurity_reduction": 1.8553885529312097,
+              "left": {
+                "value": 5.211415680321673
+              },
+              "right": {
+                "value": 1.307244366845637
+              }
+            },
+            "right": {
+              "feature_idx": 11,
+              "threshold": 85.3,
+              "impurity_reduction": 3.1645449872232128,
+              "left": {
+                "value": -10.261158712411673
+              },
+              "right": {
+                "value": -5.487824038621541
+              }
+            }
+          },
+          "right": {
+            "feature_idx": 12,
+            "threshold": 1427.149999999983,
+            "impurity_reduction": 27.15693235636271,
+            "left": {
+              "feature_idx": 12,
+              "threshold": 1097.9999999999998,
+              "impurity_reduction": 4.7504220598722,
+              "left": {
+                "value": 3.7091402258075656
+              },
+              "right": {
+                "value": -6.202091342612366
+              }
+            },
+            "right": {
+              "feature_idx": 0,
+              "threshold": 14.0,
+              "impurity_reduction": 10.709774706434596,
+              "left": {
+                "value": -13.016599693245034
+              },
+              "right": {
+                "value": -4.8570824847566145
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "max_depth": 4,
+      "min_samples_split": 12,
+      "root": {
+        "feature_idx": 9,
+        "threshold": 57.8,
+        "impurity_reduction": 3.1424006444885997,
+        "left": {
+          "feature_idx": 12,
+          "threshold": 562.0,
+          "impurity_reduction": 1.3618152659545508,
+          "left": {
+            "feature_idx": 6,
+            "threshold": 60.0,
+            "impurity_reduction": 1.9254135021390653,
+            "left": {
+              "feature_idx": 21,
+              "threshold": 0.0,
+              "impurity_reduction": 1.3901280981170494,
+              "left": {
+                "value": -0.44208028729494364
+              },
+              "right": {
+                "value": -3.5293079126674103
+              }
+            },
+            "right": {
+              "feature_idx": 13,
+              "threshold": 0.0,
+              "impurity_reduction": 6.655633110548532,
+              "left": {
+                "value": 4.287819701755824
+              },
+              "right": {
+                "value": -10.084171496996818
+              }
+            }
+          },
+          "right": {
+            "feature_idx": 0,
+            "threshold": 18.0,
+            "impurity_reduction": 2.159272945287686,
+            "left": {
+              "feature_idx": 9,
+              "threshold": 30.3,
+              "impurity_reduction": 1.9336070223029793,
+              "left": {
+                "value": -9.392881548842027
+              },
+              "right": {
+                "value": -3.2751790051789307
+              }
+            },
+            "right": {
+              "feature_idx": 18,
+              "threshold": 0.0,
+              "impurity_reduction": 3.5359971600533235,
+              "left": {
+                "value": -1.7621220408267044
+              },
+              "right": {
+                "value": 1.998732420652652
+              }
+            }
+          }
+        },
+        "right": {
+          "feature_idx": 9,
+          "threshold": 95.7,
+          "impurity_reduction": 1.8810810779084157,
+          "left": {
+            "feature_idx": 18,
+            "threshold": 0.0,
+            "impurity_reduction": 1.7901487778655607,
+            "left": {
+              "feature_idx": 19,
+              "threshold": 0.0,
+              "impurity_reduction": 4.847112176062442,
+              "left": {
+                "value": -1.7710957394332012
+              },
+              "right": {
+                "value": 2.882038516596652
+              }
+            },
+            "right": {
+              "feature_idx": 12,
+              "threshold": 927.0,
+              "impurity_reduction": 2.5580922301248776,
+              "left": {
+                "value": 3.923948392710298
+              },
+              "right": {
+                "value": 0.7083683189931502
+              }
+            }
+          },
+          "right": {
+            "feature_idx": 8,
+            "threshold": 0.0,
+            "impurity_reduction": 1.2986591910135825,
+            "left": {
+              "feature_idx": 21,
+              "threshold": 0.0,
+              "impurity_reduction": 1.4001849299407025,
+              "left": {
+                "value": 5.357163158909311
+              },
+              "right": {
+                "value": 2.081975549333769
+              }
+            },
+            "right": {
+              "feature_idx": 10,
+              "threshold": 1067.5,
+              "impurity_reduction": 1.534452168997479,
+              "left": {
+                "value": 2.0077476013305557
+              },
+              "right": {
+                "value": -3.4819660279462448
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "max_depth": 4,
+      "min_samples_split": 12,
+      "root": {
+        "feature_idx": 11,
+        "threshold": 83.9,
+        "impurity_reduction": 2.3196296670610614,
+        "left": {
+          "feature_idx": 13,
+          "threshold": 0.0,
+          "impurity_reduction": 1.2198275896237263,
+          "left": {
+            "feature_idx": 8,
+            "threshold": 1.2,
+            "impurity_reduction": 1.181271131007172,
+            "left": {
+              "feature_idx": 21,
+              "threshold": 0.0,
+              "impurity_reduction": 1.6935844641466673,
+              "left": {
+                "value": 0.347837145908456
+              },
+              "right": {
+                "value": -2.957556229571106
+              }
+            },
+            "right": {
+              "feature_idx": 15,
+              "threshold": 0.0,
+              "impurity_reduction": 1.1931836694468707,
+              "left": {
+                "value": -5.04195603677035
+              },
+              "right": {
+                "value": -2.6394590355724916
+              }
+            }
+          },
+          "right": {
+            "feature_idx": 10,
+            "threshold": 975.0,
+            "impurity_reduction": 4.337693959092498,
+            "left": {
+              "feature_idx": 11,
+              "threshold": 45.5,
+              "impurity_reduction": 2.111025445466538,
+              "left": {
+                "value": -11.042505902108728
+              },
+              "right": {
+                "value": -7.697078183004755
+              }
+            },
+            "right": {
+              "feature_idx": 9,
+              "threshold": 58.7,
+              "impurity_reduction": 13.292884841054502,
+              "left": {
+                "value": -11.28373561188657
+              },
+              "right": {
+                "value": -19.7816250201137
+              }
+            }
+          }
+        },
+        "right": {
+          "feature_idx": 10,
+          "threshold": 2376.0,
+          "impurity_reduction": 2.167635418405144,
+          "left": {
+            "feature_idx": 12,
+            "threshold": 919.0,
+            "impurity_reduction": 1.8934338015562382,
+            "left": {
+              "feature_idx": 6,
+              "threshold": 100.0,
+              "impurity_reduction": 1.534971208778158,
+              "left": {
+                "value": 1.1227986591263428
+              },
+              "right": {
+                "value": 3.874165754820527
+              }
+            },
+            "right": {
+              "feature_idx": 10,
+              "threshold": 1039.0,
+              "impurity_reduction": 9.493864334069492,
+              "left": {
+                "value": 4.033690159679806
+              },
+              "right": {
+                "value": -2.393403224325699
+              }
+            }
+          },
+          "right": {
+            "feature_idx": 18,
+            "threshold": 0.0,
+            "impurity_reduction": 11.907792490187298,
+            "left": {
+              "feature_idx": 8,
+              "threshold": 2.0,
+              "impurity_reduction": 4.459515630235007,
+              "left": {
+                "value": 7.829114440322375
+              },
+              "right": {
+                "value": 1.5587027467752923
+              }
+            },
+            "right": {
+              "feature_idx": 0,
+              "threshold": 8.0,
+              "impurity_reduction": 5.389478694890063,
+              "left": {
+                "value": 18.291237603692064
+              },
+              "right": {
+                "value": 13.236372948309572
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "max_depth": 4,
+      "min_samples_split": 12,
+      "root": {
+        "feature_idx": 9,
+        "threshold": 57.8,
+        "impurity_reduction": 1.8624354758960813,
+        "left": {
+          "feature_idx": 12,
+          "threshold": 1029.0,
+          "impurity_reduction": 1.0469217891027505,
+          "left": {
+            "feature_idx": 10,
+            "threshold": 1538.0,
+            "impurity_reduction": 1.7778710068477714,
+            "left": {
+              "feature_idx": 6,
+              "threshold": 55.0,
+              "impurity_reduction": 1.0725951898675579,
+              "left": {
+                "value": -2.349947869005217
+              },
+              "right": {
+                "value": -0.18260615633720556
+              }
+            },
+            "right": {
+              "feature_idx": 9,
+              "threshold": 36.800000000000004,
+              "impurity_reduction": 5.335224230140426,
+              "left": {
+                "value": 3.8622413291156588
+              },
+              "right": {
+                "value": 9.196520027066827
+              }
+            }
+          },
+          "right": {
+            "feature_idx": 10,
+            "threshold": 747.0,
+            "impurity_reduction": 3.0409605609210644,
+            "left": {
+              "feature_idx": 12,
+              "threshold": 1209.5,
+              "impurity_reduction": 2.2448894592854014,
+              "left": {
+                "value": -1.5017788418415103
+              },
+              "right": {
+                "value": 1.95838644075056
+              }
+            },
+            "right": {
+              "feature_idx": 10,
+              "threshold": 767.0,
+              "impurity_reduction": 1.3708460400872582,
+              "left": {
+                "value": 1.1903005309500905
+              },
+              "right": {
+                "value": -4.025318699922695
+              }
+            }
+          }
+        },
+        "right": {
+          "feature_idx": 13,
+          "threshold": 0.0,
+          "impurity_reduction": 1.1968393196884008,
+          "left": {
+            "feature_idx": 8,
+            "threshold": 0.0,
+            "impurity_reduction": 1.0946544262451745,
+            "left": {
+              "feature_idx": 21,
+              "threshold": 0.0,
+              "impurity_reduction": 1.7960151462921345,
+              "left": {
+                "value": 2.7232344191078206
+              },
+              "right": {
+                "value": -0.6963863779509966
+              }
+            },
+            "right": {
+              "feature_idx": 10,
+              "threshold": 1381.25,
+              "impurity_reduction": 2.143367529733453,
+              "left": {
+                "value": 0.012970062496935036
+              },
+              "right": {
+                "value": -3.3680495310446
+              }
+            }
+          },
+          "right": {
+            "feature_idx": 9,
+            "threshold": 78.0,
+            "impurity_reduction": 9.025426303749313,
+            "left": {
+              "feature_idx": 11,
+              "threshold": 56.3,
+              "impurity_reduction": 12.19071477757759,
+              "left": {
+                "value": -19.12505756664942
+              },
+              "right": {
+                "value": -11.329801032719871
+              }
+            },
+            "right": {
+              "feature_idx": 0,
+              "threshold": 10.0,
+              "impurity_reduction": 3.207973335896817,
+              "left": {
+                "value": -8.55598543799192
+              },
+              "right": {
+                "value": -4.963176834530193
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "max_depth": 4,
+      "min_samples_split": 12,
+      "root": {
+        "feature_idx": 11,
+        "threshold": 60.0,
+        "impurity_reduction": 1.4029212807126257,
+        "left": {
+          "feature_idx": 13,
+          "threshold": 0.0,
+          "impurity_reduction": 0.7533869982427781,
+          "left": {
+            "feature_idx": 21,
+            "threshold": 0.0,
+            "impurity_reduction": 0.74633638261448,
+            "left": {
+              "feature_idx": 8,
+              "threshold": 0.0,
+              "impurity_reduction": 1.289974698752566,
+              "left": {
+                "value": 0.0927166846968671
+              },
+              "right": {
+                "value": -2.790806838785835
+              }
+            },
+            "right": {
+              "feature_idx": 7,
+              "threshold": 26.8,
+              "impurity_reduction": 0.7452580964938385,
+              "left": {
+                "value": -2.417112800383095
+              },
+              "right": {
+                "value": -4.8668232374016664
+              }
+            }
+          },
+          "right": {
+            "feature_idx": 12,
+            "threshold": 1003.0,
+            "impurity_reduction": 3.7695222527346104,
+            "left": {
+              "feature_idx": 9,
+              "threshold": 45.785,
+              "impurity_reduction": 3.273399758902908,
+              "left": {
+                "value": -9.164179120097156
+              },
+              "right": {
+                "value": -5.365463906962986
+              }
+            },
+            "right": {
+              "feature_idx": 10,
+              "threshold": 787.0,
+              "impurity_reduction": 5.561515666673607,
+              "left": {
+                "value": -7.159795403813537
+              },
+              "right": {
+                "value": -12.549306430513482
+              }
+            }
+          }
+        },
+        "right": {
+          "feature_idx": 12,
+          "threshold": 1551.0999999999995,
+          "impurity_reduction": 1.5181851194264375,
+          "left": {
+            "feature_idx": 13,
+            "threshold": 0.0,
+            "impurity_reduction": 1.2379443922983917,
+            "left": {
+              "feature_idx": 6,
+              "threshold": 100.0,
+              "impurity_reduction": 1.0880957290481241,
+              "left": {
+                "value": 0.9588301585914214
+              },
+              "right": {
+                "value": 3.057315155206895
+              }
+            },
+            "right": {
+              "feature_idx": 9,
+              "threshold": 78.315,
+              "impurity_reduction": 3.2678884019279764,
+              "left": {
+                "value": -9.28664229613369
+              },
+              "right": {
+                "value": -5.503866843692232
+              }
+            }
+          },
+          "right": {
+            "feature_idx": 0,
+            "threshold": 15.0,
+            "impurity_reduction": 16.077860787980633,
+            "left": {
+              "feature_idx": 12,
+              "threshold": 2742.2,
+              "impurity_reduction": 15.13252059812141,
+              "left": {
+                "value": -7.207393008577733
+              },
+              "right": {
+                "value": 3.6949455800756863
+              }
+            },
+            "right": {
+              "feature_idx": 1,
+              "threshold": 4.0,
+              "impurity_reduction": 15.848731769836071,
+              "left": {
+                "value": -0.11841243997975288
+              },
+              "right": {
+                "value": 8.625272894840226
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "max_depth": 4,
+      "min_samples_split": 12,
+      "root": {
+        "feature_idx": 11,
+        "threshold": 60.0,
+        "impurity_reduction": 1.0136106253148682,
+        "left": {
+          "feature_idx": 9,
+          "threshold": 44.3,
+          "impurity_reduction": 0.6972049249692134,
+          "left": {
+            "feature_idx": 1,
+            "threshold": 4.0,
+            "impurity_reduction": 4.727933580138288,
+            "left": {
+              "feature_idx": 10,
+              "threshold": 497.0,
+              "impurity_reduction": 1.9806933499542891,
+              "left": {
+                "value": -0.31032315934156596
+              },
+              "right": {
+                "value": -4.199834146973358
+              }
+            },
+            "right": {
+              "feature_idx": 10,
+              "threshold": 488.0,
+              "impurity_reduction": 11.440096345649017,
+              "left": {
+                "value": -6.621578476604189
+              },
+              "right": {
+                "value": 2.717722316131834
+              }
+            }
+          },
+          "right": {
+            "feature_idx": 21,
+            "threshold": 0.0,
+            "impurity_reduction": 0.9652596260996393,
+            "left": {
+              "feature_idx": 9,
+              "threshold": 75.43999999999978,
+              "impurity_reduction": 0.9345696198883768,
+              "left": {
+                "value": -0.13136613652894893
+              },
+              "right": {
+                "value": 4.298769149288093
+              }
+            },
+            "right": {
+              "feature_idx": 9,
+              "threshold": 76.5,
+              "impurity_reduction": 0.8133767349886565,
+              "left": {
+                "value": -2.826737069231972
+              },
+              "right": {
+                "value": 1.326562627051496
+              }
+            }
+          }
+        },
+        "right": {
+          "feature_idx": 12,
+          "threshold": 1551.0999999999995,
+          "impurity_reduction": 1.0968887487855987,
+          "left": {
+            "feature_idx": 13,
+            "threshold": 0.0,
+            "impurity_reduction": 0.8944148234355858,
+            "left": {
+              "feature_idx": 6,
+              "threshold": 100.0,
+              "impurity_reduction": 0.7861491642372798,
+              "left": {
+                "value": 0.8150056348027099
+              },
+              "right": {
+                "value": 2.598717881925866
+              }
+            },
+            "right": {
+              "feature_idx": 1,
+              "threshold": 0.0,
+              "impurity_reduction": 2.95965036913109,
+              "left": {
+                "value": -2.096709663489187
+              },
+              "right": {
+                "value": -6.609492979166901
+              }
+            }
+          },
+          "right": {
+            "feature_idx": 0,
+            "threshold": 15.0,
+            "impurity_reduction": 11.616254419315979,
+            "left": {
+              "feature_idx": 1,
+              "threshold": 4.0,
+              "impurity_reduction": 11.035511317703659,
+              "left": {
+                "value": -1.689792025244117
+              },
+              "right": {
+                "value": -8.358193798142699
+              }
+            },
+            "right": {
+              "feature_idx": 1,
+              "threshold": 4.0,
+              "impurity_reduction": 11.45070870370656,
+              "left": {
+                "value": -0.10065057398279323
+              },
+              "right": {
+                "value": 7.331481960614187
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "max_depth": 4,
+      "min_samples_split": 12,
+      "root": {
+        "feature_idx": 9,
+        "threshold": 85.1,
+        "impurity_reduction": 0.762442437967799,
+        "left": {
+          "feature_idx": 8,
+          "threshold": 0.0,
+          "impurity_reduction": 0.6089775172835665,
+          "left": {
+            "feature_idx": 13,
+            "threshold": 0.0,
+            "impurity_reduction": 0.6147697089691597,
+            "left": {
+              "feature_idx": 21,
+              "threshold": 0.0,
+              "impurity_reduction": 0.6513351896789032,
+              "left": {
+                "value": 0.34614345260236484
+              },
+              "right": {
+                "value": -1.6557225902480799
+              }
+            },
+            "right": {
+              "feature_idx": 12,
+              "threshold": 763.0,
+              "impurity_reduction": 2.5180270158263696,
+              "left": {
+                "value": -5.177320337598212
+              },
+              "right": {
+                "value": -8.506781881460022
+              }
+            }
+          },
+          "right": {
+            "feature_idx": 15,
+            "threshold": 0.0,
+            "impurity_reduction": 0.648908921455666,
+            "left": {
+              "feature_idx": 7,
+              "threshold": 18.5,
+              "impurity_reduction": 1.3532045547151004,
+              "left": {
+                "value": -5.211850676004151
+              },
+              "right": {
+                "value": -2.6942573667748
+              }
+            },
+            "right": {
+              "feature_idx": 13,
+              "threshold": 0.0,
+              "impurity_reduction": 0.5069929097238672,
+              "left": {
+                "value": -1.652699346396678
+              },
+              "right": {
+                "value": -7.492480436917915
+              }
+            }
+          }
+        },
+        "right": {
+          "feature_idx": 1,
+          "threshold": 4.0,
+          "impurity_reduction": 1.224460599388788,
+          "left": {
+            "feature_idx": 21,
+            "threshold": 0.0,
+            "impurity_reduction": 0.8944897435976404,
+            "left": {
+              "feature_idx": 8,
+              "threshold": 0.0,
+              "impurity_reduction": 1.1163785788129967,
+              "left": {
+                "value": 3.065665673863857
+              },
+              "right": {
+                "value": 0.20413844182883523
+              }
+            },
+            "right": {
+              "feature_idx": 10,
+              "threshold": 1373.0,
+              "impurity_reduction": 0.5920028321532733,
+              "left": {
+                "value": 0.19304819336766807
+              },
+              "right": {
+                "value": -1.9833718370431748
+              }
+            }
+          },
+          "right": {
+            "feature_idx": 12,
+            "threshold": 920.0,
+            "impurity_reduction": 11.813839548673746,
+            "left": {
+              "feature_idx": 8,
+              "threshold": 0.0,
+              "impurity_reduction": 1.5635932955156182,
+              "left": {
+                "value": 2.3995076563412927
+              },
+              "right": {
+                "value": -0.6608278404986649
+              }
+            },
+            "right": {
+              "feature_idx": 12,
+              "threshold": 1070.0,
+              "impurity_reduction": 8.24347544855737,
+              "left": {
+                "value": 0.46714427218746124
+              },
+              "right": {
+                "value": -7.43474418825164
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "max_depth": 4,
+      "min_samples_split": 12,
+      "root": {
+        "feature_idx": 9,
+        "threshold": 47.9,
+        "impurity_reduction": 0.6372092383285093,
+        "left": {
+          "feature_idx": 1,
+          "threshold": 4.0,
+          "impurity_reduction": 1.90539220374467,
+          "left": {
+            "feature_idx": 9,
+            "threshold": 41.1,
+            "impurity_reduction": 1.408472947189205,
+            "left": {
+              "feature_idx": 9,
+              "threshold": 30.7,
+              "impurity_reduction": 1.3791065644220861,
+              "left": {
+                "value": -6.324153017369619
+              },
+              "right": {
+                "value": -3.056520439577176
+              }
+            },
+            "right": {
+              "feature_idx": 10,
+              "threshold": 1066.0,
+              "impurity_reduction": 1.9751557209371846,
+              "left": {
+                "value": -0.3714883648744648
+              },
+              "right": {
+                "value": -3.6432972541992594
+              }
+            }
+          },
+          "right": {
+            "feature_idx": 10,
+            "threshold": 845.0,
+            "impurity_reduction": 7.504461571954888,
+            "left": {
+              "feature_idx": 7,
+              "threshold": 26.5,
+              "impurity_reduction": 7.913198475625373,
+              "left": {
+                "value": -0.5926552941725677
+              },
+              "right": {
+                "value": -7.1099162194198815
+              }
+            },
+            "right": {
+              "feature_idx": 0,
+              "threshold": 16.0,
+              "impurity_reduction": 3.0423329832630053,
+              "left": {
+                "value": 1.7970380044360421
+              },
+              "right": {
+                "value": 5.325202163829545
+              }
+            }
+          }
+        },
+        "right": {
+          "feature_idx": 21,
+          "threshold": 0.0,
+          "impurity_reduction": 0.536476372352432,
+          "left": {
+            "feature_idx": 8,
+            "threshold": 0.0,
+            "impurity_reduction": 0.7226701871553587,
+            "left": {
+              "feature_idx": 9,
+              "threshold": 62.6,
+              "impurity_reduction": 0.5452647128741184,
+              "left": {
+                "value": 0.5176370971976537
+              },
+              "right": {
+                "value": 2.0024119244940777
+              }
+            },
+            "right": {
+              "feature_idx": 13,
+              "threshold": 0.0,
+              "impurity_reduction": 0.473713334598731,
+              "left": {
+                "value": -0.9474637171601531
+              },
+              "right": {
+                "value": -7.389299620671626
+              }
+            }
+          },
+          "right": {
+            "feature_idx": 7,
+            "threshold": 27.1,
+            "impurity_reduction": 0.869297782000011,
+            "left": {
+              "feature_idx": 3,
+              "threshold": 0.0,
+              "impurity_reduction": 0.8487036860412687,
+              "left": {
+                "value": -1.5289688757160662
+              },
+              "right": {
+                "value": 0.3993999474692752
+              }
+            },
+            "right": {
+              "feature_idx": 1,
+              "threshold": 4.0,
+              "impurity_reduction": 14.457057344421784,
+              "left": {
+                "value": -1.0084340664029017
+              },
+              "right": {
+                "value": -9.179394673435844
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "max_depth": 4,
+      "min_samples_split": 12,
+      "root": {
+        "feature_idx": 11,
+        "threshold": 56.0,
+        "impurity_reduction": 0.47832109190363425,
+        "left": {
+          "feature_idx": 13,
+          "threshold": 0.0,
+          "impurity_reduction": 0.5002885185553119,
+          "left": {
+            "feature_idx": 9,
+            "threshold": 68.7,
+            "impurity_reduction": 0.5284074735311854,
+            "left": {
+              "feature_idx": 12,
+              "threshold": 1035.0,
+              "impurity_reduction": 0.41140705667879907,
+              "left": {
+                "value": -0.3699646057580439
+              },
+              "right": {
+                "value": -1.7149218599309193
+              }
+            },
+            "right": {
+              "feature_idx": 12,
+              "threshold": 3405.0,
+              "impurity_reduction": 5.041897522355484,
+              "left": {
+                "value": 4.968873918914612
+              },
+              "right": {
+                "value": 0.45775046055575586
+              }
+            }
+          },
+          "right": {
+            "feature_idx": 12,
+            "threshold": 2502.3999999999924,
+            "impurity_reduction": 3.6714830933713323,
+            "left": {
+              "feature_idx": 9,
+              "threshold": 50.0,
+              "impurity_reduction": 1.6508430558948923,
+              "left": {
+                "value": -6.7770893248161626
+              },
+              "right": {
+                "value": -4.066517363198243
+              }
+            },
+            "right": {
+              "value": -14.348304424262196
+            }
+          }
+        },
+        "right": {
+          "feature_idx": 0,
+          "threshold": 16.0,
+          "impurity_reduction": 0.35835956203690245,
+          "left": {
+            "feature_idx": 12,
+            "threshold": 1139.8999999999996,
+            "impurity_reduction": 0.7741021721973205,
+            "left": {
+              "feature_idx": 6,
+              "threshold": 100.0,
+              "impurity_reduction": 0.6035568860467695,
+              "left": {
+                "value": 0.08484096146449667
+              },
+              "right": {
+                "value": 1.7072128644845987
+              }
+            },
+            "right": {
+              "feature_idx": 10,
+              "threshold": 1013.0,
+              "impurity_reduction": 7.747908343314037,
+              "left": {
+                "value": 4.699145624682438
+              },
+              "right": {
+                "value": -2.9924977833153643
+              }
+            }
+          },
+          "right": {
+            "feature_idx": 7,
+            "threshold": 26.2,
+            "impurity_reduction": 1.1009245978115185,
+            "left": {
+              "feature_idx": 8,
+              "threshold": 0.0,
+              "impurity_reduction": 1.194352143172031,
+              "left": {
+                "value": 2.4668442379880506
+              },
+              "right": {
+                "value": -0.28085433208114313
+              }
+            },
+            "right": {
+              "feature_idx": 1,
+              "threshold": 4.0,
+              "impurity_reduction": 9.592243293844252,
+              "left": {
+                "value": -4.92310244558147
+              },
+              "right": {
+                "value": 2.4045435268123607
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "max_depth": 4,
+      "min_samples_split": 12,
+      "root": {
+        "feature_idx": 9,
+        "threshold": 47.9,
+        "impurity_reduction": 0.36557318788951676,
+        "left": {
+          "feature_idx": 1,
+          "threshold": 4.0,
+          "impurity_reduction": 1.29051220251913,
+          "left": {
+            "feature_idx": 9,
+            "threshold": 29.4,
+            "impurity_reduction": 1.0488240300105804,
+            "left": {
+              "feature_idx": 12,
+              "threshold": 678.4999999999999,
+              "impurity_reduction": 1.0708795163055376,
+              "left": {
+                "value": -7.081936483399432
+              },
+              "right": {
+                "value": -5.001843715163647
+              }
+            },
+            "right": {
+              "feature_idx": 10,
+              "threshold": 1016.0,
+              "impurity_reduction": 1.0014529126280847,
+              "left": {
+                "value": -0.42544638164342713
+              },
+              "right": {
+                "value": -2.435220850151425
+              }
+            }
+          },
+          "right": {
+            "feature_idx": 10,
+            "threshold": 845.0,
+            "impurity_reduction": 5.378429193993018,
+            "left": {
+              "feature_idx": 7,
+              "threshold": 26.5,
+              "impurity_reduction": 5.650659370343673,
+              "left": {
+                "value": -0.43305552583078605
+              },
+              "right": {
+                "value": -5.940354372204675
+              }
+            },
+            "right": {
+              "feature_idx": 8,
+              "threshold": 0.0,
+              "impurity_reduction": 2.367169917364299,
+              "left": {
+                "value": 3.5956423377093114
+              },
+              "right": {
+                "value": -0.3663563873648759
+              }
+            }
+          }
+        },
+        "right": {
+          "feature_idx": 21,
+          "threshold": 0.0,
+          "impurity_reduction": 0.39431267313564433,
+          "left": {
+            "feature_idx": 8,
+            "threshold": 0.0,
+            "impurity_reduction": 0.49788391693226686,
+            "left": {
+              "feature_idx": 13,
+              "threshold": 0.0,
+              "impurity_reduction": 0.4998593945921961,
+              "left": {
+                "value": 1.044375394010275
+              },
+              "right": {
+                "value": -4.787271741365515
+              }
+            },
+            "right": {
+              "feature_idx": 10,
+              "threshold": 1088.0,
+              "impurity_reduction": 0.4248506419402993,
+              "left": {
+                "value": -0.49946089905777946
+              },
+              "right": {
+                "value": -2.0102553373363077
+              }
+            }
+          },
+          "right": {
+            "feature_idx": 6,
+            "threshold": 100.0,
+            "impurity_reduction": 0.6207408243883439,
+            "left": {
+              "feature_idx": 7,
+              "threshold": 27.1,
+              "impurity_reduction": 0.4380835728146373,
+              "left": {
+                "value": -1.4167791056645707
+              },
+              "right": {
+                "value": -3.343012710458404
+              }
+            },
+            "right": {
+              "feature_idx": 7,
+              "threshold": 24.8,
+              "impurity_reduction": 2.1829168869740556,
+              "left": {
+                "value": 1.0179370117525928
+              },
+              "right": {
+                "value": -2.1025973184161906
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "max_depth": 4,
+      "min_samples_split": 12,
+      "root": {
+        "feature_idx": 6,
+        "threshold": 100.0,
+        "impurity_reduction": 0.30644519417258564,
+        "left": {
+          "feature_idx": 13,
+          "threshold": 0.0,
+          "impurity_reduction": 0.2612626267258573,
+          "left": {
+            "feature_idx": 21,
+            "threshold": 0.0,
+            "impurity_reduction": 0.21796589940571387,
+            "left": {
+              "feature_idx": 8,
+              "threshold": 0.0,
+              "impurity_reduction": 0.38526540283917043,
+              "left": {
+                "value": 0.24499455317188784
+              },
+              "right": {
+                "value": -1.3383248155902305
+              }
+            },
+            "right": {
+              "feature_idx": 7,
+              "threshold": 27.1,
+              "impurity_reduction": 0.26175560058688063,
+              "left": {
+                "value": -1.1136496009958707
+              },
+              "right": {
+                "value": -2.6610675520566356
+              }
+            }
+          },
+          "right": {
+            "feature_idx": 10,
+            "threshold": 1132.3500000000001,
+            "impurity_reduction": 1.9144972934943638,
+            "left": {
+              "feature_idx": 9,
+              "threshold": 46.7,
+              "impurity_reduction": 1.3119077455967876,
+              "left": {
+                "value": -5.759830870719208
+              },
+              "right": {
+                "value": -3.1353392068729025
+              }
+            },
+            "right": {
+              "feature_idx": 9,
+              "threshold": 59.64999999999999,
+              "impurity_reduction": 16.33977649074114,
+              "left": {
+                "value": -5.77167842692524
+              },
+              "right": {
+                "value": -16.436266757372973
+              }
+            }
+          }
+        },
+        "right": {
+          "feature_idx": 12,
+          "threshold": 927.4499999999998,
+          "impurity_reduction": 1.1349437437122454,
+          "left": {
+            "feature_idx": 10,
+            "threshold": 1900.0,
+            "impurity_reduction": 1.5616336566072668,
+            "left": {
+              "feature_idx": 13,
+              "threshold": 0.0,
+              "impurity_reduction": 0.6195782045749105,
+              "left": {
+                "value": 1.7124792228171721
+              },
+              "right": {
+                "value": -4.463806939964853
+              }
+            },
+            "right": {
+              "feature_idx": 12,
+              "threshold": 686.9,
+              "impurity_reduction": 16.89845511439748,
+              "left": {
+                "value": 24.50347286011003
+              },
+              "right": {
+                "value": 6.370596508008619
+              }
+            }
+          },
+          "right": {
+            "feature_idx": 0,
+            "threshold": 9.0,
+            "impurity_reduction": 2.8333371691880096,
+            "left": {
+              "feature_idx": 0,
+              "threshold": 8.0,
+              "impurity_reduction": 2.421520003537891,
+              "left": {
+                "value": -4.578398584612729
+              },
+              "right": {
+                "value": -1.2325657599740523
+              }
+            },
+            "right": {
+              "feature_idx": 7,
+              "threshold": 26.1,
+              "impurity_reduction": 3.0728703865358185,
+              "left": {
+                "value": 1.8699767650086823
+              },
+              "right": {
+                "value": -1.8386590152233544
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "max_depth": 4,
+      "min_samples_split": 12,
+      "root": {
+        "feature_idx": 11,
+        "threshold": 56.0,
+        "impurity_reduction": 0.2510025047197253,
+        "left": {
+          "feature_idx": 7,
+          "threshold": 26.9,
+          "impurity_reduction": 0.3832370128029705,
+          "left": {
+            "feature_idx": 8,
+            "threshold": 0.0,
+            "impurity_reduction": 0.371455029495829,
+            "left": {
+              "feature_idx": 1,
+              "threshold": 4.0,
+              "impurity_reduction": 0.46081261983490407,
+              "left": {
+                "value": -0.38223420072047
+              },
+              "right": {
+                "value": 1.2300610875152105
+              }
+            },
+            "right": {
+              "feature_idx": 6,
+              "threshold": 50.0,
+              "impurity_reduction": 0.4231784670876806,
+              "left": {
+                "value": -2.8052606401568743
+              },
+              "right": {
+                "value": -1.2498510668403857
+              }
+            }
+          },
+          "right": {
+            "feature_idx": 1,
+            "threshold": 4.0,
+            "impurity_reduction": 8.297383516966416,
+            "left": {
+              "feature_idx": 0,
+              "threshold": 15.0,
+              "impurity_reduction": 2.962108625979475,
+              "left": {
+                "value": 1.5955779215576147
+              },
+              "right": {
+                "value": -2.228617041045025
+              }
+            },
+            "right": {
+              "feature_idx": 0,
+              "threshold": 15.0,
+              "impurity_reduction": 17.9624202145344,
+              "left": {
+                "value": -7.356215606487719
+              },
+              "right": {
+                "value": 3.3910873823752445
+              }
+            }
+          }
+        },
+        "right": {
+          "feature_idx": 0,
+          "threshold": 8.0,
+          "impurity_reduction": 0.3078324356251212,
+          "left": {
+            "feature_idx": 1,
+            "threshold": 4.0,
+            "impurity_reduction": 1.1900385661636363,
+            "left": {
+              "feature_idx": 0,
+              "threshold": 5.0,
+              "impurity_reduction": 3.6153570785569027,
+              "left": {
+                "value": 0.40611969437047574
+              },
+              "right": {
+                "value": -3.7118352985132677
+              }
+            },
+            "right": {
+              "feature_idx": 10,
+              "threshold": 1622.0,
+              "impurity_reduction": 2.5527794422220946,
+              "left": {
+                "value": 0.8774049924511129
+              },
+              "right": {
+                "value": 5.459414768440212
+              }
+            }
+          },
+          "right": {
+            "feature_idx": 8,
+            "threshold": 0.0,
+            "impurity_reduction": 0.3586010657193057,
+            "left": {
+              "feature_idx": 21,
+              "threshold": 0.0,
+              "impurity_reduction": 0.5954289878147243,
+              "left": {
+                "value": 1.5815898556220456
+              },
+              "right": {
+                "value": -0.3632303816607292
+              }
+            },
+            "right": {
+              "feature_idx": 0,
+              "threshold": 12.0,
+              "impurity_reduction": 0.5014749920563588,
+              "left": {
+                "value": -1.7084079257513616
+              },
+              "right": {
+                "value": -0.10062854278858538
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "max_depth": 4,
+      "min_samples_split": 12,
+      "root": {
+        "feature_idx": 13,
+        "threshold": 0.0,
+        "impurity_reduction": 0.2304102207160632,
+        "left": {
+          "feature_idx": 6,
+          "threshold": 60.0,
+          "impurity_reduction": 0.2217022918444691,
+          "left": {
+            "feature_idx": 9,
+            "threshold": 32.745,
+            "impurity_reduction": 0.18925153203642964,
+            "left": {
+              "feature_idx": 1,
+              "threshold": 4.0,
+              "impurity_reduction": 5.667484005207327,
+              "left": {
+                "value": -3.827635598161989
+              },
+              "right": {
+                "value": 1.4636948681811972
+              }
+            },
+            "right": {
+              "feature_idx": 21,
+              "threshold": 0.0,
+              "impurity_reduction": 0.14211346252243118,
+              "left": {
+                "value": -0.17434979484005375
+              },
+              "right": {
+                "value": -1.191102409729656
+              }
+            }
+          },
+          "right": {
+            "feature_idx": 12,
+            "threshold": 1107.8000000000002,
+            "impurity_reduction": 0.6063158506729067,
+            "left": {
+              "feature_idx": 10,
+              "threshold": 1339.0,
+              "impurity_reduction": 0.9155400137387506,
+              "left": {
+                "value": 0.673488361992021
+              },
+              "right": {
+                "value": 3.3621999651784895
+              }
+            },
+            "right": {
+              "feature_idx": 10,
+              "threshold": 1336.0,
+              "impurity_reduction": 1.941066189800047,
+              "left": {
+                "value": 1.333371709014652
+              },
+              "right": {
+                "value": -1.5847006401977115
+              }
+            }
+          }
+        },
+        "right": {
+          "feature_idx": 1,
+          "threshold": 4.0,
+          "impurity_reduction": 1.1570845477434126,
+          "left": {
+            "feature_idx": 7,
+            "threshold": 27.3,
+            "impurity_reduction": 1.2742625689457228,
+            "left": {
+              "feature_idx": 12,
+              "threshold": 2311.5,
+              "impurity_reduction": 0.7507037083031989,
+              "left": {
+                "value": -3.472547991914454
+              },
+              "right": {
+                "value": -7.269178721167995
+              }
+            },
+            "right": {
+              "feature_idx": 1,
+              "threshold": 2.0,
+              "impurity_reduction": 5.551394657357026,
+              "left": {
+                "value": 1.2812804131033568
+              },
+              "right": {
+                "value": -3.616673801012836
+              }
+            }
+          },
+          "right": {
+            "feature_idx": 10,
+            "threshold": 1127.1000000000001,
+            "impurity_reduction": 3.7561917688323376,
+            "left": {
+              "feature_idx": 9,
+              "threshold": 91.605,
+              "impurity_reduction": 1.1858508118859152,
+              "left": {
+                "value": -3.769831799310243
+              },
+              "right": {
+                "value": -6.768981347124902
+              }
+            },
+            "right": {
+              "feature_idx": 9,
+              "threshold": 35.879999999999995,
+              "impurity_reduction": 10.904046464462883,
+              "left": {
+                "value": -3.6062222470601544
+              },
+              "right": {
+                "value": -10.611092630592099
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "max_depth": 4,
+      "min_samples_split": 12,
+      "root": {
+        "feature_idx": 0,
+        "threshold": 18.0,
+        "impurity_reduction": 0.17156832561301805,
+        "left": {
+          "feature_idx": 12,
+          "threshold": 1169.0,
+          "impurity_reduction": 0.2822175907099673,
+          "left": {
+            "feature_idx": 10,
+            "threshold": 1264.2499999999973,
+            "impurity_reduction": 0.47247220845155624,
+            "left": {
+              "feature_idx": 9,
+              "threshold": 45.5,
+              "impurity_reduction": 0.30007555121504126,
+              "left": {
+                "value": -1.4864010921639574
+              },
+              "right": {
+                "value": 0.03738805774695507
+              }
+            },
+            "right": {
+              "feature_idx": 1,
+              "threshold": 4.0,
+              "impurity_reduction": 3.049960536768303,
+              "left": {
+                "value": -0.03210980368218993
+              },
+              "right": {
+                "value": 3.4608495004279556
+              }
+            }
+          },
+          "right": {
+            "feature_idx": 7,
+            "threshold": 26.5,
+            "impurity_reduction": 1.4432256158000598,
+            "left": {
+              "feature_idx": 10,
+              "threshold": 1339.0,
+              "impurity_reduction": 3.9391491730772152,
+              "left": {
+                "value": 2.8877167379874744
+              },
+              "right": {
+                "value": -1.6290249082489876
+              }
+            },
+            "right": {
+              "feature_idx": 0,
+              "threshold": 14.0,
+              "impurity_reduction": 9.136452347768678,
+              "left": {
+                "value": -7.389301070987485
+              },
+              "right": {
+                "value": -1.0378697112331827
+              }
+            }
+          }
+        },
+        "right": {
+          "feature_idx": 18,
+          "threshold": 0.0,
+          "impurity_reduction": 0.5665123836547252,
+          "left": {
+            "feature_idx": 19,
+            "threshold": 0.0,
+            "impurity_reduction": 0.7301711597371918,
+            "left": {
+              "feature_idx": 9,
+              "threshold": 90.7,
+              "impurity_reduction": 0.16129364984379713,
+              "left": {
+                "value": -0.8000929295561153
+              },
+              "right": {
+                "value": 0.1316487825454262
+              }
+            },
+            "right": {
+              "feature_idx": 6,
+              "threshold": 100.0,
+              "impurity_reduction": 0.9274909959979993,
+              "left": {
+                "value": 0.6204491665602294
+              },
+              "right": {
+                "value": 2.815434248303326
+              }
+            }
+          },
+          "right": {
+            "feature_idx": 0,
+            "threshold": 20.0,
+            "impurity_reduction": 1.3081549387870322,
+            "left": {
+              "feature_idx": 6,
+              "threshold": 60.0,
+              "impurity_reduction": 0.9035253197611173,
+              "left": {
+                "value": 1.8458214878548787
+              },
+              "right": {
+                "value": 3.750624423918555
+              }
+            },
+            "right": {
+              "feature_idx": 6,
+              "threshold": 55.0,
+              "impurity_reduction": 0.36951412463520494,
+              "left": {
+                "value": -0.8529229724219257
+              },
+              "right": {
+                "value": 0.8220326890316494
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "max_depth": 4,
+      "min_samples_split": 12,
+      "root": {
+        "feature_idx": 13,
+        "threshold": 0.0,
+        "impurity_reduction": 0.17162787805123259,
+        "left": {
+          "feature_idx": 19,
+          "threshold": 0.0,
+          "impurity_reduction": 0.16552337731488365,
+          "left": {
+            "feature_idx": 18,
+            "threshold": 0.0,
+            "impurity_reduction": 0.33338619164987016,
+            "left": {
+              "feature_idx": 11,
+              "threshold": 56.3,
+              "impurity_reduction": 0.11187820865773368,
+              "left": {
+                "value": -1.2224009901714954
+              },
+              "right": {
+                "value": -0.5501389316060581
+              }
+            },
+            "right": {
+              "feature_idx": 0,
+              "threshold": 17.0,
+              "impurity_reduction": 0.23262052950053835,
+              "left": {
+                "value": 0.07052554374062918
+              },
+              "right": {
+                "value": 1.2221130214212808
+              }
+            }
+          },
+          "right": {
+            "feature_idx": 7,
+            "threshold": 27.1,
+            "impurity_reduction": 0.9589201985184488,
+            "left": {
+              "feature_idx": 7,
+              "threshold": 26.8,
+              "impurity_reduction": 1.2814190757080315,
+              "left": {
+                "value": 0.8118491837850514
+              },
+              "right": {
+                "value": -4.752481195923728
+              }
+            },
+            "right": {
+              "feature_idx": 10,
+              "threshold": 1556.0,
+              "impurity_reduction": 1.1735882523148433,
+              "left": {
+                "value": 3.124568706292836
+              },
+              "right": {
+                "value": 8.244344621523393
+              }
+            }
+          }
+        },
+        "right": {
+          "feature_idx": 1,
+          "threshold": 4.0,
+          "impurity_reduction": 0.9327067349700506,
+          "left": {
+            "feature_idx": 7,
+            "threshold": 26.2,
+            "impurity_reduction": 1.0199137373923435,
+            "left": {
+              "feature_idx": 12,
+              "threshold": 2565.199999999996,
+              "impurity_reduction": 1.4141962896029163,
+              "left": {
+                "value": -3.02977340883584
+              },
+              "right": {
+                "value": -8.355418182249828
+              }
+            },
+            "right": {
+              "feature_idx": 9,
+              "threshold": 47.1,
+              "impurity_reduction": 2.9827205686601808,
+              "left": {
+                "value": -3.863282119731722
+              },
+              "right": {
+                "value": 0.0882580412215998
+              }
+            }
+          },
+          "right": {
+            "feature_idx": 10,
+            "threshold": 1127.1000000000001,
+            "impurity_reduction": 3.3956477475831157,
+            "left": {
+              "feature_idx": 9,
+              "threshold": 91.605,
+              "impurity_reduction": 0.8673411751348841,
+              "left": {
+                "value": -3.1942972408290027
+              },
+              "right": {
+                "value": -5.759242353718212
+              }
+            },
+            "right": {
+              "feature_idx": 10,
+              "threshold": 1470.5,
+              "impurity_reduction": 8.161111613327272,
+              "left": {
+                "value": -12.040483957394096
+              },
+              "right": {
+                "value": -5.662396273506834
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "max_depth": 4,
+      "min_samples_split": 12,
+      "root": {
+        "feature_idx": 6,
+        "threshold": 100.0,
+        "impurity_reduction": 0.14599596792546876,
+        "left": {
+          "feature_idx": 0,
+          "threshold": 8.0,
+          "impurity_reduction": 0.1359103614689765,
+          "left": {
+            "feature_idx": 0,
+            "threshold": 4.0,
+            "impurity_reduction": 0.8316901292912524,
+            "left": {
+              "feature_idx": 18,
+              "threshold": 0.0,
+              "impurity_reduction": 0.309035674972189,
+              "left": {
+                "value": -0.4441108826382045
+              },
+              "right": {
+                "value": 0.6677092257975776
+              }
+            },
+            "right": {
+              "feature_idx": 1,
+              "threshold": 4.0,
+              "impurity_reduction": 2.0357068037279014,
+              "left": {
+                "value": -2.628556716487932
+              },
+              "right": {
+                "value": 0.525013297325581
+              }
+            }
+          },
+          "right": {
+            "feature_idx": 0,
+            "threshold": 11.0,
+            "impurity_reduction": 0.22412900878598307,
+            "left": {
+              "feature_idx": 0,
+              "threshold": 9.0,
+              "impurity_reduction": 0.9415650066403867,
+              "left": {
+                "value": -0.36694064542654214
+              },
+              "right": {
+                "value": 1.6918993315752864
+              }
+            },
+            "right": {
+              "feature_idx": 11,
+              "threshold": 43.1,
+              "impurity_reduction": 0.3670334102714943,
+              "left": {
+                "value": -1.2237868276734856
+              },
+              "right": {
+                "value": 0.1729923091511776
+              }
+            }
+          }
+        },
+        "right": {
+          "feature_idx": 12,
+          "threshold": 927.4499999999998,
+          "impurity_reduction": 0.4487305269930104,
+          "left": {
+            "feature_idx": 11,
+            "threshold": 83.635,
+            "impurity_reduction": 0.7806443215660543,
+            "left": {
+              "feature_idx": 9,
+              "threshold": 68.46,
+              "impurity_reduction": 30.126765134300406,
+              "left": {
+                "value": 28.11473864978701
+              },
+              "right": {
+                "value": 3.779654005362983
+              }
+            },
+            "right": {
+              "feature_idx": 10,
+              "threshold": 1898.0,
+              "impurity_reduction": 0.4082113220547132,
+              "left": {
+                "value": 0.9005200977881773
+              },
+              "right": {
+                "value": 3.84400623217122
+              }
+            }
+          },
+          "right": {
+            "feature_idx": 0,
+            "threshold": 9.0,
+            "impurity_reduction": 1.1617034013341296,
+            "left": {
+              "feature_idx": 9,
+              "threshold": 69.0,
+              "impurity_reduction": 1.967920583231546,
+              "left": {
+                "value": -0.9741569849404057
+              },
+              "right": {
+                "value": -3.807408697714958
+              }
+            },
+            "right": {
+              "feature_idx": 7,
+              "threshold": 26.1,
+              "impurity_reduction": 1.6489323306581234,
+              "left": {
+                "value": 1.3727637849321208
+              },
+              "right": {
+                "value": -1.3439474550108257
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

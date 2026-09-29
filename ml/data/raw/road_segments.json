@@ -1,0 +1,1538 @@
+[
+  {
+    "road_id": "I10_SM_CC",
+    "road_name": "I-10 E (Santa Monica to Century City)",
+    "road_type": "highway",
+    "length": 10.55,
+    "geometry": [
+      [
+        -118.4965,
+        34.0102
+      ],
+      [
+        -118.47434,
+        34.02301
+      ],
+      [
+        -118.455,
+        34.035
+      ],
+      [
+        -118.43566,
+        34.04581
+      ],
+      [
+        -118.4135,
+        34.0558
+      ]
+    ],
+    "max_speed": 105.0,
+    "start_node": "NODE_SANTA_MONICA",
+    "end_node": "NODE_CENTURY_CITY",
+    "base_lanes": 4
+  },
+  {
+    "road_id": "I10_CC_SM",
+    "road_name": "I-10 W (Century City to Santa Monica)",
+    "road_type": "highway",
+    "length": 10.55,
+    "geometry": [
+      [
+        -118.4135,
+        34.0558
+      ],
+      [
+        -118.43284,
+        34.04581
+      ],
+      [
+        -118.455,
+        34.035
+      ],
+      [
+        -118.47716,
+        34.02301
+      ],
+      [
+        -118.4965,
+        34.0102
+      ]
+    ],
+    "max_speed": 105.0,
+    "start_node": "NODE_CENTURY_CITY",
+    "end_node": "NODE_SANTA_MONICA",
+    "base_lanes": 4
+  },
+  {
+    "road_id": "I10_CC_MW",
+    "road_name": "I-10 E (Century City to Mid-Wilshire)",
+    "road_type": "highway",
+    "length": 5.93,
+    "geometry": [
+      [
+        -118.4135,
+        34.0558
+      ],
+      [
+        -118.39821,
+        34.05876
+      ],
+      [
+        -118.38575,
+        34.0609
+      ],
+      [
+        -118.37329,
+        34.06186
+      ],
+      [
+        -118.358,
+        34.062
+      ]
+    ],
+    "max_speed": 105.0,
+    "start_node": "NODE_CENTURY_CITY",
+    "end_node": "NODE_MID_WILSHIRE",
+    "base_lanes": 4
+  },
+  {
+    "road_id": "I10_MW_CC",
+    "road_name": "I-10 W (Mid-Wilshire to Century City)",
+    "road_type": "highway",
+    "length": 5.93,
+    "geometry": [
+      [
+        -118.358,
+        34.062
+      ],
+      [
+        -118.37046,
+        34.06186
+      ],
+      [
+        -118.38575,
+        34.0609
+      ],
+      [
+        -118.40104,
+        34.05876
+      ],
+      [
+        -118.4135,
+        34.0558
+      ]
+    ],
+    "max_speed": 105.0,
+    "start_node": "NODE_MID_WILSHIRE",
+    "end_node": "NODE_CENTURY_CITY",
+    "base_lanes": 4
+  },
+  {
+    "road_id": "I10_MW_DTLA",
+    "road_name": "I-10 E (Mid-Wilshire to Downtown LA)",
+    "road_type": "highway",
+    "length": 11.38,
+    "geometry": [
+      [
+        -118.358,
+        34.062
+      ],
+      [
+        -118.33004,
+        34.06011
+      ],
+      [
+        -118.3049,
+        34.0574
+      ],
+      [
+        -118.27976,
+        34.05351
+      ],
+      [
+        -118.2518,
+        34.0488
+      ]
+    ],
+    "max_speed": 105.0,
+    "start_node": "NODE_MID_WILSHIRE",
+    "end_node": "NODE_DOWNTOWN_LA",
+    "base_lanes": 4
+  },
+  {
+    "road_id": "I10_DTLA_MW",
+    "road_name": "I-10 W (Downtown LA to Mid-Wilshire)",
+    "road_type": "highway",
+    "length": 11.38,
+    "geometry": [
+      [
+        -118.2518,
+        34.0488
+      ],
+      [
+        -118.27694,
+        34.05351
+      ],
+      [
+        -118.3049,
+        34.0574
+      ],
+      [
+        -118.33286,
+        34.06011
+      ],
+      [
+        -118.358,
+        34.062
+      ]
+    ],
+    "max_speed": 105.0,
+    "start_node": "NODE_DOWNTOWN_LA",
+    "end_node": "NODE_MID_WILSHIRE",
+    "base_lanes": 4
+  },
+  {
+    "road_id": "I405_LAX_CC",
+    "road_name": "I-405 N (LAX to Culver City)",
+    "road_type": "highway",
+    "length": 9.31,
+    "geometry": [
+      [
+        -118.4055,
+        33.9535
+      ],
+      [
+        -118.40184,
+        33.97301
+      ],
+      [
+        -118.401,
+        33.9917
+      ],
+      [
+        -118.40016,
+        34.00921
+      ],
+      [
+        -118.3965,
+        34.0259
+      ]
+    ],
+    "max_speed": 105.0,
+    "start_node": "NODE_LAX_AIRPORT",
+    "end_node": "NODE_CULVER_CITY",
+    "base_lanes": 5
+  },
+  {
+    "road_id": "I405_CC_LAX",
+    "road_name": "I-405 S (Culver City to LAX)",
+    "road_type": "highway",
+    "length": 9.31,
+    "geometry": [
+      [
+        -118.3965,
+        34.0259
+      ],
+      [
+        -118.39734,
+        34.00921
+      ],
+      [
+        -118.401,
+        33.9917
+      ],
+      [
+        -118.40466,
+        33.97301
+      ],
+      [
+        -118.4055,
+        33.9535
+      ]
+    ],
+    "max_speed": 105.0,
+    "start_node": "NODE_CULVER_CITY",
+    "end_node": "NODE_LAX_AIRPORT",
+    "base_lanes": 5
+  },
+  {
+    "road_id": "I405_CC_WW",
+    "road_name": "I-405 N (Culver City to Westwood)",
+    "road_type": "highway",
+    "length": 7.08,
+    "geometry": [
+      [
+        -118.3965,
+        34.0259
+      ],
+      [
+        -118.40734,
+        34.03671
+      ],
+      [
+        -118.421,
+        34.0467
+      ],
+      [
+        -118.43466,
+        34.05551
+      ],
+      [
+        -118.4455,
+        34.0635
+      ]
+    ],
+    "max_speed": 105.0,
+    "start_node": "NODE_CULVER_CITY",
+    "end_node": "NODE_WESTWOOD",
+    "base_lanes": 5
+  },
+  {
+    "road_id": "I405_WW_CC",
+    "road_name": "I-405 S (Westwood to Culver City)",
+    "road_type": "highway",
+    "length": 7.08,
+    "geometry": [
+      [
+        -118.4455,
+        34.0635
+      ],
+      [
+        -118.43184,
+        34.05551
+      ],
+      [
+        -118.421,
+        34.0467
+      ],
+      [
+        -118.41016,
+        34.03671
+      ],
+      [
+        -118.3965,
+        34.0259
+      ]
+    ],
+    "max_speed": 105.0,
+    "start_node": "NODE_WESTWOOD",
+    "end_node": "NODE_CULVER_CITY",
+    "base_lanes": 5
+  },
+  {
+    "road_id": "SMB_SM_WW",
+    "road_name": "Santa Monica Blvd (SM to Westwood)",
+    "road_type": "arterial",
+    "length": 8.7,
+    "geometry": [
+      [
+        -118.4965,
+        34.0102
+      ],
+      [
+        -118.48234,
+        34.02494
+      ],
+      [
+        -118.471,
+        34.03885
+      ],
+      [
+        -118.45966,
+        34.05159
+      ],
+      [
+        -118.4455,
+        34.0635
+      ]
+    ],
+    "max_speed": 65.0,
+    "start_node": "NODE_SANTA_MONICA",
+    "end_node": "NODE_WESTWOOD",
+    "base_lanes": 3
+  },
+  {
+    "road_id": "SMB_WW_SM",
+    "road_name": "Santa Monica Blvd (Westwood to SM)",
+    "road_type": "arterial",
+    "length": 8.7,
+    "geometry": [
+      [
+        -118.4455,
+        34.0635
+      ],
+      [
+        -118.45684,
+        34.05159
+      ],
+      [
+        -118.471,
+        34.03885
+      ],
+      [
+        -118.48516,
+        34.02494
+      ],
+      [
+        -118.4965,
+        34.0102
+      ]
+    ],
+    "max_speed": 65.0,
+    "start_node": "NODE_WESTWOOD",
+    "end_node": "NODE_SANTA_MONICA",
+    "base_lanes": 3
+  },
+  {
+    "road_id": "SMB_WW_BH",
+    "road_name": "Santa Monica Blvd (Westwood to Beverly Hills)",
+    "road_type": "arterial",
+    "length": 4.95,
+    "geometry": [
+      [
+        -118.4455,
+        34.0635
+      ],
+      [
+        -118.43281,
+        34.06744
+      ],
+      [
+        -118.42295,
+        34.07055
+      ],
+      [
+        -118.41309,
+        34.07249
+      ],
+      [
+        -118.4004,
+        34.0736
+      ]
+    ],
+    "max_speed": 65.0,
+    "start_node": "NODE_WESTWOOD",
+    "end_node": "NODE_BEVERLY_HILLS",
+    "base_lanes": 3
+  },
+  {
+    "road_id": "SMB_BH_WW",
+    "road_name": "Santa Monica Blvd (Beverly Hills to Westwood)",
+    "road_type": "arterial",
+    "length": 4.95,
+    "geometry": [
+      [
+        -118.4004,
+        34.0736
+      ],
+      [
+        -118.41026,
+        34.07249
+      ],
+      [
+        -118.42295,
+        34.07055
+      ],
+      [
+        -118.43564,
+        34.06744
+      ],
+      [
+        -118.4455,
+        34.0635
+      ]
+    ],
+    "max_speed": 65.0,
+    "start_node": "NODE_BEVERLY_HILLS",
+    "end_node": "NODE_WESTWOOD",
+    "base_lanes": 3
+  },
+  {
+    "road_id": "SMB_BH_HW",
+    "road_name": "Santa Monica Blvd (Beverly Hills to Hollywood)",
+    "road_type": "arterial",
+    "length": 7.19,
+    "geometry": [
+      [
+        -118.4004,
+        34.0736
+      ],
+      [
+        -118.38426,
+        34.08201
+      ],
+      [
+        -118.37095,
+        34.0896
+      ],
+      [
+        -118.35764,
+        34.09601
+      ],
+      [
+        -118.3415,
+        34.1016
+      ]
+    ],
+    "max_speed": 65.0,
+    "start_node": "NODE_BEVERLY_HILLS",
+    "end_node": "NODE_HOLLYWOOD",
+    "base_lanes": 3
+  },
+  {
+    "road_id": "SMB_HW_BH",
+    "road_name": "Santa Monica Blvd (Hollywood to Beverly Hills)",
+    "road_type": "arterial",
+    "length": 7.19,
+    "geometry": [
+      [
+        -118.3415,
+        34.1016
+      ],
+      [
+        -118.35481,
+        34.09601
+      ],
+      [
+        -118.37095,
+        34.0896
+      ],
+      [
+        -118.38709,
+        34.08201
+      ],
+      [
+        -118.4004,
+        34.0736
+      ]
+    ],
+    "max_speed": 65.0,
+    "start_node": "NODE_HOLLYWOOD",
+    "end_node": "NODE_BEVERLY_HILLS",
+    "base_lanes": 3
+  },
+  {
+    "road_id": "WLS_WW_CC",
+    "road_name": "Wilshire Blvd (Westwood to Century City)",
+    "road_type": "arterial",
+    "length": 3.53,
+    "geometry": [
+      [
+        -118.4455,
+        34.0635
+      ],
+      [
+        -118.43609,
+        34.06299
+      ],
+      [
+        -118.4295,
+        34.06165
+      ],
+      [
+        -118.42291,
+        34.05914
+      ],
+      [
+        -118.4135,
+        34.0558
+      ]
+    ],
+    "max_speed": 60.0,
+    "start_node": "NODE_WESTWOOD",
+    "end_node": "NODE_CENTURY_CITY",
+    "base_lanes": 3
+  },
+  {
+    "road_id": "WLS_CC_WW",
+    "road_name": "Wilshire Blvd (Century City to Westwood)",
+    "road_type": "arterial",
+    "length": 3.53,
+    "geometry": [
+      [
+        -118.4135,
+        34.0558
+      ],
+      [
+        -118.42009,
+        34.05914
+      ],
+      [
+        -118.4295,
+        34.06165
+      ],
+      [
+        -118.43891,
+        34.06299
+      ],
+      [
+        -118.4455,
+        34.0635
+      ]
+    ],
+    "max_speed": 60.0,
+    "start_node": "NODE_CENTURY_CITY",
+    "end_node": "NODE_WESTWOOD",
+    "base_lanes": 3
+  },
+  {
+    "road_id": "WLS_CC_BH",
+    "road_name": "Wilshire Blvd (Century City to Beverly Hills)",
+    "road_type": "arterial",
+    "length": 2.67,
+    "geometry": [
+      [
+        -118.4135,
+        34.0558
+      ],
+      [
+        -118.40881,
+        34.06166
+      ],
+      [
+        -118.40695,
+        34.0667
+      ],
+      [
+        -118.40509,
+        34.07056
+      ],
+      [
+        -118.4004,
+        34.0736
+      ]
+    ],
+    "max_speed": 60.0,
+    "start_node": "NODE_CENTURY_CITY",
+    "end_node": "NODE_BEVERLY_HILLS",
+    "base_lanes": 3
+  },
+  {
+    "road_id": "WLS_BH_CC",
+    "road_name": "Wilshire Blvd (Beverly Hills to Century City)",
+    "road_type": "arterial",
+    "length": 2.67,
+    "geometry": [
+      [
+        -118.4004,
+        34.0736
+      ],
+      [
+        -118.40226,
+        34.07056
+      ],
+      [
+        -118.40695,
+        34.0667
+      ],
+      [
+        -118.41164,
+        34.06166
+      ],
+      [
+        -118.4135,
+        34.0558
+      ]
+    ],
+    "max_speed": 60.0,
+    "start_node": "NODE_BEVERLY_HILLS",
+    "end_node": "NODE_CENTURY_CITY",
+    "base_lanes": 3
+  },
+  {
+    "road_id": "WLS_BH_MW",
+    "road_name": "Wilshire Blvd (Beverly Hills to Mid-Wilshire)",
+    "road_type": "arterial",
+    "length": 4.73,
+    "geometry": [
+      [
+        -118.4004,
+        34.0736
+      ],
+      [
+        -118.38839,
+        34.07211
+      ],
+      [
+        -118.3792,
+        34.0698
+      ],
+      [
+        -118.37001,
+        34.06631
+      ],
+      [
+        -118.358,
+        34.062
+      ]
+    ],
+    "max_speed": 60.0,
+    "start_node": "NODE_BEVERLY_HILLS",
+    "end_node": "NODE_MID_WILSHIRE",
+    "base_lanes": 3
+  },
+  {
+    "road_id": "WLS_MW_BH",
+    "road_name": "Wilshire Blvd (Mid-Wilshire to Beverly Hills)",
+    "road_type": "arterial",
+    "length": 4.73,
+    "geometry": [
+      [
+        -118.358,
+        34.062
+      ],
+      [
+        -118.36719,
+        34.06631
+      ],
+      [
+        -118.3792,
+        34.0698
+      ],
+      [
+        -118.39121,
+        34.07211
+      ],
+      [
+        -118.4004,
+        34.0736
+      ]
+    ],
+    "max_speed": 60.0,
+    "start_node": "NODE_MID_WILSHIRE",
+    "end_node": "NODE_BEVERLY_HILLS",
+    "base_lanes": 3
+  },
+  {
+    "road_id": "WLS_MW_DTLA",
+    "road_name": "Wilshire Blvd (Mid-Wilshire to Downtown LA)",
+    "road_type": "arterial",
+    "length": 11.38,
+    "geometry": [
+      [
+        -118.358,
+        34.062
+      ],
+      [
+        -118.33004,
+        34.06011
+      ],
+      [
+        -118.3049,
+        34.0574
+      ],
+      [
+        -118.27976,
+        34.05351
+      ],
+      [
+        -118.2518,
+        34.0488
+      ]
+    ],
+    "max_speed": 60.0,
+    "start_node": "NODE_MID_WILSHIRE",
+    "end_node": "NODE_DOWNTOWN_LA",
+    "base_lanes": 3
+  },
+  {
+    "road_id": "WLS_DTLA_MW",
+    "road_name": "Wilshire Blvd (Downtown LA to Mid-Wilshire)",
+    "road_type": "arterial",
+    "length": 11.38,
+    "geometry": [
+      [
+        -118.2518,
+        34.0488
+      ],
+      [
+        -118.27694,
+        34.05351
+      ],
+      [
+        -118.3049,
+        34.0574
+      ],
+      [
+        -118.33286,
+        34.06011
+      ],
+      [
+        -118.358,
+        34.062
+      ]
+    ],
+    "max_speed": 60.0,
+    "start_node": "NODE_DOWNTOWN_LA",
+    "end_node": "NODE_MID_WILSHIRE",
+    "base_lanes": 3
+  },
+  {
+    "road_id": "SST_HW_SL",
+    "road_name": "Sunset Blvd (Hollywood to Silver Lake)",
+    "road_type": "arterial",
+    "length": 7.79,
+    "geometry": [
+      [
+        -118.3415,
+        34.1016
+      ],
+      [
+        -118.32226,
+        34.09924
+      ],
+      [
+        -118.30585,
+        34.09605
+      ],
+      [
+        -118.28944,
+        34.09169
+      ],
+      [
+        -118.2702,
+        34.0865
+      ]
+    ],
+    "max_speed": 55.0,
+    "start_node": "NODE_HOLLYWOOD",
+    "end_node": "NODE_SILVER_LAKE",
+    "base_lanes": 2
+  },
+  {
+    "road_id": "SST_SL_HW",
+    "road_name": "Sunset Blvd (Silver Lake to Hollywood)",
+    "road_type": "arterial",
+    "length": 7.79,
+    "geometry": [
+      [
+        -118.2702,
+        34.0865
+      ],
+      [
+        -118.28661,
+        34.09169
+      ],
+      [
+        -118.30585,
+        34.09605
+      ],
+      [
+        -118.32509,
+        34.09924
+      ],
+      [
+        -118.3415,
+        34.1016
+      ]
+    ],
+    "max_speed": 55.0,
+    "start_node": "NODE_SILVER_LAKE",
+    "end_node": "NODE_HOLLYWOOD",
+    "base_lanes": 2
+  },
+  {
+    "road_id": "SST_SL_DTLA",
+    "road_name": "Sunset Blvd (Silver Lake to Downtown LA)",
+    "road_type": "secondary",
+    "length": 5.2,
+    "geometry": [
+      [
+        -118.2702,
+        34.0865
+      ],
+      [
+        -118.26419,
+        34.07849
+      ],
+      [
+        -118.261,
+        34.06965
+      ],
+      [
+        -118.25781,
+        34.05964
+      ],
+      [
+        -118.2518,
+        34.0488
+      ]
+    ],
+    "max_speed": 50.0,
+    "start_node": "NODE_SILVER_LAKE",
+    "end_node": "NODE_DOWNTOWN_LA",
+    "base_lanes": 2
+  },
+  {
+    "road_id": "SST_DTLA_SL",
+    "road_name": "Sunset Blvd (Downtown LA to Silver Lake)",
+    "road_type": "secondary",
+    "length": 5.2,
+    "geometry": [
+      [
+        -118.2518,
+        34.0488
+      ],
+      [
+        -118.25499,
+        34.05964
+      ],
+      [
+        -118.261,
+        34.06965
+      ],
+      [
+        -118.26701,
+        34.07849
+      ],
+      [
+        -118.2702,
+        34.0865
+      ]
+    ],
+    "max_speed": 50.0,
+    "start_node": "NODE_DOWNTOWN_LA",
+    "end_node": "NODE_SILVER_LAKE",
+    "base_lanes": 2
+  },
+  {
+    "road_id": "US101_HW_DTLA",
+    "road_name": "US-101 S (Hollywood to Downtown LA)",
+    "road_type": "highway",
+    "length": 11.66,
+    "geometry": [
+      [
+        -118.3415,
+        34.1016
+      ],
+      [
+        -118.31766,
+        34.08981
+      ],
+      [
+        -118.29665,
+        34.0772
+      ],
+      [
+        -118.27564,
+        34.06341
+      ],
+      [
+        -118.2518,
+        34.0488
+      ]
+    ],
+    "max_speed": 100.0,
+    "start_node": "NODE_HOLLYWOOD",
+    "end_node": "NODE_DOWNTOWN_LA",
+    "base_lanes": 4
+  },
+  {
+    "road_id": "US101_DTLA_HW",
+    "road_name": "US-101 N (Downtown LA to Hollywood)",
+    "road_type": "highway",
+    "length": 11.66,
+    "geometry": [
+      [
+        -118.2518,
+        34.0488
+      ],
+      [
+        -118.27281,
+        34.06341
+      ],
+      [
+        -118.29665,
+        34.0772
+      ],
+      [
+        -118.32049,
+        34.08981
+      ],
+      [
+        -118.3415,
+        34.1016
+      ]
+    ],
+    "max_speed": 100.0,
+    "start_node": "NODE_DOWNTOWN_LA",
+    "end_node": "NODE_HOLLYWOOD",
+    "base_lanes": 4
+  },
+  {
+    "road_id": "I110_DTLA_USC",
+    "road_name": "I-110 S (Downtown LA to USC)",
+    "road_type": "highway",
+    "length": 5.32,
+    "geometry": [
+      [
+        -118.2518,
+        34.0488
+      ],
+      [
+        -118.25881,
+        34.04251
+      ],
+      [
+        -118.26865,
+        34.0354
+      ],
+      [
+        -118.27849,
+        34.02711
+      ],
+      [
+        -118.2855,
+        34.018
+      ]
+    ],
+    "max_speed": 100.0,
+    "start_node": "NODE_DOWNTOWN_LA",
+    "end_node": "NODE_USC_CAMPUS",
+    "base_lanes": 4
+  },
+  {
+    "road_id": "I110_USC_DTLA",
+    "road_name": "I-110 N (USC to Downtown LA)",
+    "road_type": "highway",
+    "length": 5.32,
+    "geometry": [
+      [
+        -118.2855,
+        34.018
+      ],
+      [
+        -118.27566,
+        34.02711
+      ],
+      [
+        -118.26865,
+        34.0354
+      ],
+      [
+        -118.26164,
+        34.04251
+      ],
+      [
+        -118.2518,
+        34.0488
+      ]
+    ],
+    "max_speed": 100.0,
+    "start_node": "NODE_USC_CAMPUS",
+    "end_node": "NODE_DOWNTOWN_LA",
+    "base_lanes": 4
+  },
+  {
+    "road_id": "EXP_CC_USC",
+    "road_name": "Exposition Blvd (Culver City to USC)",
+    "road_type": "arterial",
+    "length": 11.81,
+    "geometry": [
+      [
+        -118.3965,
+        34.0259
+      ],
+      [
+        -118.36734,
+        34.02534
+      ],
+      [
+        -118.341,
+        34.02395
+      ],
+      [
+        -118.31466,
+        34.02139
+      ],
+      [
+        -118.2855,
+        34.018
+      ]
+    ],
+    "max_speed": 60.0,
+    "start_node": "NODE_CULVER_CITY",
+    "end_node": "NODE_USC_CAMPUS",
+    "base_lanes": 2
+  },
+  {
+    "road_id": "EXP_USC_CC",
+    "road_name": "Exposition Blvd (USC to Culver City)",
+    "road_type": "arterial",
+    "length": 11.81,
+    "geometry": [
+      [
+        -118.2855,
+        34.018
+      ],
+      [
+        -118.31184,
+        34.02139
+      ],
+      [
+        -118.341,
+        34.02395
+      ],
+      [
+        -118.37016,
+        34.02534
+      ],
+      [
+        -118.3965,
+        34.0259
+      ]
+    ],
+    "max_speed": 60.0,
+    "start_node": "NODE_USC_CAMPUS",
+    "end_node": "NODE_CULVER_CITY",
+    "base_lanes": 2
+  },
+  {
+    "road_id": "CNV_LAX_ING",
+    "road_name": "Century Blvd (LAX to Inglewood)",
+    "road_type": "arterial",
+    "length": 6.67,
+    "geometry": [
+      [
+        -118.4055,
+        33.9535
+      ],
+      [
+        -118.38844,
+        33.95609
+      ],
+      [
+        -118.3742,
+        33.95785
+      ],
+      [
+        -118.35996,
+        33.95844
+      ],
+      [
+        -118.3429,
+        33.9582
+      ]
+    ],
+    "max_speed": 60.0,
+    "start_node": "NODE_LAX_AIRPORT",
+    "end_node": "NODE_INGLEWOOD",
+    "base_lanes": 3
+  },
+  {
+    "road_id": "CNV_ING_LAX",
+    "road_name": "Century Blvd (Inglewood to LAX)",
+    "road_type": "arterial",
+    "length": 6.67,
+    "geometry": [
+      [
+        -118.3429,
+        33.9582
+      ],
+      [
+        -118.35714,
+        33.95844
+      ],
+      [
+        -118.3742,
+        33.95785
+      ],
+      [
+        -118.39126,
+        33.95609
+      ],
+      [
+        -118.4055,
+        33.9535
+      ]
+    ],
+    "max_speed": 60.0,
+    "start_node": "NODE_INGLEWOOD",
+    "end_node": "NODE_LAX_AIRPORT",
+    "base_lanes": 3
+  },
+  {
+    "road_id": "FIG_ING_USC",
+    "road_name": "Figueroa St (Inglewood to USC)",
+    "road_type": "secondary",
+    "length": 9.77,
+    "geometry": [
+      [
+        -118.3429,
+        33.9582
+      ],
+      [
+        -118.32714,
+        33.97456
+      ],
+      [
+        -118.3142,
+        33.9901
+      ],
+      [
+        -118.30126,
+        34.00446
+      ],
+      [
+        -118.2855,
+        34.018
+      ]
+    ],
+    "max_speed": 50.0,
+    "start_node": "NODE_INGLEWOOD",
+    "end_node": "NODE_USC_CAMPUS",
+    "base_lanes": 2
+  },
+  {
+    "road_id": "FIG_USC_ING",
+    "road_name": "Figueroa St (USC to Inglewood)",
+    "road_type": "secondary",
+    "length": 9.77,
+    "geometry": [
+      [
+        -118.2855,
+        34.018
+      ],
+      [
+        -118.29844,
+        34.00446
+      ],
+      [
+        -118.3142,
+        33.9901
+      ],
+      [
+        -118.32996,
+        33.97456
+      ],
+      [
+        -118.3429,
+        33.9582
+      ]
+    ],
+    "max_speed": 50.0,
+    "start_node": "NODE_USC_CAMPUS",
+    "end_node": "NODE_INGLEWOOD",
+    "base_lanes": 2
+  },
+  {
+    "road_id": "SR2_GLN_SL",
+    "road_name": "Glendale Fwy (Glendale to Silver Lake)",
+    "road_type": "highway",
+    "length": 4.64,
+    "geometry": [
+      [
+        -118.255,
+        34.1205
+      ],
+      [
+        -118.25739,
+        34.11341
+      ],
+      [
+        -118.2626,
+        34.1055
+      ],
+      [
+        -118.26781,
+        34.09641
+      ],
+      [
+        -118.2702,
+        34.0865
+      ]
+    ],
+    "max_speed": 95.0,
+    "start_node": "NODE_GLENDALE",
+    "end_node": "NODE_SILVER_LAKE",
+    "base_lanes": 3
+  },
+  {
+    "road_id": "SR2_SL_GLN",
+    "road_name": "Glendale Fwy (Silver Lake to Glendale)",
+    "road_type": "highway",
+    "length": 4.64,
+    "geometry": [
+      [
+        -118.2702,
+        34.0865
+      ],
+      [
+        -118.26499,
+        34.09641
+      ],
+      [
+        -118.2626,
+        34.1055
+      ],
+      [
+        -118.26021,
+        34.11341
+      ],
+      [
+        -118.255,
+        34.1205
+      ]
+    ],
+    "max_speed": 95.0,
+    "start_node": "NODE_SILVER_LAKE",
+    "end_node": "NODE_GLENDALE",
+    "base_lanes": 3
+  },
+  {
+    "road_id": "SR110_PAS_DTLA",
+    "road_name": "Arroyo Seco Pkwy (Pasadena to Downtown LA)",
+    "road_type": "highway",
+    "length": 17.01,
+    "geometry": [
+      [
+        -118.1445,
+        34.1478
+      ],
+      [
+        -118.16991,
+        34.12446
+      ],
+      [
+        -118.19815,
+        34.1003
+      ],
+      [
+        -118.22639,
+        34.07496
+      ],
+      [
+        -118.2518,
+        34.0488
+      ]
+    ],
+    "max_speed": 90.0,
+    "start_node": "NODE_PASADENA",
+    "end_node": "NODE_DOWNTOWN_LA",
+    "base_lanes": 3
+  },
+  {
+    "road_id": "SR110_DTLA_PAS",
+    "road_name": "Arroyo Seco Pkwy (Downtown LA to Pasadena)",
+    "road_type": "highway",
+    "length": 17.01,
+    "geometry": [
+      [
+        -118.2518,
+        34.0488
+      ],
+      [
+        -118.22356,
+        34.07496
+      ],
+      [
+        -118.19815,
+        34.1003
+      ],
+      [
+        -118.17274,
+        34.12446
+      ],
+      [
+        -118.1445,
+        34.1478
+      ]
+    ],
+    "max_speed": 90.0,
+    "start_node": "NODE_DOWNTOWN_LA",
+    "end_node": "NODE_PASADENA",
+    "base_lanes": 3
+  },
+  {
+    "road_id": "I5_CN_DTLA",
+    "road_name": "I-5 S (Chinatown to Downtown LA)",
+    "road_type": "highway",
+    "length": 2.4,
+    "geometry": [
+      [
+        -118.237,
+        34.063
+      ],
+      [
+        -118.23929,
+        34.06086
+      ],
+      [
+        -118.2444,
+        34.0579
+      ],
+      [
+        -118.24951,
+        34.05376
+      ],
+      [
+        -118.2518,
+        34.0488
+      ]
+    ],
+    "max_speed": 105.0,
+    "start_node": "NODE_CHINATOWN",
+    "end_node": "NODE_DOWNTOWN_LA",
+    "base_lanes": 4
+  },
+  {
+    "road_id": "I5_DTLA_CN",
+    "road_name": "I-5 N (Downtown LA to Chinatown)",
+    "road_type": "highway",
+    "length": 2.4,
+    "geometry": [
+      [
+        -118.2518,
+        34.0488
+      ],
+      [
+        -118.24669,
+        34.05376
+      ],
+      [
+        -118.2444,
+        34.0579
+      ],
+      [
+        -118.24211,
+        34.06086
+      ],
+      [
+        -118.237,
+        34.063
+      ]
+    ],
+    "max_speed": 105.0,
+    "start_node": "NODE_DOWNTOWN_LA",
+    "end_node": "NODE_CHINATOWN",
+    "base_lanes": 4
+  },
+  {
+    "road_id": "I10_DTLA_ELA",
+    "road_name": "I-10 E (Downtown LA to East LA)",
+    "road_type": "highway",
+    "length": 8.4,
+    "geometry": [
+      [
+        -118.2518,
+        34.0488
+      ],
+      [
+        -118.23119,
+        34.04614
+      ],
+      [
+        -118.2134,
+        34.04265
+      ],
+      [
+        -118.19561,
+        34.03799
+      ],
+      [
+        -118.175,
+        34.0325
+      ]
+    ],
+    "max_speed": 105.0,
+    "start_node": "NODE_DOWNTOWN_LA",
+    "end_node": "NODE_EAST_LA",
+    "base_lanes": 4
+  },
+  {
+    "road_id": "I10_ELA_DTLA",
+    "road_name": "I-10 W (East LA to Downtown LA)",
+    "road_type": "highway",
+    "length": 8.4,
+    "geometry": [
+      [
+        -118.175,
+        34.0325
+      ],
+      [
+        -118.19279,
+        34.03799
+      ],
+      [
+        -118.2134,
+        34.04265
+      ],
+      [
+        -118.23401,
+        34.04614
+      ],
+      [
+        -118.2518,
+        34.0488
+      ]
+    ],
+    "max_speed": 105.0,
+    "start_node": "NODE_EAST_LA",
+    "end_node": "NODE_DOWNTOWN_LA",
+    "base_lanes": 4
+  },
+  {
+    "road_id": "RES_SL_CN",
+    "road_name": "Reservoir St (Silver Lake to Chinatown)",
+    "road_type": "residential",
+    "length": 4.63,
+    "geometry": [
+      [
+        -118.2702,
+        34.0865
+      ],
+      [
+        -118.26049,
+        34.08204
+      ],
+      [
+        -118.2536,
+        34.07675
+      ],
+      [
+        -118.24671,
+        34.07029
+      ],
+      [
+        -118.237,
+        34.063
+      ]
+    ],
+    "max_speed": 40.0,
+    "start_node": "NODE_SILVER_LAKE",
+    "end_node": "NODE_CHINATOWN",
+    "base_lanes": 1
+  },
+  {
+    "road_id": "RES_CN_SL",
+    "road_name": "Reservoir St (Chinatown to Silver Lake)",
+    "road_type": "residential",
+    "length": 4.63,
+    "geometry": [
+      [
+        -118.237,
+        34.063
+      ],
+      [
+        -118.24389,
+        34.07029
+      ],
+      [
+        -118.2536,
+        34.07675
+      ],
+      [
+        -118.26331,
+        34.08204
+      ],
+      [
+        -118.2702,
+        34.0865
+      ]
+    ],
+    "max_speed": 40.0,
+    "start_node": "NODE_CHINATOWN",
+    "end_node": "NODE_SILVER_LAKE",
+    "base_lanes": 1
+  }
+]

@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgis/postgis:16-3.4
+    container_name: traffic_postgis
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-traffic_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-traffic_secure_pass_2026}
+      POSTGRES_DB: ${POSTGRES_DB:-traffic_db}
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U traffic_user -d traffic_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.backend
+    container_name: traffic_backend
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-traffic_user}:${POSTGRES_PASSWORD:-traffic_secure_pass_2026}@db:5432/${POSTGRES_DB:-traffic_db}
+      SECRET_KEY: ${SECRET_KEY:-smart_traffic_ai_super_secret_jwt_key_2026}
+      MODEL_DIR: /app/ml/models
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - ./ml/models:/app/ml/models
+      - ./ml/data:/app/ml/data
+
+  frontend:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.frontend
+    container_name: traffic_frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+
+volumes:
+  pgdata:
