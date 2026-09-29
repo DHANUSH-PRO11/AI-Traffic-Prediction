@@ -1,0 +1,28 @@
+{
+  "accuracy": 0.9733,
+  "total_samples": 3000,
+  "feature_importances": {
+    "hour": 0.1714,
+    "day": 0.0508,
+    "festival": 0.0659,
+    "rainfall": 0.0373,
+    "temperature": 0.0309,
+    "road_type": 0.0701,
+    "vehicle_count": 0.5736
+  },
+  "class_distribution": {
+    "Medium": 1149,
+    "Heavy": 1120,
+    "Low": 547,
+    "Very Heavy": 184
+  },
+  "feature_names": [
+    "hour",
+    "day",
+    "festival",
+    "rainfall",
+    "temperature",
+    "road_type",
+    "vehicle_count"
+  ]
+}

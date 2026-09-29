@@ -1,0 +1,58 @@
+[
+  {
+    "feature_type": "fuel_stations",
+    "name": "Indian Oil Auto Care Anna Salai",
+    "city": "Chennai",
+    "lat": 13.055,
+    "lon": 80.247,
+    "osm_tag": "amenity=fuel"
+  },
+  {
+    "feature_type": "fuel_stations",
+    "name": "HP Auto Fuel Hub Guindy",
+    "city": "Chennai",
+    "lat": 13.01,
+    "lon": 80.212,
+    "osm_tag": "amenity=fuel"
+  },
+  {
+    "feature_type": "fuel_stations",
+    "name": "Bharat Petroleum Express Avinashi Road",
+    "city": "Coimbatore",
+    "lat": 11.025,
+    "lon": 77.001,
+    "osm_tag": "amenity=fuel"
+  },
+  {
+    "feature_type": "fuel_stations",
+    "name": "Shell Petrol Station Trichy Road",
+    "city": "Coimbatore",
+    "lat": 11.002,
+    "lon": 76.975,
+    "osm_tag": "amenity=fuel"
+  },
+  {
+    "feature_type": "fuel_stations",
+    "name": "Indian Oil Bypass Fuel Plaza",
+    "city": "Madurai",
+    "lat": 9.905,
+    "lon": 78.102,
+    "osm_tag": "amenity=fuel"
+  },
+  {
+    "feature_type": "fuel_stations",
+    "name": "Shell Fuel Station Central Junction",
+    "city": "Trichy",
+    "lat": 10.805,
+    "lon": 78.685,
+    "osm_tag": "amenity=fuel"
+  },
+  {
+    "feature_type": "fuel_stations",
+    "name": "HP Fuel Station NH44 Highway Bypass",
+    "city": "Salem",
+    "lat": 11.652,
+    "lon": 78.121,
+    "osm_tag": "amenity=fuel"
+  }
+]

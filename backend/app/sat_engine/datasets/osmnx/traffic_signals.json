@@ -1,0 +1,98 @@
+[
+  {
+    "feature_type": "traffic_signals",
+    "name": "Anna Salai Junction Signal",
+    "city": "Chennai",
+    "lat": 13.0604,
+    "lon": 80.2496,
+    "osm_tag": "highway=traffic_signals"
+  },
+  {
+    "feature_type": "traffic_signals",
+    "name": "Kathipara Cloverleaf Signal",
+    "city": "Chennai",
+    "lat": 13.0067,
+    "lon": 80.202,
+    "osm_tag": "highway=traffic_signals"
+  },
+  {
+    "feature_type": "traffic_signals",
+    "name": "T. Nagar Bus Stand Junction Signal",
+    "city": "Chennai",
+    "lat": 13.0418,
+    "lon": 80.2341,
+    "osm_tag": "highway=traffic_signals"
+  },
+  {
+    "feature_type": "traffic_signals",
+    "name": "Koyambedu CMBT Signal",
+    "city": "Chennai",
+    "lat": 13.0694,
+    "lon": 80.1948,
+    "osm_tag": "highway=traffic_signals"
+  },
+  {
+    "feature_type": "traffic_signals",
+    "name": "Gandhipuram Central Signal",
+    "city": "Coimbatore",
+    "lat": 11.0168,
+    "lon": 76.9658,
+    "osm_tag": "highway=traffic_signals"
+  },
+  {
+    "feature_type": "traffic_signals",
+    "name": "Lakshmi Mills Signal",
+    "city": "Coimbatore",
+    "lat": 11.0112,
+    "lon": 76.9821,
+    "osm_tag": "highway=traffic_signals"
+  },
+  {
+    "feature_type": "traffic_signals",
+    "name": "Hope College Signal",
+    "city": "Coimbatore",
+    "lat": 11.026,
+    "lon": 77.012,
+    "osm_tag": "highway=traffic_signals"
+  },
+  {
+    "feature_type": "traffic_signals",
+    "name": "Periyar Bus Stand Signal",
+    "city": "Madurai",
+    "lat": 9.9174,
+    "lon": 78.1143,
+    "osm_tag": "highway=traffic_signals"
+  },
+  {
+    "feature_type": "traffic_signals",
+    "name": "Goripalayam Junction Signal",
+    "city": "Madurai",
+    "lat": 9.9328,
+    "lon": 78.1287,
+    "osm_tag": "highway=traffic_signals"
+  },
+  {
+    "feature_type": "traffic_signals",
+    "name": "Chatram Bus Stand Signal",
+    "city": "Trichy",
+    "lat": 10.8291,
+    "lon": 78.6922,
+    "osm_tag": "highway=traffic_signals"
+  },
+  {
+    "feature_type": "traffic_signals",
+    "name": "Five Roads Junction Signal",
+    "city": "Salem",
+    "lat": 11.6663,
+    "lon": 78.1345,
+    "osm_tag": "highway=traffic_signals"
+  },
+  {
+    "feature_type": "traffic_signals",
+    "name": "Green Circle Signal",
+    "city": "Vellore",
+    "lat": 12.9234,
+    "lon": 79.1356,
+    "osm_tag": "highway=traffic_signals"
+  }
+]

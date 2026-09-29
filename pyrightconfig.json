@@ -5,6 +5,18 @@
     "tests"
   ],
   "extraPaths": [
-    "backend"
+    "backend",
+    "backend/app",
+    "backend/app/sat_engine"
+  ],
+  "executionEnvironments": [
+    {
+      "root": ".",
+      "extraPaths": [
+        "backend",
+        "backend/app",
+        "backend/app/sat_engine"
+      ]
+    }
   ]
 }

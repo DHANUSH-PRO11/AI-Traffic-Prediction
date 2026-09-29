@@ -28,20 +28,20 @@ def register(user_in: UserCreate, db: Session = Depends(get_db)):
         email=user_in.email,
         password_hash=hash_pw(user_in.password),
         is_admin=False,
-        created_at=datetime.datetime.utcnow()
+        created_at=datetime.datetime.now(datetime.timezone.utc)
     )
     db.add(new_user)
     db.commit()
     db.refresh(new_user)
 
-    token = create_fake_jwt(new_user.email)
+    token = create_fake_jwt(str(new_user.email))
     return Token(access_token=token, token_type="bearer", user=UserResponse.from_orm(new_user))
 
 @router.post("/login", response_model=Token)
 def login(creds: UserLogin, db: Session = Depends(get_db)):
     user = db.query(User).filter(User.email == creds.email).first()
-    if not user or user.password_hash != hash_pw(creds.password):
+    if not user or str(user.password_hash) != hash_pw(creds.password):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid email or password.")
     
-    token = create_fake_jwt(user.email)
+    token = create_fake_jwt(str(user.email))
     return Token(access_token=token, token_type="bearer", user=UserResponse.from_orm(user))

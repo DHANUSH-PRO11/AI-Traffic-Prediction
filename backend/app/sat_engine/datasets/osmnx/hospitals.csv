@@ -1,0 +1,6 @@
+feature_type,name,city,lat,lon,osm_tag
+hospitals,Rajiv Gandhi Government General Hospital,Chennai,13.0815,80.2785,amenity=hospital
+hospitals,Apollo Hospitals Greams Road,Chennai,13.0608,80.252,amenity=hospital
+hospitals,KMCH Kovai Medical Center,Coimbatore,11.042,77.038,amenity=hospital
+hospitals,Madurai Medical College Hospital,Madurai,9.928,78.136,amenity=hospital
+hospitals,Apollo Speciality Hospital Trichy,Trichy,10.795,78.675,amenity=hospital

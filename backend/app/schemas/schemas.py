@@ -269,3 +269,24 @@ class TrafficAnalyticsResponse(BaseModel):
     hourly_trends: List[HourlyTrafficPoint]
     busiest_roads: List[Dict[str, Any]]
     fastest_roads: List[Dict[str, Any]]
+
+
+# --- Sat Smart Traffic Schemas ---
+class RouteRequest(BaseModel):
+    source: str
+    destination: str
+    vehicle_type: Optional[str] = "car"
+
+class PredictRequest(BaseModel):
+    hour: Optional[int] = None
+    day: Optional[int] = None
+    festival: Optional[int] = 0
+    rainfall: Optional[float] = 0.0
+    temperature: Optional[float] = 30.0
+    road_type: Optional[str] = "highway"
+    vehicle_count: Optional[int] = 180
+
+class OsmndDownloadRequest(BaseModel):
+    place: Optional[str] = "Tamil Nadu, India"
+    feature_type: Optional[str] = "traffic_signals"
+    network_type: Optional[str] = "drive"

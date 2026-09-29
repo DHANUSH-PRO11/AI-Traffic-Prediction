@@ -1,0 +1,4 @@
+feature_type,name,city,lat,lon,osm_tag
+parking,Multi-Level Car Parking Chennai Airport,Chennai,12.982,80.165,amenity=parking
+parking,T. Nagar Smart Parking Complex,Chennai,13.041,80.233,amenity=parking
+parking,Gandhipuram Smart Parking Hub,Coimbatore,11.017,76.965,amenity=parking

@@ -1,0 +1,50 @@
+[
+  {
+    "feature_type": "bus_stops",
+    "name": "CMBT Koyambedu Bus Terminus",
+    "city": "Chennai",
+    "lat": 13.0694,
+    "lon": 80.1948,
+    "osm_tag": "highway=bus_stop"
+  },
+  {
+    "feature_type": "bus_stops",
+    "name": "Kilambakkam KCBT Terminus",
+    "city": "Chennai",
+    "lat": 12.835,
+    "lon": 80.062,
+    "osm_tag": "highway=bus_stop"
+  },
+  {
+    "feature_type": "bus_stops",
+    "name": "Gandhipuram Central Bus Stand",
+    "city": "Coimbatore",
+    "lat": 11.018,
+    "lon": 76.9665,
+    "osm_tag": "highway=bus_stop"
+  },
+  {
+    "feature_type": "bus_stops",
+    "name": "Mattuthavani Integrated Bus Terminus",
+    "city": "Madurai",
+    "lat": 9.949,
+    "lon": 78.156,
+    "osm_tag": "highway=bus_stop"
+  },
+  {
+    "feature_type": "bus_stops",
+    "name": "Central Bus Stand Trichy",
+    "city": "Trichy",
+    "lat": 10.8015,
+    "lon": 78.6852,
+    "osm_tag": "highway=bus_stop"
+  },
+  {
+    "feature_type": "bus_stops",
+    "name": "New Bus Stand Salem",
+    "city": "Salem",
+    "lat": 11.6685,
+    "lon": 78.138,
+    "osm_tag": "highway=bus_stop"
+  }
+]

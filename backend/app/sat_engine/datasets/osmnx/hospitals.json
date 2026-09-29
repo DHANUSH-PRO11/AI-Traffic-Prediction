@@ -1,0 +1,42 @@
+[
+  {
+    "feature_type": "hospitals",
+    "name": "Rajiv Gandhi Government General Hospital",
+    "city": "Chennai",
+    "lat": 13.0815,
+    "lon": 80.2785,
+    "osm_tag": "amenity=hospital"
+  },
+  {
+    "feature_type": "hospitals",
+    "name": "Apollo Hospitals Greams Road",
+    "city": "Chennai",
+    "lat": 13.0608,
+    "lon": 80.252,
+    "osm_tag": "amenity=hospital"
+  },
+  {
+    "feature_type": "hospitals",
+    "name": "KMCH Kovai Medical Center",
+    "city": "Coimbatore",
+    "lat": 11.042,
+    "lon": 77.038,
+    "osm_tag": "amenity=hospital"
+  },
+  {
+    "feature_type": "hospitals",
+    "name": "Madurai Medical College Hospital",
+    "city": "Madurai",
+    "lat": 9.928,
+    "lon": 78.136,
+    "osm_tag": "amenity=hospital"
+  },
+  {
+    "feature_type": "hospitals",
+    "name": "Apollo Speciality Hospital Trichy",
+    "city": "Trichy",
+    "lat": 10.795,
+    "lon": 78.675,
+    "osm_tag": "amenity=hospital"
+  }
+]

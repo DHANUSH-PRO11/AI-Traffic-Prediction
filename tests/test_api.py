@@ -32,9 +32,12 @@ class TestAPIEndpoints(unittest.TestCase):
         self.assertGreater(len(data["segments"]), 0)
 
     def test_route_calculation(self):
+        from app.services.traffic_service import traffic_service
+        src = "NODE_CHENNAI" if "NODE_CHENNAI" in traffic_service.nodes_dict else list(traffic_service.nodes_dict.keys())[0]
+        dst = "NODE_COIMBATORE" if "NODE_COIMBATORE" in traffic_service.nodes_dict else list(traffic_service.nodes_dict.keys())[1]
         payload = {
-            "source_node": "NODE_SANTA_MONICA",
-            "destination_node": "NODE_DOWNTOWN_LA",
+            "source_node": src,
+            "destination_node": dst,
             "algorithm": "A*",
             "weather_condition": "Clear"
         }
@@ -45,12 +48,14 @@ class TestAPIEndpoints(unittest.TestCase):
         primary = data["recommended_route"]
         self.assertGreater(primary["total_distance_km"], 0.0)
         self.assertGreater(primary["total_travel_time_min"], 0.0)
-        self.assertEqual(primary["path_nodes"][0], "NODE_SANTA_MONICA")
-        self.assertEqual(primary["path_nodes"][-1], "NODE_DOWNTOWN_LA")
+        self.assertEqual(primary["path_nodes"][0], src)
+        self.assertEqual(primary["path_nodes"][-1], dst)
 
     def test_traffic_predict(self):
+        from app.services.traffic_service import traffic_service
+        road_id = list(traffic_service.segments_dict.keys())[0]
         payload = {
-            "road_id": "I10_SM_CC",
+            "road_id": road_id,
             "weather": "Clear",
             "time_str": "08:30",
             "temperature": 24.0,

@@ -22,7 +22,7 @@ def record_user_trip(trip_in: UserTripCreate, db: Session = Depends(get_db)):
         actual_time=trip_in.actual_time or round(trip_in.predicted_time * 1.05, 1),
         distance=trip_in.distance,
         algorithm=trip_in.algorithm or "A*",
-        created_at=datetime.datetime.utcnow()
+        created_at=datetime.datetime.now(datetime.timezone.utc)
     )
     db.add(trip)
     db.commit()

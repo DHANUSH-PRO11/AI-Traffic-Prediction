@@ -1,0 +1,7 @@
+feature_type,name,city,lat,lon,osm_tag
+bus_stops,CMBT Koyambedu Bus Terminus,Chennai,13.0694,80.1948,highway=bus_stop
+bus_stops,Kilambakkam KCBT Terminus,Chennai,12.835,80.062,highway=bus_stop
+bus_stops,Gandhipuram Central Bus Stand,Coimbatore,11.018,76.9665,highway=bus_stop
+bus_stops,Mattuthavani Integrated Bus Terminus,Madurai,9.949,78.156,highway=bus_stop
+bus_stops,Central Bus Stand Trichy,Trichy,10.8015,78.6852,highway=bus_stop
+bus_stops,New Bus Stand Salem,Salem,11.6685,78.138,highway=bus_stop

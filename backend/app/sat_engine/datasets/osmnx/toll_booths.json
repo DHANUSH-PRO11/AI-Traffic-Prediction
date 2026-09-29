@@ -1,0 +1,50 @@
+[
+  {
+    "feature_type": "toll_booths",
+    "name": "Perungudi Toll Plaza (OMR)",
+    "city": "Chennai",
+    "lat": 12.9642,
+    "lon": 80.2447,
+    "osm_tag": "barrier=toll_booth"
+  },
+  {
+    "feature_type": "toll_booths",
+    "name": "Paranur Toll Plaza (GST Road)",
+    "city": "Chengalpattu",
+    "lat": 12.7112,
+    "lon": 79.9912,
+    "osm_tag": "barrier=toll_booth"
+  },
+  {
+    "feature_type": "toll_booths",
+    "name": "Sriperumbudur Toll Plaza (NH48)",
+    "city": "Kanchipuram",
+    "lat": 12.9856,
+    "lon": 79.954,
+    "osm_tag": "barrier=toll_booth"
+  },
+  {
+    "feature_type": "toll_booths",
+    "name": "Krishnagiri Toll Plaza (NH44)",
+    "city": "Krishnagiri",
+    "lat": 12.551,
+    "lon": 78.225,
+    "osm_tag": "barrier=toll_booth"
+  },
+  {
+    "feature_type": "toll_booths",
+    "name": "Samayapuram Toll Plaza (NH45)",
+    "city": "Trichy",
+    "lat": 10.912,
+    "lon": 78.741,
+    "osm_tag": "barrier=toll_booth"
+  },
+  {
+    "feature_type": "toll_booths",
+    "name": "Kaniyur Toll Plaza (NH544)",
+    "city": "Coimbatore",
+    "lat": 11.082,
+    "lon": 77.142,
+    "osm_tag": "barrier=toll_booth"
+  }
+]

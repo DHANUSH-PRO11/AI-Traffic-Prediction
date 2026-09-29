@@ -59,10 +59,10 @@ export default function Dashboard() {
   }, []);
 
   const popularRoutes = [
-    { from: 'Santa Monica Pier', to: 'Downtown LA Grand', avg_time_min: 17.0, time_saved_min: 8.5, trips: 342 },
-    { from: 'Westwood / UCLA', to: 'Century City Hub', avg_time_min: 7.2, time_saved_min: 4.1, trips: 512 },
-    { from: 'LAX Airport North', to: 'Culver City Arts', avg_time_min: 12.8, time_saved_min: 6.2, trips: 289 },
-    { from: 'Hollywood Highland', to: 'Downtown LA Grand', avg_time_min: 15.4, time_saved_min: 7.0, trips: 405 },
+    { from: 'Chennai', to: 'Coimbatore', avg_time_min: 520.0, time_saved_min: 45.0, trips: 1420 },
+    { from: 'Chennai', to: 'Salem', avg_time_min: 340.0, time_saved_min: 28.0, trips: 980 },
+    { from: 'Coimbatore', to: 'Madurai', avg_time_min: 210.0, time_saved_min: 19.5, trips: 750 },
+    { from: 'Salem', to: 'Trichy', avg_time_min: 145.0, time_saved_min: 15.0, trips: 620 },
   ];
 
   if (loading && !trafficData) {
@@ -86,7 +86,7 @@ export default function Dashboard() {
         <div>
           <div className="flex items-center gap-2 mb-1.5">
             <StatusBadge label="REAL-TIME TELEMETRY" variant="emerald" pulse={true} />
-            <span className="text-xs font-semibold text-neutral-500">METR-LA Urban Corridor Network</span>
+            <span className="text-xs font-semibold text-neutral-500">Tamil Nadu Smart Highway & OSMnx Network</span>
           </div>
           <h1 className="text-2xl lg:text-3xl font-black tracking-tight text-neutral-900 flex items-center gap-2">
             Traffic Intelligence & Route Optimization

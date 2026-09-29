@@ -1,0 +1,34 @@
+[
+  {
+    "feature_type": "speed_cameras",
+    "name": "Speed Radar - Chennai Outer Ring Road",
+    "city": "Chennai",
+    "lat": 13.025,
+    "lon": 80.175,
+    "osm_tag": "highway=speed_camera"
+  },
+  {
+    "feature_type": "speed_cameras",
+    "name": "Radar Camera NH44 Hosur Corridor",
+    "city": "Hosur",
+    "lat": 12.65,
+    "lon": 78.012,
+    "osm_tag": "highway=speed_camera"
+  },
+  {
+    "feature_type": "speed_cameras",
+    "name": "Speed Camera Avinashi Express Highway",
+    "city": "Coimbatore",
+    "lat": 11.041,
+    "lon": 77.032,
+    "osm_tag": "highway=speed_camera"
+  },
+  {
+    "feature_type": "speed_cameras",
+    "name": "Surveillance Camera Madurai Ring Road",
+    "city": "Madurai",
+    "lat": 9.892,
+    "lon": 78.145,
+    "osm_tag": "highway=speed_camera"
+  }
+]

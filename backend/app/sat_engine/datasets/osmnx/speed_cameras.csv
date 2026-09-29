@@ -1,0 +1,5 @@
+feature_type,name,city,lat,lon,osm_tag
+speed_cameras,Speed Radar - Chennai Outer Ring Road,Chennai,13.025,80.175,highway=speed_camera
+speed_cameras,Radar Camera NH44 Hosur Corridor,Hosur,12.65,78.012,highway=speed_camera
+speed_cameras,Speed Camera Avinashi Express Highway,Coimbatore,11.041,77.032,highway=speed_camera
+speed_cameras,Surveillance Camera Madurai Ring Road,Madurai,9.892,78.145,highway=speed_camera

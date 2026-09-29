@@ -1,0 +1,7 @@
+feature_type,name,city,lat,lon,osm_tag
+toll_booths,Perungudi Toll Plaza (OMR),Chennai,12.9642,80.2447,barrier=toll_booth
+toll_booths,Paranur Toll Plaza (GST Road),Chengalpattu,12.7112,79.9912,barrier=toll_booth
+toll_booths,Sriperumbudur Toll Plaza (NH48),Kanchipuram,12.9856,79.954,barrier=toll_booth
+toll_booths,Krishnagiri Toll Plaza (NH44),Krishnagiri,12.551,78.225,barrier=toll_booth
+toll_booths,Samayapuram Toll Plaza (NH45),Trichy,10.912,78.741,barrier=toll_booth
+toll_booths,Kaniyur Toll Plaza (NH544),Coimbatore,11.082,77.142,barrier=toll_booth

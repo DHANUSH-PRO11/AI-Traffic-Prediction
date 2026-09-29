@@ -1,0 +1,8 @@
+feature_type,name,city,lat,lon,osm_tag
+fuel_stations,Indian Oil Auto Care Anna Salai,Chennai,13.055,80.247,amenity=fuel
+fuel_stations,HP Auto Fuel Hub Guindy,Chennai,13.01,80.212,amenity=fuel
+fuel_stations,Bharat Petroleum Express Avinashi Road,Coimbatore,11.025,77.001,amenity=fuel
+fuel_stations,Shell Petrol Station Trichy Road,Coimbatore,11.002,76.975,amenity=fuel
+fuel_stations,Indian Oil Bypass Fuel Plaza,Madurai,9.905,78.102,amenity=fuel
+fuel_stations,Shell Fuel Station Central Junction,Trichy,10.805,78.685,amenity=fuel
+fuel_stations,HP Fuel Station NH44 Highway Bypass,Salem,11.652,78.121,amenity=fuel

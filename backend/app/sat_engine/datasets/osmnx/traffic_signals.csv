@@ -1,0 +1,13 @@
+feature_type,name,city,lat,lon,osm_tag
+traffic_signals,Anna Salai Junction Signal,Chennai,13.0604,80.2496,highway=traffic_signals
+traffic_signals,Kathipara Cloverleaf Signal,Chennai,13.0067,80.202,highway=traffic_signals
+traffic_signals,T. Nagar Bus Stand Junction Signal,Chennai,13.0418,80.2341,highway=traffic_signals
+traffic_signals,Koyambedu CMBT Signal,Chennai,13.0694,80.1948,highway=traffic_signals
+traffic_signals,Gandhipuram Central Signal,Coimbatore,11.0168,76.9658,highway=traffic_signals
+traffic_signals,Lakshmi Mills Signal,Coimbatore,11.0112,76.9821,highway=traffic_signals
+traffic_signals,Hope College Signal,Coimbatore,11.026,77.012,highway=traffic_signals
+traffic_signals,Periyar Bus Stand Signal,Madurai,9.9174,78.1143,highway=traffic_signals
+traffic_signals,Goripalayam Junction Signal,Madurai,9.9328,78.1287,highway=traffic_signals
+traffic_signals,Chatram Bus Stand Signal,Trichy,10.8291,78.6922,highway=traffic_signals
+traffic_signals,Five Roads Junction Signal,Salem,11.6663,78.1345,highway=traffic_signals
+traffic_signals,Green Circle Signal,Vellore,12.9234,79.1356,highway=traffic_signals

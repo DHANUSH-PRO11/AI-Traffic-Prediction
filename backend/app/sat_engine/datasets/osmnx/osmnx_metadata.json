@@ -1,0 +1,12 @@
+{
+  "dataset_name": "OSMnx OpenStreetMap Spatial Dataset",
+  "region": "Tamil Nadu, India",
+  "total_infrastructure_records": 43,
+  "total_road_network_nodes": 30,
+  "total_road_network_edges": 26,
+  "files_in_datasets_dir": [
+    "osmnx_traffic_infrastructure.csv",
+    "osmnx_road_network_nodes.csv",
+    "osmnx_road_network_edges.csv"
+  ]
+}

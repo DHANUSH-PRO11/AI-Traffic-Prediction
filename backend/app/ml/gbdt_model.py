@@ -30,11 +30,11 @@ class DecisionTreeNode:
 
     def to_dict(self) -> Dict[str, Any]:
         if self.is_leaf():
-            return {"value": float(self.value)}
+            return {"value": float(self.value) if self.value is not None else 0.0}
         return {
-            "feature_idx": int(self.feature_idx),
-            "threshold": float(self.threshold),
-            "impurity_reduction": float(self.impurity_reduction),
+            "feature_idx": int(self.feature_idx) if self.feature_idx is not None else 0,
+            "threshold": float(self.threshold) if self.threshold is not None else 0.0,
+            "impurity_reduction": float(self.impurity_reduction) if self.impurity_reduction is not None else 0.0,
             "left": self.left.to_dict() if self.left else None,
             "right": self.right.to_dict() if self.right else None,
         }
@@ -130,12 +130,16 @@ class RegressionTree:
         return best_feat, best_thresh, best_gain
 
     def predict(self, X: np.ndarray) -> np.ndarray:
+        if self.root is None:
+            return np.zeros(len(X))
         return np.array([self._predict_sample(sample, self.root) for sample in X])
 
-    def _predict_sample(self, sample: np.ndarray, node: DecisionTreeNode) -> float:
+    def _predict_sample(self, sample: np.ndarray, node: Optional[DecisionTreeNode]) -> float:
+        if node is None:
+            return 0.0
         if node.is_leaf():
-            return node.value
-        if sample[node.feature_idx] <= node.threshold:
+            return float(node.value) if node.value is not None else 0.0
+        if node.feature_idx is not None and node.threshold is not None and sample[node.feature_idx] <= node.threshold:
             return self._predict_sample(sample, node.left)
         return self._predict_sample(sample, node.right)
 

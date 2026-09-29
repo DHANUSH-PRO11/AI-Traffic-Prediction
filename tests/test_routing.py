@@ -40,12 +40,14 @@ class TestRoutingEngine(unittest.TestCase):
         # A -> C -> D = 8.0 + 14.0 = 22.0 min
         route = dijkstra_shortest_path(self.graph, "A", "D")
         self.assertIsNotNone(route)
+        assert route is not None
         self.assertEqual(route["path_nodes"], ["A", "B", "D"])
         self.assertAlmostEqual(route["total_travel_time_min"], 13.2, places=1)
 
     def test_astar_finds_same_optimal_route(self):
         route = astar_shortest_path(self.graph, "A", "D")
         self.assertIsNotNone(route)
+        assert route is not None
         self.assertEqual(route["path_nodes"], ["A", "B", "D"])
         self.assertAlmostEqual(route["total_travel_time_min"], 13.2, places=1)
 
@@ -62,6 +64,7 @@ class TestRoutingEngine(unittest.TestCase):
         # A -> C -> D takes 22.0 min, so optimal path changes to A -> C -> D!
         route = astar_shortest_path(self.graph, "A", "D")
         self.assertIsNotNone(route)
+        assert route is not None
         self.assertEqual(route["path_nodes"], ["A", "C", "D"])
         self.assertAlmostEqual(route["total_travel_time_min"], 22.3, places=1)
 

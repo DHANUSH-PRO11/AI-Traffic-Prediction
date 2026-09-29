@@ -2,7 +2,7 @@ import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.core.config import settings
-from app.api import auth, traffic, routes, roads, weather, accidents, trips, ml, analytics
+from app.api import auth, traffic, routes, roads, weather, accidents, trips, ml, analytics, sat_api
 from app.database.init_db import init_database
 
 app = FastAPI(
@@ -32,6 +32,9 @@ app.include_router(accidents.router, prefix=settings.API_V1_STR)
 app.include_router(trips.router, prefix=settings.API_V1_STR)
 app.include_router(ml.router, prefix=settings.API_V1_STR)
 app.include_router(analytics.router, prefix=settings.API_V1_STR)
+# Include Smart Traffic Finder (sat) features
+app.include_router(sat_api.router)
+app.include_router(sat_api.router, prefix=settings.API_V1_STR)
 
 @app.on_event("startup")
 def on_startup():

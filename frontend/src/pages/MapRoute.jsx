@@ -20,13 +20,24 @@ import {
   ArrowRight,
   Activity,
   Zap,
-  Layers
+  Layers,
+  Car,
+  Bike,
+  Bus
 } from 'lucide-react';
 import { trafficApi } from '../api/client';
 import { Button } from '../components/common/Button';
 import { TrafficBadge, StatusBadge } from '../components/common/Badge';
 import { formatSpeed, formatDistance, formatDuration } from '../utils/formatters';
 import { getTrafficColorHex } from '../utils/trafficColors';
+
+// Safe Leaflet [lat, lon] converter
+const toLatLng = (pt) => {
+  if (!pt || pt.length < 2) return [11.1271, 78.6569];
+  // If first number is > 50, it is longitude (Tamil Nadu lon is ~76-80, lat is ~8-13)
+  if (pt[0] > 50) return [pt[1], pt[0]];
+  return [pt[0], pt[1]];
+};
 
 // Custom Leaflet DivIcons in Emerald Green (#10b981) & Red (#ef4444)
 const createPinIcon = (color, label) => L.divIcon({
@@ -61,9 +72,9 @@ function MapBoundsUpdater({ geometry }) {
   const map = useMap();
   useEffect(() => {
     if (geometry && geometry.length > 0) {
-      const latlngs = geometry.map(c => [c[1], c[0]]);
+      const latlngs = geometry.map(toLatLng);
       const bounds = L.latLngBounds(latlngs);
-      map.fitBounds(bounds, { padding: [60, 60], maxZoom: 14 });
+      map.fitBounds(bounds, { padding: [50, 50], maxZoom: 14 });
     }
   }, [geometry, map]);
   return null;
@@ -73,14 +84,21 @@ export default function MapRoute() {
   const [nodes, setNodes] = useState([]);
   const [networkSegments, setNetworkSegments] = useState([]);
   const [incidents, setIncidents] = useState([]);
-  const [sourceNode, setSourceNode] = useState('NODE_SANTA_MONICA');
-  const [destNode, setDestNode] = useState('NODE_DOWNTOWN_LA');
+  const [sourceNode, setSourceNode] = useState('');
+  const [destNode, setDestNode] = useState('');
   const [algorithm, setAlgorithm] = useState('A*');
+  const [vehicleType, setVehicleType] = useState('car');
   const [weatherCondition, setWeatherCondition] = useState('Clear');
   const [loadingRoute, setLoadingRoute] = useState(false);
   const [routeResult, setRouteResult] = useState(null);
+  const [vehicleTimes, setVehicleTimes] = useState(null);
+  const [hourlyForecast, setHourlyForecast] = useState([]);
   const [tripRecordedMsg, setTripRecordedMsg] = useState('');
   const [activeTab, setActiveTab] = useState('recommended');
+
+  // OSMnx layer overlays
+  const [activeInfraLayer, setActiveInfraLayer] = useState(null);
+  const [infraFeatures, setInfraFeatures] = useState([]);
 
   useEffect(() => {
     async function loadNetwork() {
@@ -89,7 +107,26 @@ export default function MapRoute() {
           trafficApi.getNodes(),
           trafficApi.getCurrentTraffic()
         ]);
-        setNodes(nodesData || []);
+
+        const nList = nodesData || [];
+        // Deduplicate nodes by city name
+        const uniqueNodes = [];
+        const seen = new Set();
+        for (const n of nList) {
+          if (!seen.has(n.name)) {
+            seen.add(n.name);
+            uniqueNodes.push(n);
+          }
+        }
+        setNodes(uniqueNodes);
+
+        if (uniqueNodes.length >= 2) {
+          const chennai = uniqueNodes.find(n => n.name.toLowerCase() === 'chennai') || uniqueNodes[0];
+          const coimbatore = uniqueNodes.find(n => n.name.toLowerCase() === 'coimbatore') || uniqueNodes[1];
+          setSourceNode(chennai.node_id);
+          setDestNode(coimbatore.node_id);
+        }
+
         setNetworkSegments(currentTraffic.segments || []);
         setIncidents(currentTraffic.incidents || []);
       } catch (err) {
@@ -104,18 +141,52 @@ export default function MapRoute() {
     try {
       setLoadingRoute(true);
       setTripRecordedMsg('');
-      const res = await trafficApi.calculateRoute({
-        source_node: sourceNode,
-        destination_node: destNode,
-        algorithm: algorithm,
-        weather_condition: weatherCondition
-      });
+
+      const srcObj = nodes.find(n => n.node_id === sourceNode);
+      const dstObj = nodes.find(n => n.node_id === destNode);
+      const srcName = srcObj?.name || sourceNode;
+      const dstName = dstObj?.name || destNode;
+
+      // Parallel fetch from calculateRoute and direct Sat API
+      const [res, satRes] = await Promise.all([
+        trafficApi.calculateRoute({
+          source_node: sourceNode,
+          destination_node: destNode,
+          algorithm: algorithm,
+          weather_condition: weatherCondition
+        }),
+        trafficApi.calculateSatRoute({
+          source: srcName,
+          destination: dstName,
+          vehicle_type: vehicleType
+        }).catch(() => null)
+      ]);
+
       setRouteResult(res);
+      if (satRes) {
+        if (satRes.hourly_forecast) setHourlyForecast(satRes.hourly_forecast);
+        if (satRes.vehicle_times) setVehicleTimes(satRes.vehicle_times);
+      }
       setActiveTab('recommended');
     } catch (err) {
       console.error("Route calculation error:", err);
     } finally {
       setLoadingRoute(false);
+    }
+  };
+
+  const toggleInfraLayer = async (type) => {
+    if (activeInfraLayer === type) {
+      setActiveInfraLayer(null);
+      setInfraFeatures([]);
+      return;
+    }
+    setActiveInfraLayer(type);
+    try {
+      const data = await trafficApi.getOsmnxFeatures(type);
+      setInfraFeatures(data.features || []);
+    } catch (e) {
+      console.error("Failed to load OSMnx infrastructure features:", e);
     }
   };
 
@@ -159,7 +230,7 @@ export default function MapRoute() {
               </div>
               <div>
                 <h2 className="text-base font-black text-neutral-900">Dynamic Route Optimizer</h2>
-                <p className="text-xs text-neutral-500">AI-weighted real-time travel impedance</p>
+                <p className="text-xs text-neutral-500">Tamil Nadu Highway & OSMnx Network</p>
               </div>
             </div>
           </div>
@@ -170,7 +241,7 @@ export default function MapRoute() {
             <div>
               <label className="text-xs font-bold text-neutral-700 block mb-1.5 flex items-center gap-1.5">
                 <span className="w-2.5 h-2.5 rounded-full bg-emerald-600" />
-                Origin Hub
+                Origin City / Hub
               </label>
               <select
                 value={sourceNode}
@@ -187,7 +258,7 @@ export default function MapRoute() {
             <div>
               <label className="text-xs font-bold text-neutral-700 block mb-1.5 flex items-center gap-1.5">
                 <span className="w-2.5 h-2.5 rounded-full bg-red-600" />
-                Destination Hub
+                Destination City / Hub
               </label>
               <select
                 value={destNode}
@@ -198,6 +269,39 @@ export default function MapRoute() {
                   <option key={n.node_id} value={n.node_id}>{n.name}</option>
                 ))}
               </select>
+            </div>
+
+            {/* Vehicle Mode Selector */}
+            <div>
+              <label className="text-xs font-bold text-neutral-700 block mb-1.5 flex items-center justify-between">
+                <span>Vehicle Profile</span>
+                {vehicleTimes && (
+                  <span className="text-[10px] text-emerald-700 font-bold font-mono">
+                    Car: {vehicleTimes.car}m • Bike: {vehicleTimes.bike}m • Bus: {vehicleTimes.bus}m
+                  </span>
+                )}
+              </label>
+              <div className="grid grid-cols-3 gap-2">
+                {[
+                  { id: 'car', label: 'Car / Taxi', icon: '🚗' },
+                  { id: 'bike', label: 'Bike / Moto', icon: '🏍️' },
+                  { id: 'bus', label: 'Bus / Public', icon: '🚌' }
+                ].map(v => (
+                  <button
+                    key={v.id}
+                    type="button"
+                    onClick={() => setVehicleType(v.id)}
+                    className={`py-1.5 px-2 text-xs font-bold rounded-xl border flex flex-col items-center gap-1 transition-all cursor-pointer ${
+                      vehicleType === v.id
+                        ? 'bg-emerald-50 border-emerald-500 text-emerald-800 ring-2 ring-emerald-500/20 shadow-xs'
+                        : 'bg-white border-neutral-200 text-neutral-600 hover:border-neutral-300'
+                    }`}
+                  >
+                    <span className="text-base">{v.icon}</span>
+                    <span className="text-[10px]">{v.label}</span>
+                  </button>
+                ))}
+              </div>
             </div>
 
             {/* Algorithm & Weather Row */}
@@ -229,6 +333,40 @@ export default function MapRoute() {
               </div>
             </div>
 
+            {/* OSMnx Infrastructure Features Toggle */}
+            <div className="pt-2 border-t border-neutral-100">
+              <label className="text-[11px] font-bold text-neutral-700 block mb-1.5 flex items-center justify-between">
+                <span>OSM Infrastructure Overlays</span>
+                {infraFeatures.length > 0 && (
+                  <span className="text-[10px] font-mono font-bold text-emerald-600">
+                    {infraFeatures.length} visible
+                  </span>
+                )}
+              </label>
+              <div className="grid grid-cols-4 gap-1 text-[10px]">
+                {[
+                  { id: 'traffic_signals', label: 'Signals', icon: '🚦' },
+                  { id: 'toll_booths', label: 'Tolls', icon: '🛑' },
+                  { id: 'speed_cameras', label: 'Radars', icon: '📹' },
+                  { id: 'fuel_stations', label: 'Fuel', icon: '⛽' },
+                ].map(layer => (
+                  <button
+                    key={layer.id}
+                    type="button"
+                    onClick={() => toggleInfraLayer(layer.id)}
+                    className={`py-1 px-1 rounded-lg border font-semibold flex flex-col items-center gap-0.5 transition-all cursor-pointer ${
+                      activeInfraLayer === layer.id
+                        ? 'bg-neutral-900 border-neutral-900 text-white shadow-xs'
+                        : 'bg-neutral-50 border-neutral-200 text-neutral-600 hover:bg-neutral-100'
+                    }`}
+                  >
+                    <span>{layer.icon}</span>
+                    <span className="truncate max-w-full text-[9px]">{layer.label}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+
             {/* Calculate Button - Vibrant EMERALD GREEN */}
             <Button
               onClick={handleCalculateRoute}
@@ -237,11 +375,11 @@ export default function MapRoute() {
               icon={Navigation}
               className="w-full mt-2 py-3 shadow-md shadow-emerald-600/20 text-sm"
             >
-              CALCULATE FASTEST ROUTE
+              CALCULATE OPTIMAL ROUTE
             </Button>
           </div>
 
-          {/* Reroute Alert Banner - Clean Light Red */}
+          {/* Reroute Alert Banner */}
           {routeResult?.incident_alert && (
             <div className="p-3 rounded-xl bg-red-50 border border-red-200 text-red-900 text-xs flex items-start gap-2.5">
               <AlertTriangle className="w-4 h-4 text-red-600 shrink-0 mt-0.5" />
@@ -265,7 +403,7 @@ export default function MapRoute() {
                       : 'text-neutral-600 hover:text-neutral-900'
                   }`}
                 >
-                  Fastest (A*)
+                  ⚡ Fastest
                 </button>
                 {routeResult.alternative_routes?.[0] && (
                   <button
@@ -276,7 +414,7 @@ export default function MapRoute() {
                         : 'text-neutral-600 hover:text-neutral-900'
                     }`}
                   >
-                    Alt 1
+                    🛣️ Alt 1
                   </button>
                 )}
                 {routeResult.alternative_routes?.[1] && (
@@ -288,12 +426,12 @@ export default function MapRoute() {
                         : 'text-neutral-600 hover:text-neutral-900'
                     }`}
                   >
-                    Alt 2
+                    🛣️ Alt 2
                   </button>
                 )}
               </div>
 
-              {/* Active Route Statistics - Pure White Card */}
+              {/* Active Route Statistics */}
               {currentActiveRoute && (
                 <div className="p-4 rounded-xl bg-white border border-neutral-200 shadow-xs space-y-3">
                   <div className="flex items-center justify-between">
@@ -327,9 +465,9 @@ export default function MapRoute() {
                   </div>
 
                   {/* Turn-by-Turn Segment Details */}
-                  <div className="pt-2 border-t border-neutral-100 max-h-48 overflow-y-auto space-y-1.5 pr-1">
+                  <div className="pt-2 border-t border-neutral-100 max-h-40 overflow-y-auto space-y-1.5 pr-1">
                     <span className="text-[10px] font-bold uppercase text-neutral-500 block mb-1">
-                      Route Segments ({currentActiveRoute.segments?.length})
+                      Route Corridor Breakdown
                     </span>
                     {currentActiveRoute.segments?.map((seg, idx) => (
                       <div key={idx} className="flex items-center justify-between text-xs p-2 rounded-lg bg-neutral-50 border border-neutral-200">
@@ -349,12 +487,36 @@ export default function MapRoute() {
                     ))}
                   </div>
 
+                  {/* Hourly Departure Forecast Card */}
+                  {hourlyForecast && hourlyForecast.length > 0 && (
+                    <div className="pt-2 border-t border-neutral-100 space-y-1.5">
+                      <span className="text-[10px] font-bold uppercase text-neutral-500 block">
+                        Hourly Departure Forecast
+                      </span>
+                      <div className="grid grid-cols-1 gap-1 max-h-36 overflow-y-auto pr-1">
+                        {hourlyForecast.map((slot, idx) => (
+                          <div key={idx} className="flex items-center justify-between p-1.5 rounded-lg bg-neutral-50 border border-neutral-200 text-xs">
+                            <div className="flex items-center gap-1.5">
+                              <Clock className="w-3 h-3 text-neutral-400" />
+                              <span className="font-bold text-neutral-800 text-[11px]">{slot.time}</span>
+                              <span className="text-[9px] text-neutral-500">({slot.desc})</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <span className="font-mono font-bold text-emerald-700 text-[11px]">{slot.travel_time_min}m</span>
+                              <TrafficBadge level={slot.traffic} />
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
                   {/* Record Trip Button */}
                   <Button
                     variant="secondary"
                     onClick={handleRecordTrip}
                     icon={BookmarkPlus}
-                    className="w-full text-xs border-emerald-300 text-emerald-800 hover:bg-emerald-50"
+                    className="w-full text-xs border-emerald-300 text-emerald-800 hover:bg-emerald-50 mt-1"
                   >
                     Log Completed Trip for Retraining
                   </Button>
@@ -393,15 +555,15 @@ export default function MapRoute() {
         </div>
       </div>
 
-      {/* Leaflet Map Interactive Canvas - Crisp Light Background */}
+      {/* Leaflet Map Canvas */}
       <div className="flex-1 relative h-full w-full bg-neutral-100">
         <MapContainer
-          center={[34.0522, -118.35]}
-          zoom={12}
+          center={[11.1271, 78.6569]}
+          zoom={8}
           scrollWheelZoom={true}
           style={{ height: '100%', width: '100%' }}
         >
-          {/* 100% Free OpenStreetMap Public Tiles (Zero API Key Required) */}
+          {/* OpenStreetMap Public Tiles */}
           <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -410,7 +572,7 @@ export default function MapRoute() {
 
           {/* Background Network Road Segments */}
           {networkSegments.map((seg) => {
-            const latlngs = seg.geometry?.map(pt => [pt[1], pt[0]]) || [];
+            const latlngs = seg.geometry?.map(toLatLng) || [];
             const color = getTrafficColorHex(seg.traffic_level);
             return (
               <Polyline
@@ -419,7 +581,7 @@ export default function MapRoute() {
                 pathOptions={{
                   color: color,
                   weight: 3.5,
-                  opacity: 0.75,
+                  opacity: 0.6
                 }}
               >
                 <Popup>
@@ -436,15 +598,15 @@ export default function MapRoute() {
             );
           })}
 
-          {/* Alternative Routes Polylines (Dashed Charcoal Grey) */}
+          {/* Alternative Routes Polylines */}
           {routeResult?.alternative_routes?.map((alt, i) => {
-            const latlngs = alt.geometry?.map(pt => [pt[1], pt[0]]) || [];
+            const latlngs = alt.geometry?.map(toLatLng) || [];
             return (
               <Polyline
                 key={`alt-${i}`}
                 positions={latlngs}
                 pathOptions={{
-                  color: '#475569',
+                  color: '#8b5cf6',
                   weight: 4.5,
                   dashArray: '8, 8',
                   opacity: 0.85
@@ -456,7 +618,7 @@ export default function MapRoute() {
           {/* Recommended Route Polyline (Vibrant Emerald Green #10b981) */}
           {routeResult?.recommended_route && (
             <Polyline
-              positions={routeResult.recommended_route.geometry?.map(pt => [pt[1], pt[0]]) || []}
+              positions={routeResult.recommended_route.geometry?.map(toLatLng) || []}
               pathOptions={{
                 color: '#10b981',
                 weight: 6.5,
@@ -470,11 +632,28 @@ export default function MapRoute() {
             <MapBoundsUpdater geometry={currentActiveRoute.geometry} />
           )}
 
+          {/* Infrastructure Feature Markers */}
+          {infraFeatures.map((feat, i) => (
+            <Marker
+              key={`infra-${i}`}
+              position={[feat.lat, feat.lon]}
+              icon={createPinIcon('#2563eb', activeInfraLayer === 'traffic_signals' ? '🚦 Signal' : (activeInfraLayer === 'toll_booths' ? '🛑 Toll' : (activeInfraLayer === 'speed_cameras' ? '📹 Radar' : '⛽ Fuel')))}
+            >
+              <Popup>
+                <div className="text-xs space-y-1">
+                  <span className="font-bold text-neutral-900 block">{feat.name}</span>
+                  <div className="text-neutral-500 text-[11px]">{feat.city}</div>
+                  <div className="text-[10px] text-blue-600 font-mono font-semibold">OpenStreetMap Infrastructure</div>
+                </div>
+              </Popup>
+            </Marker>
+          ))}
+
           {/* Origin Marker - Emerald Green */}
           {sourceCoord && (
             <Marker 
               position={[sourceCoord.lat, sourceCoord.lng]}
-              icon={createPinIcon('#10b981', 'Origin')}
+              icon={createPinIcon('#10b981', sourceCoord.name || 'Origin')}
             >
               <Popup>
                 <div className="text-xs">
@@ -488,7 +667,7 @@ export default function MapRoute() {
           {destCoord && (
             <Marker 
               position={[destCoord.lat, destCoord.lng]}
-              icon={createPinIcon('#ef4444', 'Destination')}
+              icon={createPinIcon('#ef4444', destCoord.name || 'Destination')}
             >
               <Popup>
                 <div className="text-xs">

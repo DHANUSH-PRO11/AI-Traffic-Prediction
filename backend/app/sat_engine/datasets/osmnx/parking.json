@@ -1,0 +1,26 @@
+[
+  {
+    "feature_type": "parking",
+    "name": "Multi-Level Car Parking Chennai Airport",
+    "city": "Chennai",
+    "lat": 12.982,
+    "lon": 80.165,
+    "osm_tag": "amenity=parking"
+  },
+  {
+    "feature_type": "parking",
+    "name": "T. Nagar Smart Parking Complex",
+    "city": "Chennai",
+    "lat": 13.041,
+    "lon": 80.233,
+    "osm_tag": "amenity=parking"
+  },
+  {
+    "feature_type": "parking",
+    "name": "Gandhipuram Smart Parking Hub",
+    "city": "Coimbatore",
+    "lat": 11.017,
+    "lon": 76.965,
+    "osm_tag": "amenity=parking"
+  }
+]

@@ -33,6 +33,7 @@ export default function Predict() {
 
   const [loading, setLoading] = useState(false);
   const [prediction, setPrediction] = useState(null);
+  const [liveDetails, setLiveDetails] = useState(null);
 
   useEffect(() => {
     async function loadRoads() {
@@ -53,16 +54,30 @@ export default function Predict() {
     if (!selectedRoadId) return;
     try {
       setLoading(true);
-      const res = await trafficApi.predictTraffic({
-        road_id: selectedRoadId,
-        date_str: dateStr,
-        time_str: timeStr,
-        weather: weather,
-        temperature: parseFloat(temperature),
-        rainfall: parseFloat(rainfall),
-        accident_reported: hasAccident
-      });
+      const hourInt = parseInt(timeStr.split(':')[0], 10) || 12;
+      const [res, liveRes] = await Promise.all([
+        trafficApi.predictTraffic({
+          road_id: selectedRoadId,
+          date_str: dateStr,
+          time_str: timeStr,
+          weather: weather,
+          temperature: parseFloat(temperature),
+          rainfall: parseFloat(rainfall),
+          accident_reported: hasAccident
+        }),
+        trafficApi.predictLive({
+          hour: hourInt,
+          day: new Date(dateStr).getDay(),
+          temperature: parseFloat(temperature),
+          rainfall: parseFloat(rainfall),
+          road_type: selectedRoad?.road_type || 'highway',
+          vehicle_count: hasAccident ? 320 : (hourInt >= 8 && hourInt <= 10 ? 240 : 140)
+        }).catch(() => null)
+      ]);
       setPrediction(res);
+      if (liveRes) {
+        setLiveDetails(liveRes);
+      }
     } catch (err) {
       console.error("Prediction failed:", err);
     } finally {
@@ -251,6 +266,40 @@ export default function Predict() {
                   <span className="text-[10px] text-emerald-700 font-mono font-bold">Model {prediction.model_version}</span>
                 </Card>
               </div>
+
+              {/* Sat ML Class Probability Breakdown */}
+              {liveDetails?.probabilities && (
+                <Card
+                  title="ML Traffic Classification Distribution"
+                  subtitle={`Inference Confidence: ${(liveDetails.confidence * 100).toFixed(1)}% • Impedance Multiplier: ${liveDetails.multiplier}x`}
+                >
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-2">
+                    {[
+                      { label: 'Low', color: '#10b981', bg: 'bg-emerald-500' },
+                      { label: 'Medium', color: '#f59e0b', bg: 'bg-amber-500' },
+                      { label: 'Heavy', color: '#f97316', bg: 'bg-orange-500' },
+                      { label: 'Very Heavy', color: '#ef4444', bg: 'bg-red-500' },
+                    ].map(cls => {
+                      const prob = liveDetails.probabilities[cls.label] || 0;
+                      const pct = Math.round(prob * 100);
+                      return (
+                        <div key={cls.label} className="p-3 rounded-xl bg-neutral-50 border border-neutral-200">
+                          <div className="flex justify-between items-center mb-1.5">
+                            <span className="text-xs font-bold text-neutral-800">{cls.label}</span>
+                            <span className="text-xs font-mono font-bold" style={{ color: cls.color }}>{pct}%</span>
+                          </div>
+                          <div className="w-full h-2 rounded-full bg-neutral-200 overflow-hidden">
+                            <div 
+                              className={`h-full rounded-full ${cls.bg} transition-all duration-500`}
+                              style={{ width: `${pct}%` }}
+                            />
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </Card>
+              )}
 
               {/* Historical vs Predicted Benchmark Bar Chart */}
               <Card
