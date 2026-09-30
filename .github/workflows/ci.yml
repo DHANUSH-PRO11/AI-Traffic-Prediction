@@ -57,7 +57,7 @@ jobs:
           DATABASE_URL: sqlite:///./traffic_system.db
           SECRET_KEY: test_secret_key_ci_cd_2026
         run: |
-          python -m pytest --cov=backend/app --cov-report=term --cov-report=xml:coverage.xml --maxfail=1 -v tests/
+          python -m pytest --cov=backend/app --cov-report=term --cov-report=xml:coverage.xml --maxfail=1 --timeout=30 -v tests/
 
       - name: Upload Test Coverage Artifact
         uses: actions/upload-artifact@v4
