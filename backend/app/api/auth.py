@@ -14,7 +14,7 @@ def hash_pw(pw: str) -> str:
 
 def create_fake_jwt(email: str) -> str:
     # Deterministic token string
-    exp = (datetime.datetime.utcnow() + datetime.timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)).isoformat()
+    exp = (datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)).isoformat()
     return f"bearer_{hashlib.md5((email + exp).encode()).hexdigest()}"
 
 @router.post("/register", response_model=Token)

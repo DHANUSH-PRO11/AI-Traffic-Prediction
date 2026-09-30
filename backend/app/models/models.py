@@ -3,6 +3,9 @@ from sqlalchemy import Column, Integer, String, Float, DateTime, Boolean, Text, 
 from sqlalchemy.orm import relationship
 from app.database.database import Base
 
+def utc_now() -> datetime.datetime:
+    return datetime.datetime.now(datetime.timezone.utc)
+
 class User(Base):
     __tablename__ = "users"
 
@@ -11,7 +14,7 @@ class User(Base):
     email = Column(String(150), unique=True, index=True, nullable=False)
     password_hash = Column(String(255), nullable=False)
     is_admin = Column(Boolean, default=False)
-    created_at = Column(DateTime, default=datetime.datetime.utcnow)
+    created_at = Column(DateTime, default=utc_now)
 
     trips = relationship("UserTrip", back_populates="user")
 
@@ -40,7 +43,7 @@ class TrafficObservation(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     road_id = Column(String(50), ForeignKey("road_segments.road_id"), index=True, nullable=False)
-    timestamp = Column(DateTime, index=True, default=datetime.datetime.utcnow)
+    timestamp = Column(DateTime, index=True, default=utc_now)
     traffic_volume = Column(Float, nullable=False)  # vehicles per hour
     average_speed = Column(Float, nullable=False)  # km/h
     vehicle_count = Column(Integer, nullable=False)
@@ -53,7 +56,7 @@ class WeatherObservation(Base):
     __tablename__ = "weather_observations"
 
     id = Column(Integer, primary_key=True, index=True)
-    timestamp = Column(DateTime, index=True, default=datetime.datetime.utcnow)
+    timestamp = Column(DateTime, index=True, default=utc_now)
     temperature = Column(Float, nullable=False)  # Celsius
     rainfall = Column(Float, default=0.0)  # mm/h
     humidity = Column(Float, default=50.0)  # %
@@ -66,7 +69,7 @@ class Accident(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     road_id = Column(String(50), ForeignKey("road_segments.road_id"), index=True, nullable=False)
-    timestamp = Column(DateTime, default=datetime.datetime.utcnow)
+    timestamp = Column(DateTime, default=utc_now)
     severity = Column(String(50), default="MEDIUM")  # LOW, MEDIUM, HIGH, SEVERE
     latitude = Column(Float, nullable=False)
     longitude = Column(Float, nullable=False)
@@ -81,7 +84,7 @@ class Prediction(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     road_id = Column(String(50), ForeignKey("road_segments.road_id"), index=True, nullable=False)
-    timestamp = Column(DateTime, default=datetime.datetime.utcnow)
+    timestamp = Column(DateTime, default=utc_now)
     predicted_speed = Column(Float, nullable=False)  # km/h
     predicted_travel_time = Column(Float, nullable=False)  # minutes
     traffic_level = Column(String(20), nullable=False)  # LOW, MEDIUM, HIGH, SEVERE
@@ -102,7 +105,7 @@ class UserTrip(Base):
     actual_time = Column(Float, nullable=True)  # minutes (updated when trip is finished)
     distance = Column(Float, nullable=False)  # km
     algorithm = Column(String(50), default="A*")
-    created_at = Column(DateTime, default=datetime.datetime.utcnow)
+    created_at = Column(DateTime, default=utc_now)
 
     user = relationship("User", back_populates="trips")
 
@@ -114,7 +117,7 @@ class ModelVersion(Base):
     model_name = Column(String(100), nullable=False)
     version = Column(String(50), unique=True, nullable=False)
     training_dataset = Column(String(150), nullable=False)
-    training_date = Column(DateTime, default=datetime.datetime.utcnow)
+    training_date = Column(DateTime, default=utc_now)
     metrics = Column(JSON, nullable=False)  # {"MAE": 2.14, "RMSE": 4.12, "R2": 0.91, "MAPE": 8.3}
     model_path = Column(String(255), nullable=False)
     is_active = Column(Boolean, default=False)

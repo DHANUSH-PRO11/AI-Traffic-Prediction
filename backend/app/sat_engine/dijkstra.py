@@ -9,6 +9,7 @@ highway speed limits, and vehicle type (bike, car, bus).
 import heapq
 import datetime
 import math
+from typing import Any
 import networkx as nx
 import os
 import sys
@@ -111,7 +112,7 @@ def apply_traffic_weights(
     return H
 
 
-def _straight_line_distance_m(G: nx.MultiDiGraph, source: int, target: int) -> float:
+def _straight_line_distance_m(G: nx.MultiDiGraph, source: Any, target: Any) -> float:
     """Return the great-circle distance between two graph nodes in metres."""
     source_data = G.nodes.get(source) or G.nodes.get(str(source)) or G.nodes.get(int(source) if str(source).isdigit() else source, {})
     target_data = G.nodes.get(target) or G.nodes.get(str(target)) or G.nodes.get(int(target) if str(target).isdigit() else target, {})
@@ -132,7 +133,7 @@ def _straight_line_distance_m(G: nx.MultiDiGraph, source: int, target: int) -> f
     return earth_radius_m * 2 * math.asin(math.sqrt(haversine))
 
 
-def dijkstra(G: nx.MultiDiGraph, source: int, target: int, weight_key: str = "travel_time") -> tuple[list, float]:
+def dijkstra(G: nx.MultiDiGraph, source: Any, target: Any, weight_key: str = "travel_time") -> tuple[list, float]:
     """
     Find the shortest path using A* with the same exact costs as Dijkstra.
 

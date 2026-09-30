@@ -24,14 +24,14 @@ def init_database():
                 email="admin@traffic.ai",
                 password_hash=hash_password("admin123"),
                 is_admin=True,
-                created_at=datetime.datetime.utcnow()
+                created_at=datetime.datetime.now(datetime.timezone.utc)
             )
             demo_user = User(
                 name="Commuter Demo",
                 email="user@traffic.ai",
                 password_hash=hash_password("user123"),
                 is_admin=False,
-                created_at=datetime.datetime.utcnow()
+                created_at=datetime.datetime.now(datetime.timezone.utc)
             )
             db.add_all([admin_user, demo_user])
             db.commit()
@@ -82,7 +82,7 @@ def init_database():
                 metrics=meta.get("metrics", {}),
                 model_path=meta.get("model_path", ""),
                 is_active=True,
-                training_date=datetime.datetime.utcnow()
+                training_date=datetime.datetime.now(datetime.timezone.utc)
             )
             db.add(mv)
             db.commit()
@@ -99,7 +99,7 @@ def init_database():
                 actual_time=26.2,
                 distance=24.8,
                 algorithm="A*",
-                created_at=datetime.datetime.utcnow() - datetime.timedelta(hours=2)
+                created_at=datetime.datetime.now(datetime.timezone.utc) - datetime.timedelta(hours=2)
             )
             db.add(sample_trip)
             db.commit()

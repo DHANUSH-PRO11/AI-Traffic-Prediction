@@ -213,7 +213,7 @@ class TrafficService:
                     "time_saved_min": time_saved,
                     "overall_traffic_level": primary_raw["traffic"].upper(),
                     "segments": [seg_detail],
-                    "path_nodes": [src_name, dst_name],
+                    "path_nodes": [source_node, dest_node],
                     "geometry": geojson_geom,
                     "node_coordinates": [
                         {"name": src_name, "lat": src_info.get("lat", raw_coords[0][0] if raw_coords else 0.0), "lng": src_info.get("lng", raw_coords[0][1] if raw_coords else 0.0)},
@@ -245,7 +245,7 @@ class TrafficService:
                             "has_incident": False,
                             "incident_description": None
                         }],
-                        "path_nodes": [src_name, dst_name],
+                        "path_nodes": [source_node, dest_node],
                         "geometry": alt_geojson,
                         "node_coordinates": primary_result["node_coordinates"]
                     })

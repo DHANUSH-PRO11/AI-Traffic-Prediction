@@ -24,7 +24,7 @@ def update_weather(req: WeatherUpdateRequest):
         "rainfall": req.rainfall,
         "humidity": req.humidity,
         "wind_speed": req.wind_speed,
-        "timestamp": datetime.datetime.utcnow().isoformat()
+        "timestamp": datetime.datetime.now(datetime.timezone.utc).isoformat()
     }
     traffic_service.update_all_predictions()
     return {"status": "success", "weather": traffic_service.current_weather}

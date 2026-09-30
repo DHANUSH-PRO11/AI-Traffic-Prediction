@@ -32,7 +32,7 @@ class DecisionTreeNode:
         if self.is_leaf():
             return {"value": float(self.value) if self.value is not None else 0.0}
         return {
-            "feature_idx": int(self.feature_idx) if self.feature_idx is not None else 0,
+            "feature_idx": self.feature_idx if self.feature_idx is not None else 0,
             "threshold": float(self.threshold) if self.threshold is not None else 0.0,
             "impurity_reduction": float(self.impurity_reduction) if self.impurity_reduction is not None else 0.0,
             "left": self.left.to_dict() if self.left else None,
@@ -78,7 +78,7 @@ class RegressionTree:
 
         # Split
         left_mask = X[:, best_feat] <= best_thresh
-        right_mask = ~left_mask
+        right_mask = np.logical_not(left_mask)
 
         if np.sum(left_mask) == 0 or np.sum(right_mask) == 0:
             return DecisionTreeNode(value=float(np.mean(y)))
