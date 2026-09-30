@@ -1,5 +1,8 @@
 import numpy as np
-from typing import Dict, Any, List
+from typing import Dict, Any, List, Tuple
+
+# Type alias for the (X, y) matrix pair returned by extract_features_from_records
+TupleMatrix = Tuple[np.ndarray, np.ndarray]
 
 ROAD_TYPES = ["highway", "arterial", "secondary", "residential"]
 WEATHER_CONDITIONS = ["Clear", "Overcast", "Rain", "Fog", "Storm"]
@@ -110,5 +113,3 @@ def extract_features_from_records(records: List[Dict[str, Any]]) -> TupleMatrix:
         y_rows.append(float(r["average_speed"]))
 
     return np.array(X_rows, dtype=float), np.array(y_rows, dtype=float)
-
-TupleMatrix = Any
