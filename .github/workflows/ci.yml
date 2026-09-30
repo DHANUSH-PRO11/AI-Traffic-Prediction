@@ -60,7 +60,7 @@ jobs:
           python -m pytest --cov=backend/app --cov-report=term --cov-report=xml:coverage.xml --maxfail=1 --timeout=30 -v tests/
 
       - name: Upload Test Coverage Artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: always()
         with:
           name: backend-coverage-report
@@ -102,7 +102,7 @@ jobs:
           npm run build
 
       - name: Upload Production Dist Bundle
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: frontend-dist-bundle
           path: frontend/dist/
