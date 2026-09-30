@@ -7,7 +7,6 @@ import {
   BarChart3, 
   History, 
   Binary, 
-  ShieldAlert, 
   Activity,
   Zap
 } from 'lucide-react';
@@ -19,7 +18,6 @@ const NAV_ITEMS = [
   { to: '/analytics', label: 'Analytics', icon: BarChart3 },
   { to: '/trips', label: 'Trip History', icon: History },
   { to: '/model', label: 'ML Model Center', icon: Binary },
-  { to: '/admin', label: 'Admin & Simulation', icon: ShieldAlert },
 ];
 
 export default function Sidebar() {

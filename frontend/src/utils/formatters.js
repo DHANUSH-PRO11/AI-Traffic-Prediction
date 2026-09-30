@@ -25,7 +25,12 @@ export function formatPercent(val) {
 export function formatTimestamp(isoString) {
   if (!isoString) return '';
   try {
-    const d = new Date(isoString);
+    let str = String(isoString).trim();
+    if (!str.endsWith('Z') && !str.includes('+')) {
+      str = str.replace(' ', 'T') + 'Z';
+    }
+    const d = new Date(str);
+    if (isNaN(d.getTime())) return String(isoString);
     return d.toLocaleString([], { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
   } catch {
     return String(isoString);

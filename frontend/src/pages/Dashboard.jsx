@@ -333,10 +333,10 @@ export default function Dashboard() {
           subtitle="Real-time road closures, collisions, and hazards"
           action={
             <button 
-              onClick={() => navigate('/admin')}
-              className="text-xs text-red-600 hover:text-red-700 font-bold flex items-center gap-1 cursor-pointer"
+              onClick={() => navigate('/map')}
+              className="text-xs text-emerald-600 hover:text-emerald-700 font-bold flex items-center gap-1 cursor-pointer"
             >
-              Simulate / Manage <ArrowRight className="w-3.5 h-3.5" />
+              View on Map <ArrowRight className="w-3.5 h-3.5" />
             </button>
           }
         >
@@ -364,12 +364,12 @@ export default function Dashboard() {
               <p className="text-sm font-bold text-neutral-900">No Active Incidents Detected</p>
               <p className="text-xs text-neutral-500 mt-1">All highway and arterial links operating under free-flow or regular peak patterns.</p>
               <Button
-                onClick={() => navigate('/admin')}
+                onClick={() => navigate('/map')}
                 variant="secondary"
                 size="sm"
                 className="mt-4 border-emerald-300 text-emerald-800"
               >
-                Inject Simulated Incident
+                View Live Traffic Map
               </Button>
             </div>
           )}

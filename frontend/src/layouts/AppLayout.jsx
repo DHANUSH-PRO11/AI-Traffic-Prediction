@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 import Sidebar from '../components/layout/Sidebar';
 import Navbar from '../components/layout/Navbar';
 import Footer from '../components/layout/Footer';
 import { trafficApi } from '../api/client';
 
 export default function AppLayout() {
+  const location = useLocation();
+  const isMapPage = location.pathname === '/map';
+
   const [trafficSummary, setTrafficSummary] = useState({
     level: 'LOW',
     avgSpeed: 45.2,
@@ -51,12 +54,12 @@ export default function AppLayout() {
           onRefresh={loadStatus}
         />
 
-        {/* Scrollable Page Body with Footer */}
-        <main className="flex-1 overflow-y-auto overflow-x-hidden flex flex-col justify-between">
-          <div className="p-6">
+        {/* Dynamic Page Body - Full Viewport for Map, Scrollable for Content */}
+        <main className={`flex-1 ${isMapPage ? 'overflow-hidden flex flex-col h-[calc(100vh-4rem)]' : 'overflow-y-auto overflow-x-hidden flex flex-col justify-between'}`}>
+          <div className={isMapPage ? 'flex-1 h-full overflow-hidden' : 'p-6'}>
             <Outlet />
           </div>
-          <Footer />
+          {!isMapPage && <Footer />}
         </main>
       </div>
     </div>

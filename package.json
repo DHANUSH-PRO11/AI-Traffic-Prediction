@@ -4,10 +4,13 @@
   "private": true,
   "description": "Full-Stack AI Traffic Prediction & Dynamic Route Optimization System",
   "scripts": {
-    "dev": "npm --prefix frontend run dev",
+    "start": "python run.py",
+    "dev": "python run.py",
+    "backend": "python -m uvicorn app.main:app --app-dir backend --host 127.0.0.1 --port 8000 --reload",
+    "frontend": "npm --prefix frontend run dev",
     "build": "npm --prefix frontend run build",
     "preview": "npm --prefix frontend run preview",
-    "start:backend": "python -m uvicorn app.main:app --app-dir backend --host 127.0.0.1 --port 8000 --reload",
-    "start": "npm run dev"
+    "test": "python -m unittest discover -s tests -p \"test_*.py\"",
+    "train": "python scripts/train_model.py"
   }
 }

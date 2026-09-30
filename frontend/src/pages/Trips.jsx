@@ -230,14 +230,14 @@ export default function Trips() {
               />
             </div>
             <div>
-              <label className="font-bold text-neutral-700 block mb-1">Algorithm</label>
+              <label className="font-bold text-neutral-700 block mb-1">Routing Strategy</label>
               <select
                 value={algorithm}
                 onChange={(e) => setAlgorithm(e.target.value)}
                 className="w-full bg-white border border-neutral-300 rounded-lg px-3 py-2 text-neutral-900 font-medium focus:outline-none focus:border-emerald-500"
               >
-                <option value="A*">A*</option>
-                <option value="Dijkstra">Dijkstra</option>
+                <option value="A*">Fastest Route — Shortest Travel Time (A*)</option>
+                <option value="Dijkstra">Shortest Path — Minimum Distance (Dijkstra)</option>
               </select>
             </div>
           </div>
