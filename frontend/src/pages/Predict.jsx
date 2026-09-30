@@ -24,8 +24,32 @@ import { formatSpeed, formatDuration, formatNumber } from '../utils/formatters';
 export default function Predict() {
   const [roads, setRoads] = useState([]);
   const [selectedRoadId, setSelectedRoadId] = useState('');
-  const [timeStr, setTimeStr] = useState('08:30');
-  const [dateStr, setDateStr] = useState('2026-09-29');
+  const getTodayDate = () => {
+    const d = new Date();
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
+
+  const getTomorrowDate = () => {
+    const d = new Date();
+    d.setDate(d.getDate() + 1);
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
+
+  const getNowTime = () => {
+    const d = new Date();
+    const hours = String(d.getHours()).padStart(2, '0');
+    const minutes = String(d.getMinutes()).padStart(2, '0');
+    return `${hours}:${minutes}`;
+  };
+
+  const [timeStr, setTimeStr] = useState(getNowTime);
+  const [dateStr, setDateStr] = useState(getTodayDate);
   const [weather, setWeather] = useState('Clear');
   const [temperature, setTemperature] = useState(24.0);
   const [rainfall, setRainfall] = useState(0.0);
@@ -50,28 +74,38 @@ export default function Predict() {
     loadRoads();
   }, []);
 
-  const handlePredict = async () => {
-    if (!selectedRoadId) return;
+  const handlePredict = async (overrides = {}) => {
+    const activeRoadId = overrides.roadId || selectedRoadId;
+    if (!activeRoadId) return;
     try {
       setLoading(true);
-      const hourInt = parseInt(timeStr.split(':')[0], 10) || 12;
+      const currentTime = overrides.timeStr || timeStr;
+      const currentDate = overrides.dateStr || dateStr;
+      const currentWeather = overrides.weather || weather;
+      const currentTemp = overrides.temperature !== undefined ? overrides.temperature : temperature;
+      const currentRain = overrides.rainfall !== undefined ? overrides.rainfall : rainfall;
+      const currentAccident = overrides.hasAccident !== undefined ? overrides.hasAccident : hasAccident;
+
+      const hourInt = parseInt(currentTime.split(':')[0], 10) || 12;
+      const roadObj = roads.find(r => r.road_id === activeRoadId);
+
       const [res, liveRes] = await Promise.all([
         trafficApi.predictTraffic({
-          road_id: selectedRoadId,
-          date_str: dateStr,
-          time_str: timeStr,
-          weather: weather,
-          temperature: parseFloat(temperature),
-          rainfall: parseFloat(rainfall),
-          accident_reported: hasAccident
+          road_id: activeRoadId,
+          date_str: currentDate,
+          time_str: currentTime,
+          weather: currentWeather,
+          temperature: parseFloat(currentTemp),
+          rainfall: parseFloat(currentRain),
+          accident_reported: currentAccident
         }),
         trafficApi.predictLive({
           hour: hourInt,
-          day: new Date(dateStr).getDay(),
-          temperature: parseFloat(temperature),
-          rainfall: parseFloat(rainfall),
-          road_type: selectedRoad?.road_type || 'highway',
-          vehicle_count: hasAccident ? 320 : (hourInt >= 8 && hourInt <= 10 ? 240 : 140)
+          day: new Date(currentDate).getDay(),
+          temperature: parseFloat(currentTemp),
+          rainfall: parseFloat(currentRain),
+          road_type: roadObj?.road_type || 'highway',
+          vehicle_count: currentAccident ? 320 : (hourInt >= 8 && hourInt <= 10 ? 240 : 140)
         }).catch(() => null)
       ]);
       setPrediction(res);
@@ -83,6 +117,26 @@ export default function Predict() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const applyTimePreset = (t) => {
+    setTimeStr(t);
+    handlePredict({ timeStr: t });
+  };
+
+  const applyNowPreset = () => {
+    const t = getNowTime();
+    const d = getTodayDate();
+    setTimeStr(t);
+    setDateStr(d);
+    handlePredict({ timeStr: t, dateStr: d });
+  };
+
+  const applyWeatherPreset = (w, temp, rain) => {
+    setWeather(w);
+    setTemperature(temp);
+    setRainfall(rain);
+    handlePredict({ weather: w, temperature: temp, rainfall: rain });
   };
 
   useEffect(() => {
@@ -137,7 +191,16 @@ export default function Predict() {
             {/* Time & Date */}
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="text-xs font-bold text-neutral-600 block mb-1">Time</label>
+                <div className="flex items-center justify-between mb-1">
+                  <label className="text-xs font-bold text-neutral-600">Time</label>
+                  <button 
+                    type="button" 
+                    onClick={applyNowPreset}
+                    className="text-[10px] text-emerald-700 hover:text-emerald-800 font-bold flex items-center gap-0.5 cursor-pointer"
+                  >
+                    <Clock className="w-2.5 h-2.5" /> Now
+                  </button>
+                </div>
                 <input
                   type="time"
                   value={timeStr}
@@ -146,13 +209,89 @@ export default function Predict() {
                 />
               </div>
               <div>
-                <label className="text-xs font-bold text-neutral-600 block mb-1">Date</label>
+                <div className="flex items-center justify-between mb-1">
+                  <label className="text-xs font-bold text-neutral-600">Date</label>
+                  <div className="flex items-center gap-1.5">
+                    <button 
+                      type="button" 
+                      onClick={() => { const d = getTodayDate(); setDateStr(d); handlePredict({ dateStr: d }); }}
+                      className="text-[10px] text-emerald-700 hover:text-emerald-800 font-bold cursor-pointer"
+                    >
+                      Today
+                    </button>
+                    <span className="text-[9px] text-neutral-300">|</span>
+                    <button 
+                      type="button" 
+                      onClick={() => { const d = getTomorrowDate(); setDateStr(d); handlePredict({ dateStr: d }); }}
+                      className="text-[10px] text-emerald-700 hover:text-emerald-800 font-bold cursor-pointer"
+                    >
+                      Tomorrow
+                    </button>
+                  </div>
+                </div>
                 <input
                   type="date"
                   value={dateStr}
                   onChange={(e) => setDateStr(e.target.value)}
                   className="w-full bg-white border border-neutral-300 rounded-lg px-2.5 py-1.5 text-xs text-neutral-900 font-medium focus:outline-none focus:border-emerald-500 font-mono"
                 />
+              </div>
+            </div>
+
+            {/* Quick Time Presets */}
+            <div>
+              <span className="text-[10px] font-bold text-neutral-500 uppercase tracking-wider block mb-1.5">
+                Rush Hour & Schedule Presets
+              </span>
+              <div className="grid grid-cols-2 gap-1.5 text-[11px]">
+                <button
+                  type="button"
+                  onClick={() => applyTimePreset('08:30')}
+                  className={`px-2 py-1.5 rounded-lg border font-semibold text-left transition-all cursor-pointer flex items-center justify-between ${
+                    timeStr === '08:30' 
+                      ? 'bg-amber-50 border-amber-300 text-amber-900' 
+                      : 'bg-neutral-50 hover:bg-neutral-100 border-neutral-200 text-neutral-700'
+                  }`}
+                >
+                  <span>🌅 Morning Peak</span>
+                  <span className="font-mono text-[10px] text-neutral-500">08:30</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => applyTimePreset('13:00')}
+                  className={`px-2 py-1.5 rounded-lg border font-semibold text-left transition-all cursor-pointer flex items-center justify-between ${
+                    timeStr === '13:00' 
+                      ? 'bg-emerald-50 border-emerald-300 text-emerald-900' 
+                      : 'bg-neutral-50 hover:bg-neutral-100 border-neutral-200 text-neutral-700'
+                  }`}
+                >
+                  <span>☀️ Midday Normal</span>
+                  <span className="font-mono text-[10px] text-neutral-500">13:00</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => applyTimePreset('18:30')}
+                  className={`px-2 py-1.5 rounded-lg border font-semibold text-left transition-all cursor-pointer flex items-center justify-between ${
+                    timeStr === '18:30' 
+                      ? 'bg-amber-50 border-amber-300 text-amber-900' 
+                      : 'bg-neutral-50 hover:bg-neutral-100 border-neutral-200 text-neutral-700'
+                  }`}
+                >
+                  <span>🌇 Evening Rush</span>
+                  <span className="font-mono text-[10px] text-neutral-500">18:30</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => applyTimePreset('22:30')}
+                  className={`px-2 py-1.5 rounded-lg border font-semibold text-left transition-all cursor-pointer flex items-center justify-between ${
+                    timeStr === '22:30' 
+                      ? 'bg-emerald-50 border-emerald-300 text-emerald-900' 
+                      : 'bg-neutral-50 hover:bg-neutral-100 border-neutral-200 text-neutral-700'
+                  }`}
+                >
+                  <span>🌙 Night Free Flow</span>
+                  <span className="font-mono text-[10px] text-neutral-500">22:30</span>
+                </button>
               </div>
             </div>
 
@@ -189,6 +328,46 @@ export default function Predict() {
               </div>
             </div>
 
+            {/* Weather Simulation Quick Chips */}
+            <div className="flex flex-wrap gap-1.5">
+              <button
+                type="button"
+                onClick={() => applyWeatherPreset('Clear', 28.0, 0.0)}
+                className={`text-[11px] px-2 py-1 rounded-lg border font-medium cursor-pointer transition-all ${
+                  weather === 'Clear' ? 'bg-amber-100 text-amber-900 border-amber-300 font-bold' : 'bg-neutral-50 text-neutral-600 border-neutral-200 hover:bg-neutral-100'
+                }`}
+              >
+                ☀️ Clear
+              </button>
+              <button
+                type="button"
+                onClick={() => applyWeatherPreset('Overcast', 24.0, 0.0)}
+                className={`text-[11px] px-2 py-1 rounded-lg border font-medium cursor-pointer transition-all ${
+                  weather === 'Overcast' ? 'bg-slate-200 text-slate-800 border-slate-300 font-bold' : 'bg-neutral-50 text-neutral-600 border-neutral-200 hover:bg-neutral-100'
+                }`}
+              >
+                ⛅ Overcast
+              </button>
+              <button
+                type="button"
+                onClick={() => applyWeatherPreset('Rain', 21.0, 5.2)}
+                className={`text-[11px] px-2 py-1 rounded-lg border font-medium cursor-pointer transition-all ${
+                  weather === 'Rain' ? 'bg-blue-100 text-blue-900 border-blue-300 font-bold' : 'bg-neutral-50 text-neutral-600 border-neutral-200 hover:bg-neutral-100'
+                }`}
+              >
+                🌧️ Heavy Rain
+              </button>
+              <button
+                type="button"
+                onClick={() => applyWeatherPreset('Fog', 19.0, 0.0)}
+                className={`text-[11px] px-2 py-1 rounded-lg border font-medium cursor-pointer transition-all ${
+                  weather === 'Fog' ? 'bg-indigo-100 text-indigo-900 border-indigo-300 font-bold' : 'bg-neutral-50 text-neutral-600 border-neutral-200 hover:bg-neutral-100'
+                }`}
+              >
+                🌫️ Fog
+              </button>
+            </div>
+
             {/* Accident Toggle - Red Accent */}
             <div className="p-3.5 rounded-xl bg-neutral-50 border border-neutral-200 flex items-center justify-between">
               <div>
@@ -197,7 +376,11 @@ export default function Predict() {
               </div>
               <button
                 type="button"
-                onClick={() => setHasAccident(!hasAccident)}
+                onClick={() => {
+                  const nextVal = !hasAccident;
+                  setHasAccident(nextVal);
+                  handlePredict({ hasAccident: nextVal });
+                }}
                 className={`w-12 h-6 rounded-full transition-colors relative p-0.5 cursor-pointer ${hasAccident ? 'bg-red-600' : 'bg-neutral-300'}`}
               >
                 <div className={`w-5 h-5 rounded-full bg-white shadow-xs transition-transform ${hasAccident ? 'translate-x-6' : 'translate-x-0'}`} />

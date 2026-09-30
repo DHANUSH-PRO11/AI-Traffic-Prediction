@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { 
   BarChart3, 
   TrendingUp, 
   Activity, 
   Clock, 
   Gauge, 
-  Compass
+  Compass,
+  Navigation
 } from 'lucide-react';
 import { 
   LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, PieChart, Pie, Cell 
@@ -14,9 +16,11 @@ import { trafficApi } from '../api/client';
 import { SectionHeader } from '../components/common/SectionHeader';
 import { Card } from '../components/common/Card';
 import { StatCard } from '../components/common/StatCard';
+import { Button } from '../components/common/Button';
 import { TrafficBadge, StatusBadge } from '../components/common/Badge';
 
 export default function Analytics() {
+  const navigate = useNavigate();
   const [trafficAnalytics, setTrafficAnalytics] = useState(null);
   const [routesAnalytics, setRoutesAnalytics] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -72,6 +76,15 @@ export default function Analytics() {
         icon={BarChart3}
         title="Network Congestion & Routing Analytics"
         description="Longitudinal telematics across diurnal rush-hour cycles, corridor bottlenecks, and algorithmic routing performance."
+        actions={
+          <Button
+            onClick={() => navigate('/map')}
+            icon={Navigation}
+            variant="primary"
+          >
+            Plan Route on Map
+          </Button>
+        }
       />
 
       {/* Top 4 KPI Metrics */}
@@ -222,8 +235,16 @@ export default function Analytics() {
               </thead>
               <tbody className="divide-y divide-neutral-100 font-mono">
                 {trafficAnalytics?.busiest_roads?.map((r, i) => (
-                  <tr key={i} className="hover:bg-neutral-50 transition-colors">
-                    <td className="py-2.5 px-3 font-sans font-bold text-neutral-900">{r.road_name}</td>
+                  <tr 
+                    key={i} 
+                    onClick={() => navigate('/map')}
+                    className="hover:bg-emerald-50/60 transition-colors cursor-pointer group"
+                    title="Click to view and plan routes on interactive map"
+                  >
+                    <td className="py-2.5 px-3 font-sans font-bold text-neutral-900 group-hover:text-emerald-950 flex items-center gap-1.5">
+                      <span>{r.road_name}</span>
+                      <Navigation className="w-3 h-3 text-transparent group-hover:text-emerald-600 transition-colors" />
+                    </td>
                     <td className="py-2.5 px-3 text-neutral-700 font-sans uppercase">
                       <StatusBadge status={r.road_type} />
                     </td>
@@ -253,8 +274,16 @@ export default function Analytics() {
               </thead>
               <tbody className="divide-y divide-neutral-100 font-mono">
                 {trafficAnalytics?.fastest_roads?.map((r, i) => (
-                  <tr key={i} className="hover:bg-neutral-50 transition-colors">
-                    <td className="py-2.5 px-3 font-sans font-bold text-neutral-900">{r.road_name}</td>
+                  <tr 
+                    key={i} 
+                    onClick={() => navigate('/map')}
+                    className="hover:bg-emerald-50/60 transition-colors cursor-pointer group"
+                    title="Click to view and plan routes on interactive map"
+                  >
+                    <td className="py-2.5 px-3 font-sans font-bold text-neutral-900 group-hover:text-emerald-950 flex items-center gap-1.5">
+                      <span>{r.road_name}</span>
+                      <Navigation className="w-3 h-3 text-transparent group-hover:text-emerald-600 transition-colors" />
+                    </td>
                     <td className="py-2.5 px-3 text-neutral-500 font-medium">{r.max_speed} km/h</td>
                     <td className="py-2.5 px-3 text-emerald-700 font-bold">{r.predicted_speed} km/h</td>
                     <td className="py-2.5 px-3 text-neutral-900 font-bold">

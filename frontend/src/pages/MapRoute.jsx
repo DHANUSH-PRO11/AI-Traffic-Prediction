@@ -6,7 +6,8 @@ import {
   Polyline, 
   Marker, 
   Popup, 
-  useMap 
+  useMap,
+  useMapEvents 
 } from 'react-leaflet';
 import L from 'leaflet';
 import { 
@@ -29,7 +30,9 @@ import {
   MapPin,
   Loader2,
   ArrowUpDown,
-  RotateCcw
+  RotateCcw,
+  Target,
+  Crosshair
 } from 'lucide-react';
 import { trafficApi } from '../api/client';
 import { Button } from '../components/common/Button';
@@ -77,12 +80,12 @@ const createHazardIcon = () => L.divIcon({
 const createLocationIcon = () => L.divIcon({
   className: 'custom-location-marker',
   html: `
-    <div style="position: relative; transform: translate(-50%, -50%);">
-      <div style="width: 22px; height: 22px; background: #0284c7; border: 3px solid white; border-radius: 50%; box-shadow: 0 0 0 6px rgba(2, 132, 199, 0.35); display: flex; align-items: center; justify-content: center;">
-        <div style="width: 6px; height: 6px; background: white; border-radius: 50%;"></div>
+    <div style="position: relative; transform: translate(-50%, -50%); cursor: grab;">
+      <div style="width: 24px; height: 24px; background: #0284c7; border: 3px solid white; border-radius: 50%; box-shadow: 0 0 0 6px rgba(2, 132, 199, 0.4); display: flex; align-items: center; justify-content: center;">
+        <div style="width: 8px; height: 8px; background: white; border-radius: 50%;"></div>
       </div>
-      <div style="position: absolute; top: 100%; left: 50%; transform: translate(-50%, 4px); background: #0284c7; color: white; font-weight: 800; font-size: 10px; padding: 2px 7px; border-radius: 9999px; white-space: nowrap; box-shadow: 0 2px 8px rgba(0,0,0,0.3); border: 1.5px solid white;">
-        📍 Current Location
+      <div style="position: absolute; top: 100%; left: 50%; transform: translate(-50%, 4px); background: #0369a1; color: white; font-weight: 800; font-size: 10px; padding: 2px 8px; border-radius: 9999px; white-space: nowrap; box-shadow: 0 2px 8px rgba(0,0,0,0.3); border: 1.5px solid white;">
+        📍 Current Location (Draggable)
       </div>
     </div>
   `,
@@ -99,6 +102,27 @@ function MapBoundsUpdater({ geometry }) {
       map.fitBounds(bounds, { padding: [50, 50], maxZoom: 14 });
     }
   }, [geometry, map]);
+  return null;
+}
+
+function MapPanController({ panTarget }) {
+  const map = useMap();
+  useEffect(() => {
+    if (panTarget) {
+      map.flyTo([panTarget.lat, panTarget.lng], 13, { duration: 1.0 });
+    }
+  }, [panTarget, map]);
+  return null;
+}
+
+function MapClickLocationSetter({ isPickingLocation, onLocationPicked }) {
+  useMapEvents({
+    click(e) {
+      if (isPickingLocation) {
+        onLocationPicked(e.latlng.lat, e.latlng.lng);
+      }
+    }
+  });
   return null;
 }
 
@@ -123,6 +147,8 @@ export default function MapRoute() {
   const [locatingUser, setLocatingUser] = useState(false);
   const [userLocation, setUserLocation] = useState(null);
   const [locationStatus, setLocationStatus] = useState('');
+  const [isPickingOnMap, setIsPickingOnMap] = useState(false);
+  const [panTarget, setPanTarget] = useState(null);
 
   // OSMnx layer overlays
   const [activeInfraLayer, setActiveInfraLayer] = useState(null);
@@ -211,6 +237,45 @@ export default function MapRoute() {
     return R * c;
   };
 
+  const updateLocationPosition = (lat, lng, customLabel = null, shouldRecalculate = true) => {
+    setUserLocation({ lat, lng });
+    setPanTarget({ lat, lng });
+
+    if (nodes && nodes.length > 0) {
+      let closestNode = nodes[0];
+      let minDistance = Infinity;
+
+      nodes.forEach((node) => {
+        const nLat = parseFloat(node.lat);
+        const nLng = parseFloat(node.lng || node.lon);
+        const dist = calculateHaversineKm(lat, lng, nLat, nLng);
+        if (dist < minDistance) {
+          minDistance = dist;
+          closestNode = node;
+        }
+      });
+
+      setSourceNode(closestNode.node_id);
+      const distStr =
+        minDistance < 1
+          ? `${Math.round(minDistance * 1000)} m`
+          : `${minDistance.toFixed(1)} km`;
+
+      const label = customLabel || `${lat.toFixed(4)}, ${lng.toFixed(4)}`;
+      setLocationStatus(`📍 ${label} → Connected to ${closestNode.name} (${distStr})`);
+
+      if (shouldRecalculate && destNode && destNode !== closestNode.node_id) {
+        handleCalculateRoute(closestNode.node_id, destNode);
+      }
+    }
+  };
+
+  const handleSetCoimbatoreLocation = () => {
+    // Exact Coimbatore coordinates (Gandhipuram Hub: 11.0168, 76.9558)
+    updateLocationPosition(11.0168, 76.9558, 'Coimbatore City Center', true);
+    setIsPickingOnMap(false);
+  };
+
   const handleUseCurrentLocation = () => {
     if (!navigator.geolocation) {
       setLocationStatus('Geolocation is not supported by your browser.');
@@ -219,51 +284,37 @@ export default function MapRoute() {
     }
 
     setLocatingUser(true);
-    setLocationStatus('Acquiring GPS location...');
+    setLocationStatus('Acquiring GPS / network location...');
 
     navigator.geolocation.getCurrentPosition(
       (position) => {
         const userLat = position.coords.latitude;
         const userLng = position.coords.longitude;
-        setUserLocation({ lat: userLat, lng: userLng });
+        const accuracy = position.coords.accuracy || 0;
 
-        if (nodes && nodes.length > 0) {
-          let closestNode = nodes[0];
-          let minDistance = Infinity;
+        // Check if detected position is near Trichy (common ISP IP gateway in Tamil Nadu)
+        const distToTrichy = calculateHaversineKm(userLat, userLng, 10.7905, 78.7047);
+        const isNearTrichy = distToTrichy < 35;
 
-          nodes.forEach((node) => {
-            const nLat = parseFloat(node.lat);
-            const nLng = parseFloat(node.lng || node.lon);
-            const dist = calculateHaversineKm(userLat, userLng, nLat, nLng);
-            if (dist < minDistance) {
-              minDistance = dist;
-              closestNode = node;
-            }
-          });
+        updateLocationPosition(userLat, userLng, null, true);
 
-          setSourceNode(closestNode.node_id);
-          const distStr =
-            minDistance < 1
-              ? `${Math.round(minDistance * 1000)} m`
-              : `${minDistance.toFixed(1)} km`;
-          setLocationStatus(`Nearest hub selected: ${closestNode.name} (${distStr} away)`);
-        } else {
-          setLocationStatus('GPS coordinates detected.');
+        if (isNearTrichy) {
+          setLocationStatus(`⚠️ Detected near Trichy via ISP IP (${distToTrichy.toFixed(0)}km away). In Coimbatore? Click 'Snap to Coimbatore' or drag pin.`);
+        } else if (accuracy > 15000) {
+          setLocationStatus(`📍 Coarse IP location (±${Math.round(accuracy / 1000)}km). Drag the map pin to refine.`);
         }
 
         setLocatingUser(false);
-        setTimeout(() => setLocationStatus(''), 6000);
       },
       (error) => {
         setLocatingUser(false);
-        let msg = 'Could not acquire location.';
+        let msg = 'Could not acquire GPS.';
         if (error.code === 1) msg = 'Location access denied by browser.';
-        else if (error.code === 2) msg = 'GPS position unavailable.';
+        else if (error.code === 2) msg = 'Position unavailable.';
         else if (error.code === 3) msg = 'Location request timed out.';
-        setLocationStatus(msg);
-        setTimeout(() => setLocationStatus(''), 5000);
+        setLocationStatus(`${msg} Click 'I\\'m in Coimbatore' to set directly.`);
       },
-      { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 }
+      { enableHighAccuracy: true, timeout: 10000, maximumAge: 30000 }
     );
   };
 
@@ -373,30 +424,41 @@ export default function MapRoute() {
           <div className="space-y-3.5">
             {/* Origin Location */}
             <div>
-              <div className="flex items-center justify-between mb-1.5">
+              <div className="flex items-center justify-between mb-1.5 flex-wrap gap-1">
                 <label className="text-xs font-bold text-neutral-700 flex items-center gap-1.5">
                   <span className="w-2.5 h-2.5 rounded-full bg-emerald-600" />
                   Origin City / Hub
                 </label>
-                <button
-                  type="button"
-                  onClick={handleUseCurrentLocation}
-                  disabled={locatingUser}
-                  className="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-700 hover:text-emerald-800 bg-emerald-50 hover:bg-emerald-100 border border-emerald-300 rounded-lg px-2.5 py-1 transition-all shadow-2xs cursor-pointer disabled:opacity-50"
-                  title="Detect GPS location and select nearest hub"
-                >
-                  {locatingUser ? (
-                    <>
-                      <Loader2 className="w-3 h-3 animate-spin text-emerald-600" />
-                      <span>Locating...</span>
-                    </>
-                  ) : (
-                    <>
-                      <LocateFixed className="w-3 h-3 text-emerald-600" />
-                      <span>Use Current Location</span>
-                    </>
-                  )}
-                </button>
+                <div className="flex items-center gap-1.5">
+                  <button
+                    type="button"
+                    onClick={handleSetCoimbatoreLocation}
+                    className="inline-flex items-center gap-1 text-[11px] font-bold text-sky-800 hover:text-sky-950 bg-sky-50 hover:bg-sky-100 border border-sky-300 rounded-lg px-2 py-1 transition-all cursor-pointer shadow-2xs"
+                    title="I am physically in Coimbatore - snap location here directly"
+                  >
+                    <Target className="w-3 h-3 text-sky-600" />
+                    <span>I'm in Coimbatore</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleUseCurrentLocation}
+                    disabled={locatingUser}
+                    className="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-700 hover:text-emerald-800 bg-emerald-50 hover:bg-emerald-100 border border-emerald-300 rounded-lg px-2 py-1 transition-all shadow-2xs cursor-pointer disabled:opacity-50"
+                    title="Detect GPS or network location"
+                  >
+                    {locatingUser ? (
+                      <>
+                        <Loader2 className="w-3 h-3 animate-spin text-emerald-600" />
+                        <span>Locating...</span>
+                      </>
+                    ) : (
+                      <>
+                        <LocateFixed className="w-3 h-3 text-emerald-600" />
+                        <span>GPS Detect</span>
+                      </>
+                    )}
+                  </button>
+                </div>
               </div>
               <select
                 value={sourceNode}
@@ -408,11 +470,57 @@ export default function MapRoute() {
                 ))}
               </select>
 
+              {/* Location Fine-Tuning Banner */}
+              {userLocation && (
+                <div className="mt-2 p-2.5 rounded-xl bg-sky-50 border border-sky-200 text-xs space-y-1.5 shadow-2xs">
+                  <div className="flex items-center justify-between">
+                    <span className="font-bold text-sky-900 flex items-center gap-1.5">
+                      <LocateFixed className="w-3.5 h-3.5 text-sky-600" />
+                      Active Location Pin
+                    </span>
+                    <button 
+                      type="button" 
+                      onClick={() => { setUserLocation(null); setLocationStatus(''); setIsPickingOnMap(false); }}
+                      className="text-[10px] text-sky-700 hover:text-sky-900 font-bold underline cursor-pointer"
+                    >
+                      Clear Pin
+                    </button>
+                  </div>
+                  <div className="flex flex-wrap gap-1.5 text-[11px] pt-0.5">
+                    <button
+                      type="button"
+                      onClick={handleSetCoimbatoreLocation}
+                      className="px-2 py-1 rounded-md bg-white hover:bg-sky-100 text-sky-900 border border-sky-300 font-bold transition-all cursor-pointer flex items-center gap-1 shadow-2xs"
+                    >
+                      <Target className="w-3 h-3 text-sky-600" />
+                      Snap to Coimbatore
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setIsPickingOnMap(!isPickingOnMap)}
+                      className={`px-2 py-1 rounded-md border font-bold transition-all cursor-pointer flex items-center gap-1 shadow-2xs ${
+                        isPickingOnMap 
+                          ? 'bg-sky-600 text-white border-sky-700' 
+                          : 'bg-white hover:bg-sky-100 text-sky-900 border-sky-300'
+                      }`}
+                    >
+                      <Crosshair className="w-3 h-3" />
+                      {isPickingOnMap ? 'Click Map to Place' : 'Pick on Map'}
+                    </button>
+                  </div>
+                  <p className="text-[10px] text-sky-700 pt-0.5">
+                    💡 <strong>Tip:</strong> Drag the blue pin on the map to your exact street in Coimbatore.
+                  </p>
+                </div>
+              )}
+
               {locationStatus && (
                 <div className={`mt-2 text-[11px] font-medium flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg transition-all ${
-                  locationStatus.includes('Nearest hub') || locationStatus.includes('detected')
-                    ? 'bg-emerald-50 text-emerald-800 border border-emerald-200'
-                    : 'bg-amber-50 text-amber-800 border border-amber-200'
+                  locationStatus.includes('⚠️') 
+                    ? 'bg-amber-50 text-amber-900 border border-amber-300'
+                    : (locationStatus.includes('Nearest hub') || locationStatus.includes('📍'))
+                      ? 'bg-emerald-50 text-emerald-800 border border-emerald-200'
+                      : 'bg-neutral-50 text-neutral-800 border border-neutral-200'
                 }`}>
                   <MapPin className="w-3.5 h-3.5 shrink-0 text-emerald-600" />
                   <span>{locationStatus}</span>
@@ -802,7 +910,22 @@ export default function MapRoute() {
       </div>
 
       {/* Leaflet Map Canvas */}
-      <div className="flex-1 relative h-full w-full bg-neutral-100">
+      <div className={`flex-1 relative h-full w-full bg-neutral-100 ${isPickingOnMap ? 'cursor-crosshair' : ''}`}>
+        {/* Floating helper when picking location on map */}
+        {isPickingOnMap && (
+          <div className="absolute top-4 left-1/2 -translate-x-1/2 z-[1000] bg-sky-950/90 text-white backdrop-blur-md px-4 py-2 rounded-full shadow-lg border border-sky-400 text-xs font-bold flex items-center gap-2">
+            <Crosshair className="w-4 h-4 text-sky-300 animate-spin" />
+            <span>Click anywhere on the map to place your exact location pin</span>
+            <button
+              type="button"
+              onClick={() => setIsPickingOnMap(false)}
+              className="ml-2 px-2 py-0.5 rounded-full bg-white/20 hover:bg-white/30 text-[10px] cursor-pointer"
+            >
+              Cancel
+            </button>
+          </div>
+        )}
+
         <MapContainer
           center={[11.1271, 78.6569]}
           zoom={8}
@@ -913,9 +1036,29 @@ export default function MapRoute() {
             </Marker>
           ))}
 
-          {/* Current GPS Location Marker */}
+          {/* Map Pan Controller */}
+          <MapPanController panTarget={panTarget} />
+
+          {/* Map Click Handler for Pick-on-Map */}
+          <MapClickLocationSetter 
+            isPickingLocation={isPickingOnMap} 
+            onLocationPicked={(lat, lng) => {
+              updateLocationPosition(lat, lng, 'Pinned on Map', true);
+              setIsPickingOnMap(false);
+            }} 
+          />
+
+          {/* Current Location Marker (Draggable) */}
           {userLocation && (
             <Marker
+              draggable={true}
+              eventHandlers={{
+                dragend: (e) => {
+                  const marker = e.target;
+                  const pos = marker.getLatLng();
+                  updateLocationPosition(pos.lat, pos.lng, 'Fine-Tuned Pin', true);
+                }
+              }}
               position={[userLocation.lat, userLocation.lng]}
               icon={createLocationIcon()}
             >
@@ -923,11 +1066,14 @@ export default function MapRoute() {
                 <div className="text-xs space-y-1">
                   <div className="font-bold text-sky-700 flex items-center gap-1">
                     <LocateFixed className="w-3.5 h-3.5" />
-                    <span>Your Current Location</span>
+                    <span>Your Location (Draggable)</span>
                   </div>
                   <div className="text-[11px] text-neutral-600">
-                    GPS Coordinates: {userLocation.lat.toFixed(4)}, {userLocation.lng.toFixed(4)}
+                    Coordinates: {userLocation.lat.toFixed(4)}, {userLocation.lng.toFixed(4)}
                   </div>
+                  <p className="text-[10px] text-sky-700 font-semibold pt-0.5">
+                    💡 Drag this pin anywhere on the map to set your exact location!
+                  </p>
                 </div>
               </Popup>
             </Marker>

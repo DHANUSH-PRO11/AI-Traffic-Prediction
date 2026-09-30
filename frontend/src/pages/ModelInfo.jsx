@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { 
   Binary, 
   CheckCircle2, 
@@ -8,15 +9,17 @@ import {
   Database, 
   ShieldCheck, 
   Sparkles,
-  GitCommit
+  GitCommit,
+  Zap
 } from 'lucide-react';
 import { 
   BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, Cell 
 } from 'recharts';
 import { trafficApi } from '../api/client';
-import { SectionHeader, StatCard, Card, StatusBadge } from '../components/common';
+import { SectionHeader, StatCard, Card, StatusBadge, Button } from '../components/common';
 
 export default function ModelInfo() {
+  const navigate = useNavigate();
   const [modelInfo, setModelInfo] = useState(null);
   const [versions, setVersions] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -72,6 +75,15 @@ export default function ModelInfo() {
         description="Real evaluation metrics and split-importance values extracted directly from the active trained model."
         icon={Binary}
         badge={<StatusBadge label="DEPLOYED" variant="emerald" />}
+        actions={
+          <Button
+            onClick={() => navigate('/predict')}
+            icon={Zap}
+            variant="primary"
+          >
+            Test Live Inference
+          </Button>
+        }
       />
 
       {/* 2. Hero Overview Banner - Crisp White */}

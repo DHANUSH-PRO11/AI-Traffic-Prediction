@@ -8,7 +8,12 @@ import {
   CheckCircle2, 
   Sparkles,
   TrendingUp,
-  FileSpreadsheet
+  FileSpreadsheet,
+  Search,
+  Download,
+  Filter,
+  X,
+  Compass
 } from 'lucide-react';
 import { trafficApi } from '../api/client';
 import { SectionHeader, Button, Card, Modal, StatusBadge } from '../components/common';
@@ -20,12 +25,16 @@ export default function Trips() {
   const [nodes, setNodes] = useState([]);
   const [showModal, setShowModal] = useState(false);
 
+  // Search & Filter state
+  const [searchTerm, setSearchTerm] = useState('');
+  const [algorithmFilter, setAlgorithmFilter] = useState('ALL');
+
   // Form state
-  const [source, setSource] = useState('NODE_SANTA_MONICA');
-  const [destination, setDestination] = useState('NODE_DOWNTOWN_LA');
-  const [distance, setDistance] = useState('27.8');
-  const [predictedTime, setPredictedTime] = useState('17.0');
-  const [actualTime, setActualTime] = useState('18.2');
+  const [source, setSource] = useState('Chennai');
+  const [destination, setDestination] = useState('Coimbatore');
+  const [distance, setDistance] = useState('504.0');
+  const [predictedTime, setPredictedTime] = useState('480.0');
+  const [actualTime, setActualTime] = useState('492.0');
   const [algorithm, setAlgorithm] = useState('A*');
   const [submitting, setSubmitting] = useState(false);
 
@@ -64,7 +73,7 @@ export default function Trips() {
         predicted_time: parseFloat(predictedTime),
         actual_time: parseFloat(actualTime),
         algorithm,
-        route_geometry: [[-118.4965, 34.0102], [-118.2518, 34.0488]]
+        route_geometry: [[80.2707, 13.0827], [76.9558, 11.0168]]
       });
       setShowModal(false);
       await loadTrips();
@@ -75,6 +84,53 @@ export default function Trips() {
     }
   };
 
+  // Filtered trips
+  const filteredTrips = trips.filter(t => {
+    const sTerm = searchTerm.toLowerCase();
+    const matchesSearch = !searchTerm ||
+      (t.source && t.source.toLowerCase().includes(sTerm)) ||
+      (t.destination && t.destination.toLowerCase().includes(sTerm)) ||
+      (`TRIP-${t.id}`.toLowerCase().includes(sTerm));
+    const matchesAlgo = algorithmFilter === 'ALL' || t.algorithm === algorithmFilter;
+    return matchesSearch && matchesAlgo;
+  });
+
+  // KPI Calculations
+  const totalDistance = trips.reduce((sum, t) => sum + (Number(t.distance) || 0), 0);
+  const avgVariance = trips.length > 0 
+    ? (trips.reduce((sum, t) => sum + Math.abs((Number(t.actual_time) || 0) - (Number(t.predicted_time) || 0)), 0) / trips.length).toFixed(1)
+    : '0.0';
+  const onTimeCount = trips.filter(t => (Number(t.actual_time) || 0) <= (Number(t.predicted_time) || 0) + 3).length;
+  const onTimeRate = trips.length > 0 ? Math.round((onTimeCount / trips.length) * 100) : 100;
+
+  // CSV Export Handler
+  const handleExportCSV = () => {
+    if (!filteredTrips.length) return;
+    const headers = ['Trip ID', 'Timestamp', 'Origin', 'Destination', 'Algorithm', 'Distance (km)', 'Predicted Time (min)', 'Actual Time (min)', 'Variance (min)'];
+    const rows = filteredTrips.map(t => {
+      const variance = (Number(t.actual_time || 0) - Number(t.predicted_time || 0)).toFixed(1);
+      return [
+        `"TRIP-${t.id}"`,
+        `"${t.created_at || ''}"`,
+        `"${t.source || ''}"`,
+        `"${t.destination || ''}"`,
+        `"${t.algorithm || 'A*'}"`,
+        t.distance || 0,
+        t.predicted_time || 0,
+        t.actual_time || 0,
+        variance
+      ].join(',');
+    });
+    const csvContent = 'data:text/csv;charset=utf-8,' + [headers.join(','), ...rows].join('\n');
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement('a');
+    link.setAttribute('href', encodedUri);
+    link.setAttribute('download', `traffic_trips_export_${new Date().toISOString().split('T')[0]}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
     <div className="space-y-6 max-w-6xl mx-auto pb-6">
       {/* 1. Header Section */}
@@ -83,46 +139,124 @@ export default function Trips() {
         description="Completed driver trip telemetry stored to train and evaluate future ML model versions."
         icon={History}
         actions={
-          <Button
-            onClick={() => setShowModal(true)}
-            icon={PlusCircle}
-            variant="primary"
-          >
-            Record Completed Trip
-          </Button>
+          <div className="flex items-center gap-2">
+            <Button
+              onClick={handleExportCSV}
+              icon={Download}
+              variant="secondary"
+              disabled={trips.length === 0}
+            >
+              Export CSV
+            </Button>
+            <Button
+              onClick={() => setShowModal(true)}
+              icon={PlusCircle}
+              variant="primary"
+            >
+              Record Completed Trip
+            </Button>
+          </div>
         }
       />
 
-      {/* 2. Hero Information Card - White Background with Emerald Accent */}
-      <div className="p-5 rounded-2xl bg-white border border-neutral-200 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <span className="text-xs font-bold text-emerald-700 uppercase tracking-wider block">
-            Continuous Learning Pipeline
-          </span>
-          <p className="text-xs text-neutral-600 mt-1 max-w-xl">
-            Every recorded trip logs the predicted vs actual duration, generating real-world residual error metrics that trigger model retraining whenever error boundaries drift.
-          </p>
-        </div>
-        <div className="flex items-center gap-3 shrink-0">
-          <div className="bg-neutral-50 px-4 py-2 rounded-xl border border-neutral-200 text-center font-mono">
-            <span className="text-[10px] text-neutral-500 uppercase font-bold block">Logged Trips</span>
-            <span className="text-xl font-black text-neutral-900">{trips.length}</span>
+      {/* 2. Key Metrics Summary Cards */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="p-4 rounded-xl bg-white border border-neutral-200 shadow-xs">
+          <div className="flex items-center justify-between text-neutral-500 mb-1">
+            <span className="text-xs font-bold uppercase tracking-wider">Logged Trips</span>
+            <Compass className="w-4 h-4 text-emerald-600" />
           </div>
+          <div className="text-2xl font-black text-neutral-900 font-mono">
+            {trips.length}
+          </div>
+          <span className="text-[11px] text-neutral-500 mt-1 block">Continuous database</span>
+        </div>
+
+        <div className="p-4 rounded-xl bg-white border border-neutral-200 shadow-xs">
+          <div className="flex items-center justify-between text-neutral-500 mb-1">
+            <span className="text-xs font-bold uppercase tracking-wider">Total Tracked</span>
+            <Navigation className="w-4 h-4 text-blue-600" />
+          </div>
+          <div className="text-2xl font-black text-neutral-900 font-mono">
+            {formatDistance(totalDistance)}
+          </div>
+          <span className="text-[11px] text-neutral-500 mt-1 block">Tamil Nadu highway network</span>
+        </div>
+
+        <div className="p-4 rounded-xl bg-white border border-neutral-200 shadow-xs">
+          <div className="flex items-center justify-between text-neutral-500 mb-1">
+            <span className="text-xs font-bold uppercase tracking-wider">Mean Variance</span>
+            <Clock className="w-4 h-4 text-amber-600" />
+          </div>
+          <div className="text-2xl font-black text-neutral-900 font-mono">
+            ±{avgVariance}m
+          </div>
+          <span className="text-[11px] text-neutral-500 mt-1 block">Predicted vs actual travel</span>
+        </div>
+
+        <div className="p-4 rounded-xl bg-white border border-neutral-200 shadow-xs">
+          <div className="flex items-center justify-between text-neutral-500 mb-1">
+            <span className="text-xs font-bold uppercase tracking-wider">On-Time Accuracy</span>
+            <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+          </div>
+          <div className="text-2xl font-black text-emerald-700 font-mono">
+            {onTimeRate}%
+          </div>
+          <span className="text-[11px] text-neutral-500 mt-1 block">Within +3 min margin</span>
         </div>
       </div>
 
-      {/* 3. Main Content: Trips Table */}
+      {/* 3. Search & Filter Bar */}
+      <div className="p-3 bg-white rounded-xl border border-neutral-200 shadow-xs flex flex-col sm:flex-row items-center justify-between gap-3">
+        <div className="relative w-full sm:w-80">
+          <Search className="w-4 h-4 text-neutral-400 absolute left-3 top-1/2 -translate-y-1/2" />
+          <input
+            type="text"
+            placeholder="Search by city (e.g. Chennai, Madurai) or Trip ID..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-full pl-9 pr-8 py-1.5 text-xs rounded-lg border border-neutral-200 focus:outline-none focus:border-emerald-500 bg-neutral-50 focus:bg-white text-neutral-900"
+          />
+          {searchTerm && (
+            <button
+              onClick={() => setSearchTerm('')}
+              className="absolute right-2.5 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-neutral-600 cursor-pointer"
+            >
+              <X className="w-3.5 h-3.5" />
+            </button>
+          )}
+        </div>
+
+        <div className="flex items-center gap-2 w-full sm:w-auto">
+          <Filter className="w-3.5 h-3.5 text-neutral-500 shrink-0" />
+          <span className="text-xs text-neutral-500 font-semibold shrink-0">Strategy:</span>
+          <select
+            value={algorithmFilter}
+            onChange={(e) => setAlgorithmFilter(e.target.value)}
+            className="text-xs py-1.5 px-2.5 rounded-lg border border-neutral-200 bg-neutral-50 text-neutral-800 font-medium focus:outline-none focus:border-emerald-500 cursor-pointer"
+          >
+            <option value="ALL">All Strategies</option>
+            <option value="A*">Fastest Route (A*)</option>
+            <option value="Dijkstra">Shortest Path (Dijkstra)</option>
+          </select>
+          <span className="text-xs text-neutral-500 font-mono ml-2">
+            Showing {filteredTrips.length} of {trips.length}
+          </span>
+        </div>
+      </div>
+
+      {/* 4. Main Content: Trips Table */}
       <Card
         title="Recorded Commuter Trips"
         subtitle="Chronological list of optimized paths and variance analysis"
-        action={<StatusBadge label={`${trips.length} Total`} variant="slate" />}
+        action={<StatusBadge label={`${filteredTrips.length} Shown`} variant="slate" />}
         bodyClassName="p-0"
       >
         {loading ? (
           <div className="flex items-center justify-center p-12">
             <div className="w-8 h-8 border-4 border-emerald-600 border-t-transparent rounded-full animate-spin" />
           </div>
-        ) : trips.length > 0 ? (
+        ) : filteredTrips.length > 0 ? (
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
               <thead className="bg-neutral-50 text-neutral-500 uppercase text-[10px] font-bold border-b border-neutral-200 tracking-wider">
@@ -137,7 +271,7 @@ export default function Trips() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-neutral-100 font-mono">
-                {trips.map((t, idx) => {
+                {filteredTrips.map((t, idx) => {
                   const variance = Math.round((t.actual_time - t.predicted_time) * 10) / 10;
                   const isFaster = variance <= 0;
                   return (
@@ -179,6 +313,17 @@ export default function Trips() {
                 })}
               </tbody>
             </table>
+          </div>
+        ) : trips.length > 0 ? (
+          <div className="p-12 text-center text-neutral-500 space-y-3">
+            <p className="font-semibold text-neutral-700">No trips matching "{searchTerm || algorithmFilter}"</p>
+            <p className="text-xs text-neutral-500">Try adjusting your search query or reset the filter.</p>
+            <button
+              onClick={() => { setSearchTerm(''); setAlgorithmFilter('ALL'); }}
+              className="text-xs px-3 py-1.5 rounded-lg bg-emerald-50 text-emerald-700 hover:bg-emerald-100 font-bold border border-emerald-200 cursor-pointer"
+            >
+              Reset All Filters
+            </button>
           </div>
         ) : (
           <div className="p-8 text-center text-neutral-500">
