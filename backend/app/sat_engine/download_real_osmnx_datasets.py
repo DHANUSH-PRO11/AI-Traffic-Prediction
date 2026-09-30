@@ -12,7 +12,11 @@ import time
 from typing import Any
 import pandas as pd
 import geopandas as gpd
-import osmnx as ox
+try:
+    import osmnx as _ox
+    ox: Any = _ox
+except ImportError:
+    ox = None
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DATASETS_DIR = os.path.join(BASE_DIR, "datasets")

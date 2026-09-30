@@ -124,8 +124,8 @@ def create_intermediate_geometry(start_coord, end_coord, num_points=5):
 def generate_network_data():
     segments = []
     for s in SEGMENT_DEFINITIONS:
-        start_node = NETWORK_NODES[s["start"]]
-        end_node = NETWORK_NODES[s["end"]]
+        start_node = NETWORK_NODES[str(s["start"])]
+        end_node = NETWORK_NODES[str(s["end"])]
         dist_km = calculate_haversine(start_node["lat"], start_node["lng"], end_node["lat"], end_node["lng"])
         actual_length = round(dist_km * 1.15, 2)
         geom = create_intermediate_geometry(start_node, end_node)

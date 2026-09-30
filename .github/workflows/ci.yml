@@ -1,0 +1,149 @@
+name: CI - Build & Test Pipeline
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - '**.md'
+      - '.gitignore'
+  pull_request:
+    branches:
+      - main
+    paths-ignore:
+      - '**.md'
+      - '.gitignore'
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # -------------------------------------------------------------
+  # Job 1: Backend Testing, Code Validation & Coverage
+  # -------------------------------------------------------------
+  backend-test:
+    name: Backend Tests & Lint
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    strategy:
+      matrix:
+        python-version: ['3.11']
+
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: 'pip'
+          cache-dependency-path: backend/requirements.txt
+
+      - name: Install Backend Dependencies
+        run: |
+          python -m pip install --upgrade pip setuptools wheel
+          pip install -r backend/requirements.txt
+
+      - name: Syntax & Import Sanity Check
+        run: |
+          python -m compileall backend/ tests/ -q
+
+      - name: Run Backend Pytest Suite with Coverage
+        env:
+          DATABASE_URL: sqlite:///./traffic_system.db
+          SECRET_KEY: test_secret_key_ci_cd_2026
+        run: |
+          python -m pytest --cov=backend/app --cov-report=term --cov-report=xml:coverage.xml --maxfail=1 -v tests/
+
+      - name: Upload Test Coverage Artifact
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: backend-coverage-report
+          path: coverage.xml
+          retention-days: 14
+
+  # -------------------------------------------------------------
+  # Job 2: Frontend Linting & Production Build Verification
+  # -------------------------------------------------------------
+  frontend-test-and-build:
+    name: Frontend Lint & Production Build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js 20.x
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install Frontend Dependencies
+        working-directory: frontend
+        run: |
+          npm ci
+
+      - name: Run Code Linter (oxlint)
+        working-directory: frontend
+        run: |
+          npm run lint
+
+      - name: Run Production Bundle Build (Vite)
+        working-directory: frontend
+        run: |
+          npm run build
+
+      - name: Upload Production Dist Bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-dist-bundle
+          path: frontend/dist/
+          retention-days: 14
+
+  # -------------------------------------------------------------
+  # Job 3: Docker & Multi-Container Build Validation
+  # -------------------------------------------------------------
+  docker-validation:
+    name: Docker Container Validation
+    needs: [backend-test, frontend-test-and-build]
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Validate Docker Compose Config
+        run: |
+          docker compose config
+
+      - name: Build Backend Docker Image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: docker/Dockerfile.backend
+          push: false
+          tags: ai-traffic-backend:ci-test
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Build Frontend Docker Image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: docker/Dockerfile.frontend
+          push: false
+          tags: ai-traffic-frontend:ci-test
+          cache-from: type=gha
+          cache-to: type=gha,mode=max

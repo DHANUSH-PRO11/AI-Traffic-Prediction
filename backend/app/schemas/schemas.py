@@ -1,5 +1,9 @@
 from typing import List, Optional, Dict, Any
-from pydantic import BaseModel, EmailStr
+try:
+    from pydantic.main import BaseModel
+    from pydantic.networks import EmailStr
+except ImportError:
+    from pydantic import BaseModel, EmailStr
 from datetime import datetime
 
 # --- Auth Schemas ---

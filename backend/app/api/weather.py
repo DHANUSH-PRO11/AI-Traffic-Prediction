@@ -1,5 +1,8 @@
 from fastapi import APIRouter
-from pydantic import BaseModel
+try:
+    from pydantic.main import BaseModel
+except ImportError:
+    from pydantic import BaseModel
 from app.services.traffic_service import traffic_service
 import datetime
 

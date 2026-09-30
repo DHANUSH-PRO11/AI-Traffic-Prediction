@@ -1,5 +1,8 @@
 from fastapi import APIRouter, HTTPException
-from pydantic import BaseModel
+try:
+    from pydantic.main import BaseModel
+except ImportError:
+    from pydantic import BaseModel
 from typing import Optional
 from app.services.traffic_service import traffic_service
 

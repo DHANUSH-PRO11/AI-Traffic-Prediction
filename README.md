@@ -1,5 +1,13 @@
 # AI Traffic Prediction & Dynamic Route Optimization System
 
+[![CI - Build & Test Pipeline](https://github.com/DHANUSH-PRO11/AI-Traffic-Prediction/actions/workflows/ci.yml/badge.svg)](https://github.com/DHANUSH-PRO11/AI-Traffic-Prediction/actions/workflows/ci.yml)
+[![CD - Production Release](https://github.com/DHANUSH-PRO11/AI-Traffic-Prediction/actions/workflows/cd.yml/badge.svg)](https://github.com/DHANUSH-PRO11/AI-Traffic-Prediction/actions/workflows/cd.yml)
+![Python](https://img.shields.io/badge/Python-3.11%20%7C%203.12-blue?logo=python)
+![FastAPI](https://img.shields.io/badge/FastAPI-0.110+-009688?logo=fastapi)
+![React](https://img.shields.io/badge/React-19.0-61DAFB?logo=react)
+![Docker](https://img.shields.io/badge/Docker-Multi--Container-2496ED?logo=docker)
+![License](https://img.shields.io/badge/License-MIT-green)
+
 A production-quality full-stack intelligent transportation platform combining machine learning continuous travel-time regression, dynamic graph shortest-path routing (A* and Dijkstra), live traffic map visualization, real-time incident mitigation, user trip logging, and automated model retraining.
 
 ---
@@ -168,3 +176,62 @@ docker-compose up --build
 3. System triggers periodic or on-demand retraining via `/api/ml/train` or `scripts/train_model.py`.
 4. Candidate models are evaluated on unseen time-series validation sets.
 5. If candidate MAE / RMSE demonstrates improved accuracy, the model is automatically promoted to production without system downtime.
+
+---
+
+## 🔄 CI/CD Automation & DevOps Pipeline
+
+The repository includes a production-grade **GitHub Actions CI/CD Pipeline** designed for high reliability, automated regression testing, and zero-downtime container publishing.
+
+```mermaid
+flowchart LR
+    subgraph Trigger["Git Events"]
+        push["Push to main"]
+        pr["Pull Request"]
+    end
+
+    subgraph CI["Continuous Integration (ci.yml)"]
+        b_test["Backend Pytest (14 tests) & Coverage"]
+        f_build["Frontend Oxlint & Vite Build"]
+        d_val["Docker Compose & Image Validation"]
+    end
+
+    subgraph CD["Continuous Deployment (cd.yml)"]
+        ghcr["Build & Publish to GHCR"]
+        deploy["Production Container Deployment"]
+    end
+
+    push --> CI
+    pr --> CI
+    CI --> CD
+```
+
+### 1. Continuous Integration (`.github/workflows/ci.yml`)
+- **Backend Testing & Coverage**: Runs Python 3.11 with cached pip dependencies. Executes the full 14-test suite (`pytest`), validates ML feature pipelines, Dijkstra/A* routing, and REST endpoints, outputting Cobertura XML coverage artifacts.
+- **Frontend Validation**: Runs Node.js 20 with cached npm dependencies. Performs `oxlint` static code analysis and executes `vite build` to guarantee zero frontend bundling issues.
+- **Docker Validation**: Synthesizes and tests `docker-compose.yml` and builds both `Dockerfile.backend` and `Dockerfile.frontend` using Buildx with GitHub Actions caching.
+
+### 2. Continuous Delivery (`.github/workflows/cd.yml`)
+- **Container Registry Publishing**: Automatically builds multi-platform OCI images and publishes them to **GitHub Container Registry (GHCR)**:
+  - `ghcr.io/dhanush-pro11/ai-traffic-prediction/backend:latest`
+  - `ghcr.io/dhanush-pro11/ai-traffic-prediction/frontend:latest`
+- **Release Tagging**: Generates semantic tags (`vX.Y.Z`) and commit SHA tracking (`sha-<commit>`).
+
+### 3. Automated Dependency Updates (`.github/dependabot.yml`)
+- Weekly automated vulnerability alerts and version PRs for Python backend packages and npm frontend libraries.
+
+### 4. Running CI/CD Verifications Locally
+```bash
+# Run all backend tests
+npm test
+
+# Run frontend code linting
+npm run lint
+
+# Build production frontend bundle
+npm run build
+
+# Run integrated CI test command
+npm run test:ci
+```
+

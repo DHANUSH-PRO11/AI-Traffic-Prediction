@@ -10,7 +10,11 @@
     "frontend": "npm --prefix frontend run dev",
     "build": "npm --prefix frontend run build",
     "preview": "npm --prefix frontend run preview",
-    "test": "python -m unittest discover -s tests -p \"test_*.py\"",
+    "lint": "npm --prefix frontend run lint",
+    "test": "python -m pytest tests/ -v",
+    "test:backend": "python -m pytest tests/ -v",
+    "test:frontend": "npm --prefix frontend run lint",
+    "test:ci": "python -m pytest --maxfail=1 tests/ && npm --prefix frontend run build",
     "train": "python scripts/train_model.py"
   }
 }
