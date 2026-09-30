@@ -1,9 +1,5 @@
 from typing import List, Optional, Dict, Any
-try:
-    from pydantic.main import BaseModel
-    from pydantic.networks import EmailStr
-except ImportError:
-    from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, EmailStr
 from datetime import datetime
 
 # --- Auth Schemas ---
@@ -99,6 +95,11 @@ class AccidentBase(BaseModel):
 
 class AccidentCreate(AccidentBase):
     pass
+
+class AccidentCreateRequest(BaseModel):
+    road_id: str
+    severity: Optional[str] = "HIGH"
+    description: Optional[str] = "Vehicle collision causing lane closure"
 
 class AccidentResponse(AccidentBase):
     id: int

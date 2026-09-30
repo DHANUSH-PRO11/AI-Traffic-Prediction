@@ -53,6 +53,10 @@ def download_osmnx_road_network():
     Downloads real spatial road network graph via OSMnx for major cities,
     extracts node and edge GeoDataFrames, and saves them to CSV datasets.
     """
+    if ox is None:
+        print("[OSMnx] Library not installed. Skipping live OSMnx download.")
+        return None, None
+
     print("\n[1/3] Downloading real OSMnx spatial road networks...")
     all_nodes = []
     all_edges = []
@@ -128,6 +132,10 @@ def download_osmnx_features():
     Downloads real spatial infrastructure elements (Traffic Signals, Fuel Stations, Tolls, Bus Stops, Speed Cameras, Hospitals, Parking)
     using OSMnx features_from_place API for target cities.
     """
+    if ox is None:
+        print("[OSMnx] Library not installed. Skipping live features download.")
+        return []
+
     print("\n[2/3] Downloading real OSMnx traffic & spatial infrastructure features...")
     all_features = []
     categorized = {cat: [] for cat in FEATURE_TAGS.keys()}

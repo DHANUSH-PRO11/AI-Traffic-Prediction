@@ -92,7 +92,33 @@ class TrafficService:
                     geometry=seg_obj["geometry"],
                     base_lanes=seg_obj["base_lanes"]
                 )
-            print(f"[TrafficService] Loaded {len(df_nodes)} Tamil Nadu hubs and {len(df_edges)} corridors from sat datasets.")
+
+                # Add reverse corridor for two-way highway connectivity
+                road_id_rev = f"{road_id}_REV"
+                seg_obj_rev = {
+                    "road_id": road_id_rev,
+                    "road_name": f"{dst} - {src} Highway",
+                    "road_type": road_type,
+                    "start_node": dst_id,
+                    "end_node": src_id,
+                    "length": dist_km,
+                    "max_speed": speed_kph,
+                    "geometry": [[dst_lon, dst_lat], [src_lon, src_lat]],
+                    "base_lanes": 4 if road_type == "highway" else 2
+                }
+                self.segments_dict[road_id_rev] = seg_obj_rev
+                self.graph.add_edge(
+                    road_id=road_id_rev,
+                    road_name=seg_obj_rev["road_name"],
+                    start_node=dst_id,
+                    end_node=src_id,
+                    road_type=road_type,
+                    length=dist_km,
+                    max_speed=speed_kph,
+                    geometry=seg_obj_rev["geometry"],
+                    base_lanes=seg_obj_rev["base_lanes"]
+                )
+            print(f"[TrafficService] Loaded {len(df_nodes)} Tamil Nadu hubs and {len(df_edges)*2} bidirectional corridors from sat datasets.")
             return
 
         base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../ml/data/raw"))

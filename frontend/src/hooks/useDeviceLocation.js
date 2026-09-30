@@ -1,15 +1,22 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 
 /**
- * Standard device geolocation options as specified:
+ * Standard device geolocation options:
  * - enableHighAccuracy: true (use GPS hardware when available)
- * - timeout: 10000 (10s timeout)
- * - maximumAge: 0 (never use cached/stale coordinates)
+ * - timeout: 15000 (15s timeout to give GPS/Wi-Fi positioning adequate time on PC/mobile)
+ * - maximumAge: 10000 (allow recent 10s fix to reduce hardware lock delays)
  */
 const GEOLOCATION_OPTIONS = {
   enableHighAccuracy: true,
-  timeout: 10000,
-  maximumAge: 0
+  timeout: 15000,
+  maximumAge: 10000
+};
+
+// Fallback options for when GPS hardware is unavailable or times out
+const FALLBACK_GEOLOCATION_OPTIONS = {
+  enableHighAccuracy: false,
+  timeout: 12000,
+  maximumAge: 30000
 };
 
 /**
@@ -33,6 +40,7 @@ export function useDeviceLocation(autoStartTracking = false) {
   const [isTracking, setIsTracking] = useState(false);
 
   const watchIdRef = useRef(null);
+  const hasExistingPosition = useRef(false);
 
   // Map standard GeolocationPositionError to specified user-friendly error messages
   const formatGeolocationError = useCallback((geoError) => {
@@ -67,6 +75,7 @@ export function useDeviceLocation(autoStartTracking = false) {
       `Timestamp: ${new Date(timestamp).toISOString()}`
     );
 
+    hasExistingPosition.current = true;
     setLocationState({
       latitude,
       longitude,
@@ -83,6 +92,12 @@ export function useDeviceLocation(autoStartTracking = false) {
 
   // Handle position errors
   const handlePositionError = useCallback((geoError) => {
+    // If it's a momentary timeout during continuous tracking and we already have a fix, don't disrupt the user
+    if (geoError?.code === 3 && hasExistingPosition.current) {
+      console.warn('[LOCATION] Continuous GPS tick timed out; retaining current location fix.');
+      return;
+    }
+
     const errorMsg = formatGeolocationError(geoError);
     console.warn(`[LOCATION ERROR] Code ${geoError?.code}: ${errorMsg}`);
     setError(errorMsg);
@@ -132,7 +147,7 @@ export function useDeviceLocation(autoStartTracking = false) {
     }
   }, [handlePositionSuccess, handlePositionError]);
 
-  // Trigger one-time high accuracy location fetch (e.g. on "Locate Me" button click)
+  // Trigger one-time location fetch with automatic fallback if high accuracy times out
   const getCurrentLocation = useCallback(() => {
     return new Promise((resolve, reject) => {
       if (typeof navigator === 'undefined' || !navigator.geolocation) {
@@ -147,20 +162,37 @@ export function useDeviceLocation(autoStartTracking = false) {
       setLoading(true);
       setError(null);
 
+      // Attempt high accuracy first
       navigator.geolocation.getCurrentPosition(
         (position) => {
           setLoading(false);
           handlePositionSuccess(position);
-
-          // Automatically establish continuous tracking once initial position is granted
           startTracking();
-
           resolve(position.coords);
         },
         (geoError) => {
-          setLoading(false);
-          handlePositionError(geoError);
-          reject(geoError);
+          // If high accuracy timed out or was unavailable, try fallback with network/Wi-Fi positioning
+          if (geoError.code === 2 || geoError.code === 3) {
+            console.log('[LOCATION] High-accuracy GPS timed out or unavailable, attempting standard network positioning...');
+            navigator.geolocation.getCurrentPosition(
+              (fbPosition) => {
+                setLoading(false);
+                handlePositionSuccess(fbPosition);
+                startTracking();
+                resolve(fbPosition.coords);
+              },
+              (finalError) => {
+                setLoading(false);
+                handlePositionError(finalError);
+                reject(finalError);
+              },
+              FALLBACK_GEOLOCATION_OPTIONS
+            );
+          } else {
+            setLoading(false);
+            handlePositionError(geoError);
+            reject(geoError);
+          }
         },
         GEOLOCATION_OPTIONS
       );

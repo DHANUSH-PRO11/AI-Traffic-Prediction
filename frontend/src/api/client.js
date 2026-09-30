@@ -52,8 +52,8 @@ export const trafficApi = {
   calculateSatRoute: (data) => api.post('/route', data).then(res => res.data),
   predictLive: (data) => api.post('/predict-live', data).then(res => res.data),
   getOsmnxFeatures: (type = 'traffic_signals', place = 'Tamil Nadu, India') => 
-    api.get('/api/osmnx/features', { params: { type, place } }).then(res => res.data),
-  getOsmnxDatasets: () => api.get('/api/osmnx/datasets').then(res => res.data),
+    api.get('/osmnx/features', { params: { type, place } }).then(res => res.data),
+  getOsmnxDatasets: () => api.get('/osmnx/datasets').then(res => res.data),
   getSearchHistory: (limit = 100) => api.get('/history', { params: { limit } }).then(res => res.data),
   clearSearchHistory: () => api.delete('/history').then(res => res.data),
 };

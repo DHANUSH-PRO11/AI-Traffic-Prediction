@@ -372,9 +372,9 @@ export default function MapRoute() {
 
     const distStr = minDistance < 1 ? `${Math.round(minDistance * 1000)} m` : `${minDistance.toFixed(1)} km`;
     const accStr = accuracy ? ` (±${Math.round(accuracy)}m)` : '';
-    const label = customLabel || 'Your Location';
-
-    setLocationStatus(`📍 Connected to ${closestNode.name} (${distStr} from GPS)${accStr}`);
+    const label = customLabel || deviceAddress;
+    const prefix = label ? `${label} • ` : '';
+    setLocationStatus(`📍 ${prefix}Connected to ${closestNode.name} (${distStr} from GPS)${accStr}`);
 
     let targetDest = destNode;
     if (destNode === closestNode.node_id) {
@@ -625,9 +625,9 @@ export default function MapRoute() {
                         <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75" />
                         <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-blue-600" />
                       </span>
-                      <span className="truncate">Your Location</span>
+                      <span className="truncate shrink-0">Your Location</span>
                       {deviceAddress && (
-                        <span className="text-[10px] text-blue-600 font-normal truncate max-w-[120px]">
+                        <span className="text-[11px] text-blue-700 font-semibold truncate max-w-[180px] sm:max-w-[260px]" title={deviceAddress}>
                           ({deviceAddress})
                         </span>
                       )}
@@ -1230,7 +1230,7 @@ export default function MapRoute() {
             locating={locatingDevice}
             isUsingCurrentLocation={isUsingCurrentLocation}
           />
-          {/* Tile Layer: Carto Voyager (Streets) or Esri World Imagery (Satellite) */}
+          {/* Tile Layer: OpenStreetMap (Streets) or Esri World Imagery (Satellite) */}
           {mapStyle === 'satellite' ? (
             <TileLayer
               attribution='Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
@@ -1239,9 +1239,8 @@ export default function MapRoute() {
             />
           ) : (
             <TileLayer
-              attribution='&copy; <a href="https://carto.com/">CARTO</a> &copy; OpenStreetMap'
-              url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
-              subdomains="abcd"
+              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               maxZoom={19}
             />
           )}

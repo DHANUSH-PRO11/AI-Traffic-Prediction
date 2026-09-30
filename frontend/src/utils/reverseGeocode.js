@@ -51,20 +51,56 @@ export async function reverseGeocode(lat, lon) {
     const data = await res.json();
     const addr = data.address || {};
 
-    const city = addr.city || addr.town || addr.municipality || addr.village || addr.county || addr.suburb || 'Local Area';
+    // 1. Most specific local / popular name (village, suburb, neighborhood, landmark)
+    const popularName = addr.suburb || addr.neighbourhood || addr.village || addr.hamlet || addr.residential || addr.quarter || addr.road || '';
+
+    // 2. Sub-district / Taluk / Town / County
+    const subDistrict = addr.town || addr.county || addr.municipality || '';
+
+    // 3. District / Metropolitan Area
+    const districtRaw = addr.state_district || addr.district || '';
+    const cleanDistrict = districtRaw.replace(/\b(District|City|South|North|East|West|Central|Corporation)\b/gi, '').trim();
+
+    // 4. City: Prioritize explicit city, then cleaned district, then cleaned town/county
+    let city = addr.city || '';
+    if (!city && cleanDistrict) {
+      city = cleanDistrict;
+    }
+    if (!city && subDistrict) {
+      const cleanSub = subDistrict.replace(/\b(District|City|South|North|East|West|Central|Corporation)\b/gi, '').trim();
+      city = cleanSub || subDistrict;
+    }
+    if (!city) {
+      city = popularName || 'Local Area';
+    }
+
     const state = addr.state || '';
-    const locality = addr.suburb || addr.neighbourhood || addr.road || '';
 
+    // 5. Construct cohesive label ensuring: Popular Name + Sub-area (if unique) + City
     const labelParts = [];
-    if (locality && locality !== city) labelParts.push(locality);
-    if (city) labelParts.push(city);
-    if (state) labelParts.push(state);
+    if (popularName) labelParts.push(popularName);
+    if (subDistrict && subDistrict.toLowerCase() !== popularName.toLowerCase() && subDistrict.toLowerCase() !== city.toLowerCase()) {
+      labelParts.push(subDistrict);
+    }
+    if (city && city.toLowerCase() !== popularName.toLowerCase()) {
+      labelParts.push(city);
+    }
 
-    const displayName = labelParts.length > 0 ? labelParts.join(', ') : (data.display_name?.split(',').slice(0, 3).join(',') || `${lat.toFixed(4)}, ${lon.toFixed(4)}`);
+    // Guarantee that city is represented in the display label
+    if (city && !labelParts.some(p => p.toLowerCase().includes(city.toLowerCase()))) {
+      labelParts.push(city);
+    }
+
+    const displayName = labelParts.length > 0
+      ? labelParts.join(', ')
+      : (data.display_name?.split(',').slice(0, 3).map(s => s.trim()).join(', ') || `${lat.toFixed(4)}, ${lon.toFixed(4)}`);
 
     const result = {
       fullAddress: data.display_name || displayName,
       city: city,
+      popularName: popularName,
+      subDistrict: subDistrict,
+      district: cleanDistrict || districtRaw,
       state: state,
       displayName: displayName
     };

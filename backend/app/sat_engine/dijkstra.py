@@ -21,12 +21,12 @@ if _ENGINE_DIR not in sys.path:
 try:
     from app.sat_engine.predict import predict_traffic, get_multiplier
     from app.sat_engine.weather import get_weather
-    from app.sat_engine.graph_loader import get_graph, path_to_coords, path_length_km, get_nearest_node, geocode_location
+    from app.sat_engine.graph_loader import get_graph, path_to_coords, path_length_km, get_nearest_node, geocode_location, _get_edge_records
     from app.sat_engine.osrm_router import fetch_osrm_driving_routes, generate_curved_fallback_polyline
 except ImportError:
     from predict import predict_traffic, get_multiplier  # type: ignore
     from weather import get_weather  # type: ignore
-    from graph_loader import get_graph, path_to_coords, path_length_km, get_nearest_node, geocode_location  # type: ignore
+    from graph_loader import get_graph, path_to_coords, path_length_km, get_nearest_node, geocode_location, _get_edge_records  # type: ignore
     from osrm_router import fetch_osrm_driving_routes, generate_curved_fallback_polyline  # type: ignore
 
 # ── Vehicle Speed Profiles ─────────────────────────────────────────────────────
@@ -280,9 +280,10 @@ def _format_route_item(
     travel_seconds = 0.0
     for u, v in zip(path[:-1], path[1:]):
         edges = H.get_edge_data(u, v)
-        if edges:
-            data = min(edges.values(), key=lambda d: float(d.get("travel_time", 9e9)))
-            travel_seconds += float(data.get("travel_time", 60.0))
+        records = _get_edge_records(edges)
+        if records:
+            times = [float(str(r.get("travel_time", 60.0))) for r in records if r.get("travel_time") is not None]
+            travel_seconds += min(times) if times else 60.0
         else:
             travel_seconds += 300.0
 
@@ -290,13 +291,16 @@ def _format_route_item(
     coords = get_real_road_polyline_for_path(path, G)
 
     # Dominant road type
-    road_types = []
+    road_types: list[str] = []
     for u, v in zip(path[:-1], path[1:]):
         edges = G.get_edge_data(u, v)
-        if edges:
-            data = list(edges.values())[0]
-            ht = data.get("highway", "highway")
-            road_types.append(ht if isinstance(ht, str) else ht[0])
+        records = _get_edge_records(edges)
+        if records:
+            ht = records[0].get("highway", "highway")
+            if isinstance(ht, (list, tuple)) and len(ht) > 0:
+                road_types.append(str(ht[0]))
+            else:
+                road_types.append(str(ht))
     road_type = max(set(road_types), key=road_types.count) if road_types else "highway"
 
     via_summary = _extract_via_summary(G, path)
@@ -476,7 +480,11 @@ def find_best_route(source_name: str, dest_name: str, vehicle_type: str = "car")
             config = route_configs[i] if i < len(route_configs) else route_configs[2]
             dist_km = raw["distance_km"]
             base_dur = raw["base_duration_min"]
-            travel_time_min = max(1.0, round(base_dur * multiplier / rain_factor, 1))
+            # OSRM already uses real road speed data, so apply only a partial traffic adjustment
+            # Full multiplier would double-count: OSRM speed limits vs actual congestion
+            osrm_traffic_factor = 1.0 + (multiplier - 1.0) * 0.35  # 35% of multiplier adjustment
+            rain_time_factor = (1.0 / rain_factor) if rainfall > 0.5 else 1.0
+            travel_time_min = max(1.0, round(base_dur * osrm_traffic_factor * rain_time_factor, 1))
             coords = raw["coordinates"]
 
             routes.append({
@@ -570,9 +578,13 @@ def find_best_route(source_name: str, dest_name: str, vehicle_type: str = "car")
         H_alt = H.copy()
         for u, v in zip(path_fastest[:-1], path_fastest[1:]):
             if H_alt.has_edge(u, v):
-                for k in H_alt[u][v]:
-                    H_alt[u][v][k]["travel_time"] *= 2.2
-                    H_alt[u][v][k]["length"] *= 2.2
+                if getattr(H_alt, "is_multigraph", lambda: False)():
+                    for k in H_alt[u][v]:
+                        H_alt[u][v][k]["travel_time"] = float(H_alt[u][v][k].get("travel_time", 60.0)) * 2.2
+                        H_alt[u][v][k]["length"] = float(H_alt[u][v][k].get("length", 1000.0)) * 2.2
+                else:
+                    H_alt[u][v]["travel_time"] = float(H_alt[u][v].get("travel_time", 60.0)) * 2.2
+                    H_alt[u][v]["length"] = float(H_alt[u][v].get("length", 1000.0)) * 2.2
 
         path_alt, _ = dijkstra(H_alt, src_node, dst_node, weight_key="travel_time")
         if path_alt and path_alt != path_fastest and path_alt != path_dist:

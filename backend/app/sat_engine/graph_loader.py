@@ -13,6 +13,7 @@ _ENGINE_DIR = os.path.dirname(os.path.abspath(__file__))
 if _ENGINE_DIR not in sys.path:
     sys.path.insert(0, _ENGINE_DIR)
 
+from typing import Any
 import math
 try:
     import osmnx as ox
@@ -66,6 +67,19 @@ KNOWN_LOCATIONS = {
     "thoothukudi":    (8.7642,  78.1348),
     "kanyakumari":    (8.0883,  77.5385),
     "nagercoil":      (8.1833,  77.4119),
+    # Additional hubs and Coimbatore / Chennai localities
+    "kulathur":       (11.0405, 77.0748),
+    "sulur":          (11.0247, 77.1264),
+    "peelamedu":      (11.0336, 77.0184),
+    "gandhipuram":    (11.0183, 76.9644),
+    "singanallur":    (10.9995, 77.0264),
+    "saravanampatti": (11.0797, 76.9997),
+    "pollachi":       (10.6582, 77.0094),
+    "mettupalayam":   (11.3002, 76.9404),
+    "perundurai":     (11.2758, 77.5831),
+    "tambaram":       (12.9249, 80.1000),
+    "guindy":         (13.0067, 80.2025),
+    "avadi":          (13.1147, 80.0982),
 }
 
 # ── Graph Loader ──────────────────────────────────────────────────────────────
@@ -79,12 +93,15 @@ def get_graph() -> nx.MultiDiGraph:
     if os.path.exists(GRAPH_CACHE):
         print("[Graph] Loading from cache...")
         try:
-            _graph = nx.read_graphml(GRAPH_CACHE, node_type=int)
+            _graph = nx.read_graphml(GRAPH_CACHE, node_type=int, force_multigraph=True)
         except Exception:
             try:
-                _graph = nx.read_graphml(GRAPH_CACHE)
+                _graph = nx.read_graphml(GRAPH_CACHE, force_multigraph=True)
             except Exception:
-                _graph = None
+                try:
+                    _graph = nx.read_graphml(GRAPH_CACHE)
+                except Exception:
+                    _graph = None
 
     if _graph is None:
         print("[Graph] Graph cache missing or unreadable. Generating network...")
@@ -103,7 +120,8 @@ def get_graph() -> nx.MultiDiGraph:
 def geocode_location(place: str) -> tuple[float, float]:
     """Convert place name or coordinate string to (lat, lon)."""
     import re
-    cleaned = (place or "").strip().lower()
+    raw_place = (place or "").strip()
+    cleaned = raw_place.lower()
 
     # 1. Check if string contains explicit coordinates e.g. "11.0168, 76.9558" or "Coimbatore (11.0168, 76.9558)"
     match = re.search(r"(-?\d+\.\d+)\s*,\s*(-?\d+\.\d+)", cleaned)
@@ -113,10 +131,32 @@ def geocode_location(place: str) -> tuple[float, float]:
         except ValueError:
             pass
 
+    # Normalize node prefix (e.g. NODE_COIMBATORE -> coimbatore)
+    cleaned_norm = re.sub(r"^node[_\-\s]+", "", cleaned)
+    cleaned_words = cleaned_norm.replace("_", " ").replace("-", " ")
+
     # 2. Fast local dictionary lookup with word boundary or exact match
     for key, coords in KNOWN_LOCATIONS.items():
-        if re.search(r'\b' + re.escape(key) + r'\b', cleaned) or key == cleaned:
+        if re.search(r'\b' + re.escape(key) + r'\b', cleaned_words) or key == cleaned_words:
             return coords
+
+    # 3. Fallback to online OSM Nominatim geocoding for unrecognized addresses or specific localities
+    try:
+        import urllib.request
+        import urllib.parse
+        import json
+        query = raw_place if "tamil nadu" in cleaned else f"{raw_place}, Tamil Nadu, India"
+        encoded = urllib.parse.quote(query)
+        url = f"https://nominatim.openstreetmap.org/search?q={encoded}&format=json&limit=1"
+        req = urllib.request.Request(url, headers={"User-Agent": "AITrafficSystem/1.0"})
+        with urllib.request.urlopen(req, timeout=3.0) as resp:
+            data = json.loads(resp.read().decode("utf-8"))
+            if data and len(data) > 0:
+                lat = float(data[0]["lat"])
+                lon = float(data[0]["lon"])
+                return lat, lon
+    except Exception:
+        pass
 
     raise ValueError(
         f"Location '{place}' is not in the local dataset. "
@@ -159,15 +199,26 @@ def path_to_coords(path: list[int]) -> list[list[float]]:
     return generate_curved_fallback_polyline(raw_nodes, num_subpoints=6)
 
 
+def _get_edge_records(edges: Any) -> list[dict[str, Any]]:
+    """Safely extracts edge attribute dictionaries from MultiDiGraph or DiGraph edge queries."""
+    if not edges or not isinstance(edges, dict):
+        return []
+    first_val = next(iter(edges.values()), None)
+    if isinstance(first_val, dict):
+        return [v for v in edges.values() if isinstance(v, dict)]
+    return [edges]
+
+
 def path_length_km(path: list[int]) -> float:
     """Return total path distance in kilometers."""
     G = get_graph()
     total_meters = 0.0
     for u, v in zip(path[:-1], path[1:]):
         edges = G.get_edge_data(u, v)
-        if edges:
-            data = min(edges.values(), key=lambda d: float(d.get("length", 9e9)))
-            total_meters += float(data.get("length", 0.0))
+        records = _get_edge_records(edges)
+        if records:
+            lengths = [float(str(r.get("length", 1000.0))) for r in records if r.get("length") is not None]
+            total_meters += min(lengths) if lengths else 1000.0
         else:
             # Fallback estimation if direct edge attribute missing
             u_data, v_data = G.nodes[u], G.nodes[v]

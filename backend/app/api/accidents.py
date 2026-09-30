@@ -1,17 +1,9 @@
 from fastapi import APIRouter, HTTPException
-try:
-    from pydantic.main import BaseModel
-except ImportError:
-    from pydantic import BaseModel
 from typing import Optional
 from app.services.traffic_service import traffic_service
+from app.schemas.schemas import AccidentCreateRequest
 
 router = APIRouter(prefix="/accidents", tags=["Accidents & Incidents"])
-
-class AccidentCreateRequest(BaseModel):
-    road_id: str
-    severity: Optional[str] = "HIGH"
-    description: Optional[str] = "Vehicle collision causing lane closure"
 
 @router.get("/")
 def get_active_accidents():
