@@ -1216,32 +1216,6 @@ export default function MapRoute() {
           </div>
         </div>
 
-        {/* ── GOOGLE MAPS FLOATING BOTTOM-RIGHT CONTROLS ────────────────────── */}
-        <div className="absolute bottom-6 right-6 z-[1000] flex flex-col items-center gap-3 select-none pointer-events-auto">
-          
-          {/* Google Maps "Locate Me / Re-Center" FAB */}
-          <button
-            type="button"
-            onClick={handleLocateMe}
-            disabled={locatingDevice}
-            className={`w-12 h-12 rounded-full bg-white flex items-center justify-center shadow-xl border-2 transition-all cursor-pointer hover:scale-105 active:scale-95 ${
-              isUsingCurrentLocation 
-                ? 'border-blue-500 text-blue-600 ring-4 ring-blue-400/20' 
-                : 'border-neutral-200 text-neutral-700 hover:text-blue-600 hover:border-blue-300'
-            }`}
-            title="Show Your Current Location"
-          >
-            {locatingDevice ? (
-              <Loader2 className="w-5 h-5 animate-spin text-blue-600" />
-            ) : (
-              <Crosshair className="w-5 h-5 text-blue-600" />
-            )}
-          </button>
-
-          {/* Map Zoom Controls (+ / -) */}
-          <MapZoomControls />
-        </div>
-
         {/* Leaflet MapContainer */}
         <MapContainer
           center={[11.1271, 78.6569]}
@@ -1250,6 +1224,12 @@ export default function MapRoute() {
           scrollWheelZoom={true}
           style={{ height: '100%', width: '100%' }}
         >
+          {/* Google Maps Style Bottom-Right Controls: Re-Center & Zoom */}
+          <MapInnerControls 
+            onLocate={handleLocateMe}
+            locating={locatingDevice}
+            isUsingCurrentLocation={isUsingCurrentLocation}
+          />
           {/* Tile Layer: Carto Voyager (Streets) or Esri World Imagery (Satellite) */}
           {mapStyle === 'satellite' ? (
             <TileLayer
