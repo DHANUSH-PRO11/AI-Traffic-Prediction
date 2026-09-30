@@ -268,21 +268,29 @@ def get_osmnx_datasets_summary() -> dict:
 
     summary["total_infrastructure_elements"] = total_count
 
-    # Check for road network nodes dataset count
-    nodes_csv = os.path.join(os.path.dirname(OSMNX_DATASETS_DIR), "osmnx_road_network_nodes.csv")
-    edges_csv = os.path.join(os.path.dirname(OSMNX_DATASETS_DIR), "osmnx_road_network_edges.csv")
-    
+    # Prefer live graph counts (directed MultiDiGraph); fall back to CSV row counts
     nodes_cnt, edges_cnt = 30, 66
-    if os.path.exists(nodes_csv):
-        try:
-            nodes_cnt = len(pd.read_csv(nodes_csv))
-        except Exception:
-            pass
-    if os.path.exists(edges_csv):
-        try:
-            edges_cnt = len(pd.read_csv(edges_csv))
-        except Exception:
-            pass
+    try:
+        from app.sat_engine.graph_loader import get_graph
+    except ImportError:
+        from graph_loader import get_graph  # type: ignore
+    try:
+        G = get_graph()
+        nodes_cnt = len(G.nodes)
+        edges_cnt = len(G.edges)
+    except Exception:
+        nodes_csv = os.path.join(os.path.dirname(OSMNX_DATASETS_DIR), "osmnx_road_network_nodes.csv")
+        edges_csv = os.path.join(os.path.dirname(OSMNX_DATASETS_DIR), "osmnx_road_network_edges.csv")
+        if os.path.exists(nodes_csv):
+            try:
+                nodes_cnt = len(pd.read_csv(nodes_csv))
+            except Exception:
+                pass
+        if os.path.exists(edges_csv):
+            try:
+                edges_cnt = len(pd.read_csv(edges_csv))
+            except Exception:
+                pass
 
     summary["graph_stats"] = {
         "nodes_count": nodes_cnt,

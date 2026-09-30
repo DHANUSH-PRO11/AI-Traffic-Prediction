@@ -16,6 +16,7 @@ if _ENGINE_DIR not in sys.path:
 
 import joblib
 import numpy as np
+import pandas as pd
 try:
     from app.sat_engine.config import MODEL_PATH
 except ImportError:
@@ -23,6 +24,10 @@ except ImportError:
 
 LABEL_MAP     = {0: "Low", 1: "Medium", 2: "Heavy", 3: "Very Heavy"}
 ROAD_TYPE_ENC = {"highway": 2, "main": 1, "secondary": 0}
+FEATURE_NAMES = [
+    "hour", "day", "festival", "rainfall", "temperature",
+    "road_type", "vehicle_count",
+]
 
 TRAFFIC_MULTIPLIER = {
     "Low":        1.0,
@@ -35,16 +40,22 @@ _model = None
 
 
 def _load_model():
-    """Load and cache model from disk."""
+    """Load and cache model from disk. Retry once for transient DLL/import failures."""
     global _model
     if _model is not None:
         return _model
-    if os.path.exists(MODEL_PATH):
+    if not os.path.exists(MODEL_PATH):
+        print(f"[Predict] Model file missing: {MODEL_PATH}")
+        return None
+    last_exc = None
+    for _ in range(2):
         try:
             _model = joblib.load(MODEL_PATH)
             return _model
         except Exception as exc:
-            print(f"[Predict] Error loading model: {exc}")
+            last_exc = exc
+            _model = None
+    print(f"[Predict] Error loading model: {last_exc}")
     return None
 
 
@@ -54,16 +65,17 @@ def _encode_road(road_type) -> int:
     return ROAD_TYPE_ENC.get(str(road_type).lower().strip(), 1)
 
 
-def _extract_features(features: dict) -> np.ndarray:
-    return np.array([[
-        float(features.get("hour",          12)),
-        int(features.get("day",              1)),
-        int(features.get("festival",         0)),
-        float(features.get("rainfall",       0.0)),
-        float(features.get("temperature",   28.0)),
-        _encode_road(features.get("road_type", "main")),
-        int(features.get("vehicle_count",   150)),
-    ]])
+def _extract_features(features: dict) -> pd.DataFrame:
+    """Build a single-row DataFrame with the same feature names used at training time."""
+    return pd.DataFrame([{
+        "hour":          float(features.get("hour",          12)),
+        "day":           int(features.get("day",              1)),
+        "festival":      int(features.get("festival",         0)),
+        "rainfall":      float(features.get("rainfall",       0.0)),
+        "temperature":   float(features.get("temperature",   28.0)),
+        "road_type":     _encode_road(features.get("road_type", "main")),
+        "vehicle_count": int(features.get("vehicle_count",   150)),
+    }], columns=FEATURE_NAMES)
 
 
 def predict_traffic(features: dict) -> str:
