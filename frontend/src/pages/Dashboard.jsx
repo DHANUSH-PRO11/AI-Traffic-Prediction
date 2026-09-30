@@ -302,25 +302,27 @@ export default function Dashboard() {
             {popularRoutes.map((r, i) => (
               <div 
                 key={i} 
-                onClick={() => navigate('/map')}
-                className="p-3.5 rounded-xl bg-neutral-50 hover:bg-emerald-50/50 border border-neutral-200 transition-all cursor-pointer flex items-center justify-between"
+                onClick={() => navigate(`/map?src=${encodeURIComponent(r.from)}&dst=${encodeURIComponent(r.to)}`)}
+                className="group p-3.5 rounded-xl bg-neutral-50 hover:bg-emerald-50/60 border border-neutral-200 hover:border-emerald-300 transition-all cursor-pointer flex items-center justify-between"
+                title={`Calculate optimized route from ${r.from} to ${r.to}`}
               >
                 <div>
-                  <div className="text-xs font-bold text-neutral-900 flex items-center gap-2">
+                  <div className="text-xs font-bold text-neutral-900 group-hover:text-emerald-950 flex items-center gap-2">
                     <span>{r.from}</span>
-                    <span className="text-neutral-400">→</span>
+                    <span className="text-emerald-600 font-black">→</span>
                     <span>{r.to}</span>
                   </div>
                   <div className="text-[11px] text-neutral-500 mt-1 flex items-center gap-3">
-                    <span>{r.trips} trips today</span>
+                    <span>{r.trips} trips logged</span>
                     <span>•</span>
                     <span>Avg {r.avg_time_min} min</span>
                   </div>
                 </div>
-                <div className="text-right">
-                  <span className="text-xs font-bold text-emerald-800 bg-emerald-100 px-2.5 py-1 rounded-lg border border-emerald-300">
-                    Saved {r.time_saved_min}m
+                <div className="text-right flex items-center gap-2">
+                  <span className="text-xs font-bold text-emerald-800 bg-emerald-100 group-hover:bg-emerald-200/80 px-2.5 py-1 rounded-lg border border-emerald-300 transition-colors">
+                    ⚡ Saved {r.time_saved_min}m
                   </span>
+                  <ArrowRight className="w-3.5 h-3.5 text-neutral-400 group-hover:text-emerald-700 group-hover:translate-x-0.5 transition-all" />
                 </div>
               </div>
             ))}
