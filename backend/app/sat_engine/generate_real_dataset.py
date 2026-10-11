@@ -2,8 +2,9 @@
 generate_real_dataset.py
 ------------------------
 Generates a realistic, highly detailed Tamil Nadu traffic dataset
-with 3,000 samples incorporating real city road types, rush hours,
-monsoon weather impact, festival surges, vehicle density, and speed dynamics.
+with 10,000 samples incorporating real junction observations from traffic.csv,
+city road types, rush hours, monsoon weather impact, festival surges,
+vehicle density, and speed dynamics.
 """
 
 import os
@@ -24,8 +25,27 @@ ROAD_TYPE_ENC = {"highway": 2, "main": 1, "secondary": 0}
 
 LABEL_MAP = {0: "Low", 1: "Medium", 2: "Heavy", 3: "Very Heavy"}
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DATASETS_DIR = os.path.join(BASE_DIR, "datasets")
+TRAFFIC_CSV = os.path.join(DATASETS_DIR, "traffic.csv")
 
-def generate_samples(n=3000):
+
+def _load_real_traffic_junction_counts():
+    """Load real vehicle counts from the 48,120 junction observation records."""
+    if os.path.exists(TRAFFIC_CSV):
+        try:
+            df = pd.read_csv(TRAFFIC_CSV)
+            if "Vehicles" in df.columns and len(df) > 0:
+                return df["Vehicles"].to_numpy()
+        except Exception:
+            pass
+    return None
+
+
+def generate_samples(n=10000):
+    real_counts = _load_real_traffic_junction_counts()
+    n_real = len(real_counts) if real_counts is not None else 0
+
     rows = []
     for i in range(n):
         city = random.choice(CITIES)
@@ -70,8 +90,13 @@ def generate_samples(n=3000):
 
         temperature = round(random.uniform(*temp_range), 1)
 
-        # Base vehicle count calculation
+        # Base vehicle count calculation, influenced by real telematics
         base_vehicles = 120 if road == "highway" else (90 if road == "main" else 50)
+        if n_real > 0 and random.random() < 0.5:
+            # Scale real junction observation by road type factor
+            real_sample = float(real_counts[random.randint(0, n_real - 1)])
+            scale = 3.5 if road == "highway" else (2.2 if road == "main" else 1.2)
+            base_vehicles = max(30, int(real_sample * scale))
 
         # Time multipliers
         if 8 <= hour <= 10 or 17 <= hour <= 20:
@@ -144,4 +169,4 @@ def generate_samples(n=3000):
 
 
 if __name__ == "__main__":
-    generate_samples(3000)
+    generate_samples(10000)

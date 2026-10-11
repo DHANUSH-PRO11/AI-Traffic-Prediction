@@ -39,24 +39,39 @@ TRAFFIC_MULTIPLIER = {
 _model = None
 
 
+try:
+    from app.sat_engine.rf_classifier import PureRandomForestClassifier
+except ImportError:
+    from rf_classifier import PureRandomForestClassifier  # type: ignore
+
 def _load_model():
-    """Load and cache model from disk. Retry once for transient DLL/import failures."""
+    """Load and cache model from disk."""
     global _model
     if _model is not None:
         return _model
     if not os.path.exists(MODEL_PATH):
         print(f"[Predict] Model file missing: {MODEL_PATH}")
-        return None
-    last_exc = None
-    for _ in range(2):
+        try:
+            try:
+                from app.sat_engine.train_model import train
+            except ImportError:
+                from train_model import train  # type: ignore
+            _model, _ = train()
+            return _model
+        except Exception as e:
+            print(f"[Predict] Training on missing model failed: {e}")
+            return None
+
+    try:
+        _model = PureRandomForestClassifier.load(MODEL_PATH)
+        return _model
+    except Exception as exc1:
         try:
             _model = joblib.load(MODEL_PATH)
             return _model
-        except Exception as exc:
-            last_exc = exc
-            _model = None
-    print(f"[Predict] Error loading model: {last_exc}")
-    return None
+        except Exception as exc2:
+            print(f"[Predict] Error loading model: {exc1} / {exc2}")
+            return None
 
 
 def _encode_road(road_type) -> int:

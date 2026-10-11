@@ -150,7 +150,7 @@ def trigger_retraining(req: RetrainRequest, db: Session = Depends(get_db)):
             metrics=candidate_metrics,
             model_path=cand_meta["model_path"],
             is_active=True,
-            training_date=datetime.datetime.utcnow()
+            training_date=datetime.datetime.now(datetime.timezone.utc)
         )
         db.add(new_mv)
         db.commit()

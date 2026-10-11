@@ -10,15 +10,18 @@ Labels   : 0=Low  1=Medium  2=Heavy  3=Very Heavy
 """
 
 import os
+import sys
+_ENGINE_DIR = os.path.dirname(os.path.abspath(__file__))
+if _ENGINE_DIR not in sys.path:
+    sys.path.insert(0, _ENGINE_DIR)
+
 import json
 import joblib
 import pandas as pd
 import numpy as np
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import classification_report, accuracy_score
 
 from config import DATASETS_DIR, MODEL_PATH, MODELS_DIR
+from rf_classifier import PureRandomForestClassifier
 
 REAL_DATASET_CSV = os.path.join(DATASETS_DIR, "real_traffic_dataset.csv")
 METADATA_PATH = os.path.join(MODELS_DIR, "model_metadata.json")
@@ -41,6 +44,22 @@ def load_dataset() -> pd.DataFrame:
     return pd.read_csv(REAL_DATASET_CSV)
 
 
+def stratified_split(df: pd.DataFrame, test_ratio: float = 0.2, random_state: int = 42):
+    """Clean stratified train-test split without external C-extensions."""
+    rng = np.random.default_rng(random_state)
+    train_indices = []
+    test_indices = []
+
+    for label_val, group in df.groupby("label"):
+        idx = group.index.to_numpy().copy()
+        rng.shuffle(idx)
+        n_test = max(1, int(len(idx) * test_ratio))
+        test_indices.extend(idx[:n_test])
+        train_indices.extend(idx[n_test:])
+
+    return df.loc[train_indices], df.loc[test_indices]
+
+
 def train():
     df = load_dataset()
 
@@ -51,40 +70,48 @@ def train():
         enc = {"highway": 2, "main": 1, "secondary": 0}
         df["road_type"] = df["road_type"].map(lambda x: enc.get(str(x).lower(), 1))
 
-    X = df[FEATURE_NAMES]
-    y = df["label"]
+    train_df, test_df = stratified_split(df, test_ratio=0.2, random_state=42)
 
-    X_train, X_test, y_train, y_test = train_test_split(
-        X, y, test_size=0.2, stratify=y, random_state=42
-    )
+    X_train = train_df[FEATURE_NAMES]
+    y_train = train_df["label"]
+    X_test = test_df[FEATURE_NAMES]
+    y_test = test_df["label"]
 
-    print(f"[Train] Training Random Forest on {len(X_train)} samples...")
-    model = RandomForestClassifier(
-        n_estimators=150,
-        max_depth=14,
+    print(f"[Train] Training Random Forest on {len(X_train)} samples across {len(FEATURE_NAMES)} features...")
+    model = PureRandomForestClassifier(
+        n_estimators=35,
+        max_depth=12,
         min_samples_split=4,
         random_state=42,
-        n_jobs=-1,
     )
     model.fit(X_train, y_train)
 
     preds = model.predict(X_test)
-    accuracy = accuracy_score(y_test, preds)
-    target_names = [LABEL_MAP[i] for i in sorted(y.unique())]
-    
-    report_dict = classification_report(y_test, preds, target_names=target_names, output_dict=True)
-    report_text = classification_report(y_test, preds, target_names=target_names, zero_division="warn")
+    accuracy = float(np.mean(preds == y_test.to_numpy()))
+
+    # Build classification metrics summary
     print("\n--- Model Evaluation ---")
-    print(report_text)
-    print(f"Overall Accuracy: {accuracy * 100:.2f}%\n")
+    print(f"Overall Accuracy on Unseen Test Set: {accuracy * 100:.2f}%\n")
+    for cls_idx in sorted(LABEL_MAP.keys()):
+        cls_name = LABEL_MAP[cls_idx]
+        mask_true = (y_test.to_numpy() == cls_idx)
+        mask_pred = (preds == cls_idx)
+        tp = np.sum(mask_true & mask_pred)
+        fp = np.sum((~mask_true) & mask_pred)
+        fn = np.sum(mask_true & (~mask_pred))
+        precision = tp / (tp + fp) if (tp + fp) > 0 else 0.0
+        recall = tp / (tp + fn) if (tp + fn) > 0 else 0.0
+        f1 = (2 * precision * recall) / (precision + recall) if (precision + recall) > 0 else 0.0
+        print(f"  {cls_name:<12} | Precision: {precision:.3f} | Recall: {recall:.3f} | F1: {f1:.3f} | Support: {np.sum(mask_true)}")
 
     # Feature Importance
-    importances = dict(zip(FEATURE_NAMES, [round(float(v), 4) for v in model.feature_importances_]))
-    print("[Feature Importances]:", importances)
+    raw_importances = model.feature_importances_
+    importances = {feat: round(float(imp), 4) for feat, imp in zip(FEATURE_NAMES, raw_importances)}
+    print("\n[Feature Importances]:", importances)
 
     os.makedirs(MODELS_DIR, exist_ok=True)
-    joblib.dump(model, MODEL_PATH)
-    print(f"[Train] Model saved -> {MODEL_PATH}")
+    model.save(MODEL_PATH)
+    print(f"[Train] Real ML Model saved -> {MODEL_PATH}")
 
     # Metadata for analytics API
     metadata = {
@@ -94,7 +121,7 @@ def train():
         "class_distribution": df["traffic_level"].value_counts().to_dict(),
         "feature_names": FEATURE_NAMES,
     }
-    with open(METADATA_PATH, "w") as f:
+    with open(METADATA_PATH, "w", encoding="utf-8") as f:
         json.dump(metadata, f, indent=2)
     print(f"[Train] Metadata saved -> {METADATA_PATH}")
 

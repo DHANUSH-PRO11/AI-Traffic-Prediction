@@ -1,30 +1,28 @@
-from fastapi import APIRouter
-from pydantic import BaseModel
-from app.services.traffic_service import traffic_service
 import datetime
+from fastapi import APIRouter
+from app.services.traffic_service import traffic_service
+from app.schemas.schemas import WeatherUpdateRequest
 
 router = APIRouter(prefix="/weather", tags=["Weather"])
 
-class WeatherUpdateRequest(BaseModel):
-    condition: str
-    temperature: float
-    rainfall: float
-    humidity: float
-    wind_speed: float
 
 @router.get("/")
 def get_current_weather():
     return traffic_service.current_weather
 
+
 @router.post("/update")
 def update_weather(req: WeatherUpdateRequest):
+    humidity_val: float = float(req.humidity) if req.humidity is not None else 65.0
+    wind_speed_val: float = float(req.wind_speed) if req.wind_speed is not None else 12.0
+
     traffic_service.current_weather = {
         "condition": req.condition,
-        "temperature": req.temperature,
-        "rainfall": req.rainfall,
-        "humidity": req.humidity,
-        "wind_speed": req.wind_speed,
-        "timestamp": datetime.datetime.now(datetime.timezone.utc).isoformat()
+        "temperature": float(req.temperature),
+        "rainfall": float(req.rainfall),
+        "humidity": humidity_val,
+        "wind_speed": wind_speed_val,
+        "timestamp": datetime.datetime.now(datetime.timezone.utc).isoformat(),
     }
     traffic_service.update_all_predictions()
     return {"status": "success", "weather": traffic_service.current_weather}

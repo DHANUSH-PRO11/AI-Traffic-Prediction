@@ -54,7 +54,7 @@ def main():
     X_test, y_test = extract_features_from_records(test_records)
 
     print("Training Gradient Boosted Regressor on speed targets...")
-    model = GradientBoostedTrafficRegressor(n_estimators=30, learning_rate=0.15, max_depth=4)
+    model = GradientBoostedTrafficRegressor(n_estimators=40, learning_rate=0.12, max_depth=5)
     model.fit(X_train, y_train, feature_names=FEATURE_NAMES)
 
     print("Evaluating model performance on unseen time-series test set...")

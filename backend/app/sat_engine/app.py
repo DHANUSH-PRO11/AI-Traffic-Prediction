@@ -13,23 +13,42 @@ Endpoints:
 """
 
 import os
+import sys
+
+_ENGINE_DIR = os.path.dirname(os.path.abspath(__file__))
+if _ENGINE_DIR not in sys.path:
+    sys.path.insert(0, _ENGINE_DIR)
+
 import json
 import datetime
 import pandas as pd
 from flask import Flask, request, jsonify, render_template
 from flask_cors import CORS
 
-from config import FESTIVAL_CSV, DEBUG, MODELS_DIR
-from weather import get_weather
-from predict import predict_traffic, predict_traffic_details
-from dijkstra import find_best_route
-from database import save_history, save_prediction, get_history, clear_history
-from graph_loader import geocode_location
-from osmnx_manager import (
-    get_osmnx_features,
-    get_osmnx_datasets_summary,
-    get_osmnx_graph,
-)
+try:
+    from app.sat_engine.config import FESTIVAL_CSV, DEBUG, MODELS_DIR
+    from app.sat_engine.weather import get_weather
+    from app.sat_engine.predict import predict_traffic, predict_traffic_details
+    from app.sat_engine.dijkstra import find_best_route
+    from app.sat_engine.database import save_history, save_prediction, get_history, clear_history
+    from app.sat_engine.graph_loader import geocode_location
+    from app.sat_engine.osmnx_manager import (
+        get_osmnx_features,
+        get_osmnx_datasets_summary,
+        get_osmnx_graph,
+    )
+except ImportError:
+    from config import FESTIVAL_CSV, DEBUG, MODELS_DIR  # type: ignore
+    from weather import get_weather  # type: ignore
+    from predict import predict_traffic, predict_traffic_details  # type: ignore
+    from dijkstra import find_best_route  # type: ignore
+    from database import save_history, save_prediction, get_history, clear_history  # type: ignore
+    from graph_loader import geocode_location  # type: ignore
+    from osmnx_manager import (  # type: ignore
+        get_osmnx_features,
+        get_osmnx_datasets_summary,
+        get_osmnx_graph,
+    )
 
 app = Flask(__name__, template_folder="templates", static_folder="static")
 CORS(app)

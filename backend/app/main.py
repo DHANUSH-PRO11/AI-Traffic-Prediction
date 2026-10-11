@@ -5,12 +5,21 @@ from app.core.config import settings
 from app.api import auth, traffic, routes, roads, weather, accidents, trips, ml, analytics, sat_api
 from app.database.init_db import init_database
 
+from contextlib import asynccontextmanager
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    print("[FastAPI] Running startup procedures...")
+    init_database()
+    yield
+
 app = FastAPI(
     title=settings.PROJECT_NAME,
     description="Production-grade AI Traffic Prediction & Dynamic Route Optimization System",
     version="1.0.0",
     docs_url="/docs",
-    redoc_url="/redoc"
+    redoc_url="/redoc",
+    lifespan=lifespan
 )
 
 # CORS configuration
@@ -35,11 +44,6 @@ app.include_router(analytics.router, prefix=settings.API_V1_STR)
 # Include Smart Traffic Finder (sat) features
 app.include_router(sat_api.router)
 app.include_router(sat_api.router, prefix=settings.API_V1_STR)
-
-@app.on_event("startup")
-def on_startup():
-    print("[FastAPI] Running startup procedures...")
-    init_database()
 
 @app.get("/")
 def root():

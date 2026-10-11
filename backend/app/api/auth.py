@@ -35,7 +35,7 @@ def register(user_in: UserCreate, db: Session = Depends(get_db)):
     db.refresh(new_user)
 
     token = create_fake_jwt(str(new_user.email))
-    return Token(access_token=token, token_type="bearer", user=UserResponse.from_orm(new_user))
+    return Token(access_token=token, token_type="bearer", user=UserResponse.model_validate(new_user))
 
 @router.post("/login", response_model=Token)
 def login(creds: UserLogin, db: Session = Depends(get_db)):
@@ -44,4 +44,4 @@ def login(creds: UserLogin, db: Session = Depends(get_db)):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid email or password.")
     
     token = create_fake_jwt(str(user.email))
-    return Token(access_token=token, token_type="bearer", user=UserResponse.from_orm(user))
+    return Token(access_token=token, token_type="bearer", user=UserResponse.model_validate(user))

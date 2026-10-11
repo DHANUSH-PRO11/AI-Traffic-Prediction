@@ -122,5 +122,78 @@ class TestAPIEndpoints(unittest.TestCase):
         self.assertIn("congestion_distribution", data)
         self.assertIn("hourly_trends", data)
 
+    def test_accidents_workflow(self):
+        from app.services.traffic_service import traffic_service
+        road_id = list(traffic_service.segments_dict.keys())[0]
+        # Report
+        res_post = client.post("/api/accidents/", json={
+            "road_id": road_id,
+            "severity": "HIGH",
+            "description": "Multi-vehicle incident"
+        })
+        self.assertEqual(res_post.status_code, 200)
+
+        # Get active
+        res_get = client.get("/api/accidents/")
+        self.assertEqual(res_get.status_code, 200)
+        self.assertTrue(any(a["road_id"] == road_id for a in res_get.json()))
+
+        # Resolve
+        res_del = client.delete(f"/api/accidents/{road_id}")
+        self.assertEqual(res_del.status_code, 200)
+
+    def test_sat_live_prediction(self):
+        res = client.post("/api/predict-live", json={
+            "hour": 17,
+            "day": 3,
+            "festival": 1,
+            "rainfall": 20.0,
+            "temperature": 29.0,
+            "road_type": "highway",
+            "vehicle_count": 320
+        })
+        self.assertEqual(res.status_code, 200)
+        data = res.json()
+        self.assertEqual(data["status"], "success")
+        self.assertIn("prediction", data)
+        self.assertIn("confidence", data)
+        self.assertIn("probabilities", data)
+        self.assertIn("multiplier", data)
+
+    @patch("app.sat_engine.dijkstra.find_best_route", side_effect=_fake_find_best_route)
+    def test_sat_route(self, _mock):
+        res = client.post("/api/route", json={
+            "source": "Chennai",
+            "destination": "Coimbatore",
+            "vehicle_type": "car"
+        })
+        self.assertEqual(res.status_code, 200)
+
+    def test_roads_endpoints(self):
+        from app.services.traffic_service import traffic_service
+        res_roads = client.get("/api/roads/")
+        self.assertEqual(res_roads.status_code, 200)
+        self.assertGreater(len(res_roads.json()), 0)
+
+        res_nodes = client.get("/api/roads/nodes")
+        self.assertEqual(res_nodes.status_code, 200)
+        self.assertGreater(len(res_nodes.json()), 0)
+
+        road_id = list(traffic_service.segments_dict.keys())[0]
+        res_single = client.get(f"/api/roads/{road_id}")
+        self.assertEqual(res_single.status_code, 200)
+        self.assertEqual(res_single.json()["road_id"], road_id)
+
+    def test_weather_endpoints(self):
+        res_w = client.get("/api/weather/")
+        self.assertEqual(res_w.status_code, 200)
+
+        res_up = client.post("/api/weather/update", json={
+            "condition": "Rain",
+            "temperature": 21.0,
+            "rainfall": 15.0
+        })
+        self.assertEqual(res_up.status_code, 200)
+
 if __name__ == "__main__":
     unittest.main()

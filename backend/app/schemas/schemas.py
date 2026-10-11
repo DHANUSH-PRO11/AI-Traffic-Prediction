@@ -1,5 +1,6 @@
 from typing import List, Optional, Dict, Any
-from pydantic import BaseModel, EmailStr
+from pydantic.main import BaseModel
+from pydantic import ConfigDict, EmailStr
 from datetime import datetime
 
 # --- Auth Schemas ---
@@ -18,8 +19,7 @@ class UserResponse(UserBase):
     id: int
     is_admin: bool
     created_at: datetime
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 class Token(BaseModel):
     access_token: str
@@ -50,8 +50,7 @@ class RoadSegmentResponse(RoadSegmentBase):
     predicted_travel_time: Optional[float] = None
     has_incident: Optional[bool] = False
     incident_severity: Optional[str] = None
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 # --- Traffic Observation Schemas ---
@@ -65,8 +64,7 @@ class TrafficObservationBase(BaseModel):
 class TrafficObservationResponse(TrafficObservationBase):
     id: int
     timestamp: datetime
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 # --- Weather Schemas ---
@@ -80,8 +78,14 @@ class WeatherObservationBase(BaseModel):
 class WeatherObservationResponse(WeatherObservationBase):
     id: int
     timestamp: datetime
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
+
+class WeatherUpdateRequest(BaseModel):
+    condition: str
+    temperature: float
+    rainfall: float
+    humidity: float = 65.0
+    wind_speed: float = 12.0
 
 
 # --- Accident Schemas ---
@@ -105,8 +109,7 @@ class AccidentResponse(AccidentBase):
     id: int
     timestamp: datetime
     road_name: Optional[str] = None
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 # --- Prediction Schemas ---
@@ -210,8 +213,7 @@ class UserTripResponse(BaseModel):
     distance: float
     algorithm: str
     created_at: datetime
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 # --- Model Management & Retraining ---
@@ -232,8 +234,7 @@ class ModelVersionResponse(BaseModel):
     metrics: Dict[str, Any]
     feature_importance: Optional[Dict[str, float]] = None
     is_active: bool
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 class RetrainRequest(BaseModel):
     dataset_name: Optional[str] = "augmented_trip_observations"
