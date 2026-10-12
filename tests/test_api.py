@@ -33,7 +33,13 @@ def _fake_find_best_route(src_name: str, dst_name: str, vehicle_type: str = "car
         ]
     }
 
+from app.database.init_db import init_database
+
 class TestAPIEndpoints(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        init_database()
+
     def test_root_and_health(self):
         res = client.get("/")
         self.assertEqual(res.status_code, 200)

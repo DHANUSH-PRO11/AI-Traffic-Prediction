@@ -92,7 +92,7 @@ def generate_samples(n=10000):
 
         # Base vehicle count calculation, influenced by real telematics
         base_vehicles = 120 if road == "highway" else (90 if road == "main" else 50)
-        if n_real > 0 and random.random() < 0.5:
+        if real_counts is not None and n_real > 0 and random.random() < 0.5:
             # Scale real junction observation by road type factor
             real_sample = float(real_counts[random.randint(0, n_real - 1)])
             scale = 3.5 if road == "highway" else (2.2 if road == "main" else 1.2)

@@ -147,14 +147,15 @@ class DecisionTreeClassifier:
                     best_feat = f
                     best_thresh = thresh
 
-        if best_gain <= 1e-5 or best_feat is None:
+        if best_gain <= 1e-5 or best_feat is None or best_thresh is None:
             return DecisionTreeNode(probabilities=self._leaf_probs(y))
 
         self.feature_importances_accum[best_feat] += best_gain * n_samples
 
         left_mask = X[:, best_feat] <= best_thresh
+        right_mask = np.logical_not(left_mask)
         left_child = self._build_tree(X[left_mask], y[left_mask], depth + 1, rng)
-        right_child = self._build_tree(X[~left_mask], y[~left_mask], depth + 1, rng)
+        right_child = self._build_tree(X[right_mask], y[right_mask], depth + 1, rng)
 
         return DecisionTreeNode(
             feature_idx=best_feat,
