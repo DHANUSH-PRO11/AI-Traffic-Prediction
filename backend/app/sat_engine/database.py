@@ -108,6 +108,7 @@ def get_db():
     global _db
     if _db is not None:
         return _db
+    client = None
     try:
         # Increase timeout slightly and enable tls/ssl considerations implicitly used by Atlas
         client = MongoClient(MONGO_URI, serverSelectionTimeoutMS=5000)
@@ -116,6 +117,11 @@ def get_db():
         print("MongoDB Atlas connected successfully")
     except (ServerSelectionTimeoutError, Exception) as exc:
         print("MongoDB connection failed. Operating with in-memory store.")
+        if client is not None:
+            try:
+                client.close()
+            except Exception:
+                pass
         _db = _StubDB()
     return _db
 

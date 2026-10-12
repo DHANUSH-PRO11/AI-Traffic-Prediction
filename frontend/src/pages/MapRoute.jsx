@@ -41,19 +41,15 @@ import {
   Sliders,
   ChevronRight,
   Sun,
-  ShieldAlert,
-  Fuel,
   Info
 } from 'lucide-react';
 import { trafficApi } from '../api/client';
 import { Button } from '../components/common/Button';
-import { TrafficBadge, StatusBadge } from '../components/common/Badge';
-import { formatSpeed, formatDistance, formatDuration } from '../utils/formatters';
+import { TrafficBadge } from '../components/common/Badge';
+import { formatDistance, formatDuration } from '../utils/formatters';
 import { getTrafficColorHex } from '../utils/trafficColors';
 import { useDeviceLocation } from '../hooks/useDeviceLocation';
 import { reverseGeocode } from '../utils/reverseGeocode';
-import CurrentLocationMarker from '../components/map/CurrentLocationMarker';
-import CurrentLocationButton from '../components/map/CurrentLocationButton';
 
 // Safe Leaflet [lat, lon] converter
 const toLatLng = (pt) => {
@@ -254,9 +250,7 @@ export default function MapRoute() {
     loading: locatingDevice,
     error: deviceLocationError,
     isTracking: isDeviceTracking,
-    getCurrentLocation,
-    startTracking,
-    stopTracking
+    getCurrentLocation
   } = useDeviceLocation(false);
 
   const [userLocation, setUserLocation] = useState(null);

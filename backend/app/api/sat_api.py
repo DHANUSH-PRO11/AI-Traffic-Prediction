@@ -176,6 +176,7 @@ def weather_endpoint(place: Optional[str] = None, lat: Optional[float] = None, l
 
 # ── OSMnx Datasets & Features ─────────────────────────────────────────────────
 
+@router.get("/osmnx/datasets")
 @router.get("/api/osmnx/datasets")
 def osmnx_datasets_summary_endpoint():
     try:
@@ -185,6 +186,7 @@ def osmnx_datasets_summary_endpoint():
         raise HTTPException(status_code=500, detail=f"Failed to get OSMnx datasets summary: {exc}")
 
 
+@router.get("/osmnx/features")
 @router.get("/api/osmnx/features")
 def osmnx_features_endpoint(type: str = "traffic_signals", place: str = "Tamil Nadu, India"):
     try:
@@ -200,6 +202,7 @@ def osmnx_features_endpoint(type: str = "traffic_signals", place: str = "Tamil N
         raise HTTPException(status_code=500, detail=f"Failed to fetch OSMnx features: {exc}")
 
 
+@router.post("/osmnx/download")
 @router.post("/api/osmnx/download")
 def osmnx_download_endpoint(body: OsmndDownloadRequest):
     try:

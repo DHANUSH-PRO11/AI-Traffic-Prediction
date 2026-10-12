@@ -40,6 +40,11 @@ class TestAPIEndpoints(unittest.TestCase):
     def setUpClass(cls):
         init_database()
 
+    @classmethod
+    def tearDownClass(cls):
+        from app.database.database import engine
+        engine.dispose()
+
     def test_root_and_health(self):
         res = client.get("/")
         self.assertEqual(res.status_code, 200)
@@ -200,6 +205,57 @@ class TestAPIEndpoints(unittest.TestCase):
             "rainfall": 15.0
         })
         self.assertEqual(res_up.status_code, 200)
+
+    def test_auth_flow(self):
+        # 1. Login with seeded admin
+        res_login = client.post("/api/auth/login", json={
+            "email": "admin@traffic.ai",
+            "password": "admin123"
+        })
+        self.assertEqual(res_login.status_code, 200)
+        data = res_login.json()
+        self.assertIn("access_token", data)
+        self.assertEqual(data["user"]["email"], "admin@traffic.ai")
+
+        # 2. Register a new user
+        unique_email = f"test_{os.getpid()}@traffic.ai"
+        res_reg = client.post("/api/auth/register", json={
+            "name": "Audit Test User",
+            "email": unique_email,
+            "password": "Password123!"
+        })
+        self.assertEqual(res_reg.status_code, 200)
+        reg_data = res_reg.json()
+        self.assertIn("access_token", reg_data)
+        self.assertEqual(reg_data["user"]["email"], unique_email)
+
+        # 3. Duplicate register should fail with 400
+        res_dup = client.post("/api/auth/register", json={
+            "name": "Duplicate User",
+            "email": unique_email,
+            "password": "Password123!"
+        })
+        self.assertEqual(res_dup.status_code, 400)
+
+    def test_osmnx_endpoints(self):
+        res_datasets = client.get("/api/osmnx/datasets")
+        self.assertEqual(res_datasets.status_code, 200)
+
+        res_datasets_no_prefix = client.get("/osmnx/datasets")
+        self.assertEqual(res_datasets_no_prefix.status_code, 200)
+
+        res_features = client.get("/api/osmnx/features", params={"type": "traffic_signals"})
+        self.assertEqual(res_features.status_code, 200)
+        self.assertEqual(res_features.json()["status"], "success")
+
+    def test_history_lifecycle(self):
+        res_hist = client.get("/api/history")
+        self.assertEqual(res_hist.status_code, 200)
+        self.assertIn("history", res_hist.json())
+
+        res_del = client.delete("/api/history")
+        self.assertEqual(res_del.status_code, 200)
+        self.assertEqual(res_del.json()["status"], "success")
 
 if __name__ == "__main__":
     unittest.main()
