@@ -45,16 +45,22 @@ app.include_router(analytics.router, prefix=settings.API_V1_STR)
 app.include_router(sat_api.router)
 app.include_router(sat_api.router, prefix=settings.API_V1_STR)
 
+from fastapi.openapi.docs import get_swagger_ui_html, get_redoc_html
+from fastapi.responses import JSONResponse
+
 @app.get("/")
+@app.get(settings.API_V1_STR)
+@app.get(f"{settings.API_V1_STR}/")
 def root():
     return {
         "system": settings.PROJECT_NAME,
         "status": "operational",
         "version": "1.0.0",
-        "docs": "/docs",
+        "docs": f"{settings.API_V1_STR}/docs",
         "api_prefix": settings.API_V1_STR
     }
 
+@app.get("/health")
 @app.get("/api/health")
 def health_check():
     return {
@@ -63,6 +69,20 @@ def health_check():
         "database": "connected"
     }
 
+# Ensure Swagger docs & OpenAPI schemas are accessible under /api prefix for Vercel routing
+@app.get("/api/docs", include_in_schema=False)
+def api_docs():
+    return get_swagger_ui_html(openapi_url="/api/openapi.json", title=f"{settings.PROJECT_NAME} - API Docs")
+
+@app.get("/api/redoc", include_in_schema=False)
+def api_redoc():
+    return get_redoc_html(openapi_url="/api/openapi.json", title=f"{settings.PROJECT_NAME} - ReDoc")
+
+@app.get("/api/openapi.json", include_in_schema=False)
+def api_openapi():
+    return JSONResponse(app.openapi())
+
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run("app.main:app", host="0.0.0.0", port=8000, reload=True)
+    port = int(os.getenv("PORT", "8000"))
+    uvicorn.run("app.main:app", host="0.0.0.0", port=port, reload=True)

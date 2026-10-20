@@ -1,0 +1,82 @@
+{
+  "NODE_SANTA_MONICA": {
+    "name": "Santa Monica Pier",
+    "lat": 34.0102,
+    "lng": -118.4965
+  },
+  "NODE_WESTWOOD": {
+    "name": "Westwood / UCLA",
+    "lat": 34.0635,
+    "lng": -118.4455
+  },
+  "NODE_CENTURY_CITY": {
+    "name": "Century City Hub",
+    "lat": 34.0558,
+    "lng": -118.4135
+  },
+  "NODE_BEVERLY_HILLS": {
+    "name": "Beverly Hills Junction",
+    "lat": 34.0736,
+    "lng": -118.4004
+  },
+  "NODE_HOLLYWOOD": {
+    "name": "Hollywood Highland",
+    "lat": 34.1016,
+    "lng": -118.3415
+  },
+  "NODE_MID_WILSHIRE": {
+    "name": "Mid-Wilshire Center",
+    "lat": 34.062,
+    "lng": -118.358
+  },
+  "NODE_CULVER_CITY": {
+    "name": "Culver City Arts",
+    "lat": 34.0259,
+    "lng": -118.3965
+  },
+  "NODE_LAX_AIRPORT": {
+    "name": "LAX Airport North",
+    "lat": 33.9535,
+    "lng": -118.4055
+  },
+  "NODE_INGLEWOOD": {
+    "name": "Inglewood Arena",
+    "lat": 33.9582,
+    "lng": -118.3429
+  },
+  "NODE_USC_CAMPUS": {
+    "name": "USC / Exposition Park",
+    "lat": 34.018,
+    "lng": -118.2855
+  },
+  "NODE_DOWNTOWN_LA": {
+    "name": "Downtown LA Grand",
+    "lat": 34.0488,
+    "lng": -118.2518
+  },
+  "NODE_CHINATOWN": {
+    "name": "Chinatown North",
+    "lat": 34.063,
+    "lng": -118.237
+  },
+  "NODE_SILVER_LAKE": {
+    "name": "Silver Lake Junction",
+    "lat": 34.0865,
+    "lng": -118.2702
+  },
+  "NODE_GLENDALE": {
+    "name": "Glendale South",
+    "lat": 34.1205,
+    "lng": -118.255
+  },
+  "NODE_PASADENA": {
+    "name": "Pasadena Gateway",
+    "lat": 34.1478,
+    "lng": -118.1445
+  },
+  "NODE_EAST_LA": {
+    "name": "East LA Interchange",
+    "lat": 34.0325,
+    "lng": -118.175
+  }
+}

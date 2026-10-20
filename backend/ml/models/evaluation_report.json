@@ -1,0 +1,73 @@
+{
+  "model_version": "v1.0",
+  "eval_samples": 3226,
+  "overall": {
+    "MAE": 4.07,
+    "RMSE": 5.45,
+    "R2": 0.957,
+    "MAPE": 7.43
+  },
+  "slices": {
+    "rush_hour_peak": {
+      "MAE": 5.53,
+      "RMSE": 7.29,
+      "MAPE": 12.76,
+      "count": 807
+    },
+    "off_peak": {
+      "MAE": 3.59,
+      "RMSE": 4.68,
+      "MAPE": 5.65,
+      "count": 2419
+    },
+    "highways": {
+      "MAE": 4.14,
+      "RMSE": 5.56,
+      "MAPE": 5.67,
+      "count": 2554
+    },
+    "arterials": {
+      "MAE": 3.81,
+      "RMSE": 5.0,
+      "MAPE": 14.09,
+      "count": 672
+    },
+    "rainy_conditions": {
+      "MAE": 3.92,
+      "RMSE": 5.13,
+      "MAPE": 8.47,
+      "count": 508
+    },
+    "clear_conditions": {
+      "MAE": 4.12,
+      "RMSE": 5.49,
+      "MAPE": 7.32,
+      "count": 1653
+    }
+  },
+  "feature_importances": {
+    "hour": 0.0032,
+    "day_of_week": 0.0279,
+    "month": 0.0,
+    "is_weekend": 0.0,
+    "is_holiday": 0.0,
+    "road_length": 0.0,
+    "max_speed": 0.0085,
+    "temperature": 0.0019,
+    "rainfall": 0.025,
+    "historical_speed": 0.7684,
+    "historical_volume": 0.0067,
+    "previous_speed": 0.0695,
+    "previous_volume": 0.0259,
+    "accident": 0.0498,
+    "road_type_highway": 0.0,
+    "road_type_arterial": 0.0001,
+    "road_type_secondary": 0.0,
+    "road_type_residential": 0.0,
+    "weather_Clear": 0.0036,
+    "weather_Overcast": 0.0006,
+    "weather_Rain": 0.0,
+    "weather_Fog": 0.0088,
+    "weather_Storm": 0.0
+  }
+}

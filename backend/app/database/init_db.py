@@ -37,9 +37,18 @@ def init_database():
             db.commit()
 
         # Check if road segments exist
-        raw_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../ml/data/raw"))
-        segments_file = os.path.join(raw_dir, "road_segments.json")
-        if os.path.exists(segments_file) and db.query(RoadSegment).count() == 0:
+        raw_candidates = [
+            os.path.abspath(os.path.join(os.path.dirname(__file__), "../../ml/data/raw")),
+            os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../ml/data/raw")),
+        ]
+        segments_file = None
+        for cand in raw_candidates:
+            cand_file = os.path.join(cand, "road_segments.json")
+            if os.path.exists(cand_file):
+                segments_file = cand_file
+                break
+
+        if segments_file and db.query(RoadSegment).count() == 0:
             print("[DB Init] Seeding road segments from raw dataset...")
             with open(segments_file, "r", encoding="utf-8") as f:
                 segments_data = json.load(f)

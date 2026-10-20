@@ -121,11 +121,19 @@ class TrafficService:
             print(f"[TrafficService] Loaded {len(df_nodes)} Tamil Nadu hubs and {len(df_edges)*2} bidirectional corridors from sat datasets.")
             return
 
-        base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../ml/data/raw"))
-        nodes_file = os.path.join(base_dir, "network_nodes.json")
-        segments_file = os.path.join(base_dir, "road_segments.json")
+        raw_candidates = [
+            os.path.abspath(os.path.join(os.path.dirname(__file__), "../../ml/data/raw")),
+            os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../ml/data/raw")),
+        ]
+        nodes_file, segments_file = None, None
+        for cand in raw_candidates:
+            nf = os.path.join(cand, "network_nodes.json")
+            sf = os.path.join(cand, "road_segments.json")
+            if os.path.exists(nf) and os.path.exists(sf):
+                nodes_file, segments_file = nf, sf
+                break
 
-        if os.path.exists(nodes_file) and os.path.exists(segments_file):
+        if nodes_file and segments_file:
             with open(nodes_file, "r", encoding="utf-8") as f:
                 self.nodes_dict = json.load(f)
             with open(segments_file, "r", encoding="utf-8") as f:
