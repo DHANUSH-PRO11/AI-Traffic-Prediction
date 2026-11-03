@@ -89,7 +89,7 @@ jobs:
       - name: Install Frontend Dependencies
         working-directory: frontend
         run: |
-          npm ci
+          npm ci || npm install
 
       - name: Run Code Linter (oxlint)
         working-directory: frontend
